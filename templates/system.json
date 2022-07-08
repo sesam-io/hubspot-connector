@@ -1,5 +1,5 @@
 {
-  "_id": "xxxxxxxx-hubspot",
+  "_id": "{{@ system @}}",
   "type": "system:rest",
   "headers": {
     "Authorization": "$SECRET(hubspot-jwt)",

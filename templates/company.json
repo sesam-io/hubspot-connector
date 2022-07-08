@@ -1,10 +1,10 @@
 [
   {
-    "_id": "xxxxxxxx-hubspot-company-collect",
+    "_id": "{{@ system @}}-company-collect",
     "type": "pipe",
     "source": {
       "type": "rest",
-      "system": "xxxxxxxx-hubspot",
+      "system": "{{@ system @}}",
       "id_expression": "{{ id }}",
       "operation": "get",
       "payload_property": "results",
@@ -19,11 +19,11 @@
     "add_namespaces": false
   },
   {
-    "_id": "xxxxxxxx-hubspot-company-share-insert",
+    "_id": "{{@ system @}}-company-share-insert",
     "type": "pipe",
     "source": {
       "type": "dataset",
-      "dataset": "xxxxxxxx-hubspot-company-transform",
+      "dataset": "<todo>",
       "subset": [
         "eq",
         [
@@ -56,7 +56,7 @@
                   "hops",
                   {
                     "datasets": [
-                      "xxxxxxxx-hubspot-company-share-insert chi"
+                      "{{@ system @}}-company-share-insert chi"
                     ],
                     "where": [
                       [
@@ -87,7 +87,7 @@
       },
       {
         "type": "rest",
-        "system": "xxxxxxxx-hubspot",
+        "system": "{{@ system @}}",
         "operation": "insert",
         "properties": {
           "url": "companies"
@@ -126,11 +126,11 @@
     "reprocessing_policy": "continue"
   },
   {
-    "_id": "xxxxxxxx-hubspot-company-share-update",
+    "_id": "{{@ system @}}-company-share-update",
     "type": "pipe",
     "source": {
       "type": "dataset",
-      "dataset": "xxxxxxxx-hubspot-company-transform",
+      "dataset": "<todo>",
       "subset": [
         "eq",
         [
@@ -142,7 +142,7 @@
     },
     "sink": {
       "type": "rest",
-      "system": "xxxxxxxx-hubspot",
+      "system": "{{@ system @}}",
       "operation": "update"
     },
     "transform": [
@@ -181,7 +181,7 @@
       },
       {
         "type": "rest",
-        "system": "xxxxxxxx-hubspot",
+        "system": "{{@ system @}}",
         "operation": "get",
         "replace_entity": false
       },
@@ -202,7 +202,7 @@
                   "hops",
                   {
                     "datasets": [
-                      "xxxxxxxx-hubspot-company-collect a"
+                      "{{@ system @}}-company-collect a"
                     ],
                     "where": [
                       [
