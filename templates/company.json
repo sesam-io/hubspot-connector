@@ -1,0 +1,319 @@
+[
+  {
+    "_id": "xxxxxxxx-hubspot-company-collect",
+    "type": "pipe",
+    "source": {
+      "type": "rest",
+      "system": "xxxxxxxx-hubspot",
+      "id_expression": "{{ id }}",
+      "operation": "get",
+      "payload_property": "results",
+      "properties": {
+        "url": "companies?properties=hs_analytics_first_timestamp,hs_analytics_last_timestamp,hs_analytics_last_visit_timestamp,hs_analytics_num_page_views,hs_analytics_num_visits,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_source,hs_last_booked_meeting_date,hs_last_logged_call_date,hs_last_open_task_date,hs_last_sales_activity_timestamp,hs_lastmodifieddate,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,about_us,address,address2,annualrevenue,city,closedate,country,createdate,days_to_close,description,domain,engagements_last_meeting_booked_medium,first_contact_createdate,founded_year,hs_analytics_last_touch_converting_campaign,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,hs_createdate,hs_num_child_companies,hs_object_id,hs_parent_company_id,industry,is_public,lifecyclestage,name,num_associated_contacts,numberofemployees,phone,state,timezone,total_money_raised,total_revenue,type,web_technologies,website,zip,hs_analytics_first_touch_converting_campaign,hs_analytics_first_visit_timestamp,first_deal_created_date,hs_num_open_deals,hs_total_deal_value,num_associated_deals,recent_deal_amount,recent_deal_close_date,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,facebook_company_page,facebookfans,googleplus_page,linkedin_company_page,linkedinbio,twitterbio,twitterfollowers,twitterhandle,hs_ideal_customer_profile,hs_is_target_account,hs_num_blockers,hs_num_contacts_with_buying_roles,hs_num_decision_makers&"
+      },
+      "updated_expression": "{{ updatedAt }}"
+    },
+    "pump": {
+      "cron_expression": "0 * * * ?"
+    },
+    "add_namespaces": false
+  },
+  {
+    "_id": "xxxxxxxx-hubspot-company-share-insert",
+    "type": "pipe",
+    "source": {
+      "type": "dataset",
+      "dataset": "xxxxxxxx-hubspot-company-transform",
+      "subset": [
+        "eq",
+        [
+          "is-empty",
+          "_S.id"
+        ],
+        true
+      ]
+    },
+    "sink": {
+      "set_initial_offset": "onload"
+    },
+    "transform": [
+      {
+        "type": "dtl",
+        "rules": {
+          "default": [
+            [
+              "discard",
+              [
+                "is-null",
+                "_S.id"
+              ]
+            ],
+            [
+              "discard",
+              [
+                "is-not-empty",
+                [
+                  "hops",
+                  {
+                    "datasets": [
+                      "xxxxxxxx-hubspot-company-share-insert chi"
+                    ],
+                    "where": [
+                      [
+                        "eq",
+                        "_S.sesam-id",
+                        "chi.sesam-id"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ],
+            [
+              "add",
+              "::payload",
+              [
+                "dict",
+                "properties",
+                "_S.properties"
+              ]
+            ],
+            [
+              "copy",
+              "sesam-id"
+            ]
+          ]
+        }
+      },
+      {
+        "type": "rest",
+        "system": "xxxxxxxx-hubspot",
+        "operation": "insert",
+        "properties": {
+          "url": "companies"
+        },
+        "replace_entity": false
+      },
+      {
+        "type": "dtl",
+        "rules": {
+          "default": [
+            [
+              "copy",
+              "sesam-id"
+            ],
+            [
+              "merge-union",
+              "_S.response"
+            ],
+            [
+              "add",
+              "_id",
+              "_T.id"
+            ]
+          ]
+        }
+      }
+    ],
+    "pump": {
+      "run_at_startup_if_not_populated": true
+    },
+    "add_namespaces": false,
+    "disable_set_last_seen": true,
+    "exclude_completeness": [
+      "hubspot-company"
+    ],
+    "reprocessing_policy": "continue"
+  },
+  {
+    "_id": "xxxxxxxx-hubspot-company-share-update",
+    "type": "pipe",
+    "source": {
+      "type": "dataset",
+      "dataset": "xxxxxxxx-hubspot-company-transform",
+      "subset": [
+        "eq",
+        [
+          "is-not-empty",
+          "_S.id"
+        ],
+        true
+      ]
+    },
+    "sink": {
+      "type": "rest",
+      "system": "xxxxxxxx-hubspot",
+      "operation": "update"
+    },
+    "transform": [
+      {
+        "type": "dtl",
+        "rules": {
+          "default": [
+            [
+              "discard",
+              [
+                "is-not-empty",
+                "_S.id"
+              ]
+            ],
+            [
+              "add",
+              "::properties",
+              [
+                "dict",
+                "url",
+                [
+                  "concat",
+                  "companies/",
+                  "_S.id",
+                  "?properties=hs_analytics_first_timestamp,hs_analytics_last_timestamp,hs_analytics_last_visit_timestamp,hs_analytics_num_page_views,hs_analytics_num_visits,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_source,hs_last_booked_meeting_date,hs_last_logged_call_date,hs_last_open_task_date,hs_last_sales_activity_timestamp,hs_lastmodifieddate,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,about_us,address,address2,annualrevenue,city,closedate,country,createdate,days_to_close,description,domain,engagements_last_meeting_booked_medium,first_contact_createdate,founded_year,hs_analytics_last_touch_converting_campaign,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,hs_createdate,hs_num_child_companies,hs_object_id,hs_parent_company_id,industry,is_public,lifecyclestage,name,num_associated_contacts,numberofemployees,phone,state,timezone,total_money_raised,total_revenue,type,web_technologies,website,zip,hs_analytics_first_touch_converting_campaign,hs_analytics_first_visit_timestamp,first_deal_created_date,hs_num_open_deals,hs_total_deal_value,num_associated_deals,recent_deal_amount,recent_deal_close_date,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,facebook_company_page,facebookfans,googleplus_page,linkedin_company_page,linkedinbio,twitterbio,twitterfollowers,twitterhandle,hs_ideal_customer_profile,hs_is_target_account,hs_num_blockers,hs_num_contacts_with_buying_roles,hs_num_decision_makers&"
+                ]
+              ]
+            ],
+            [
+              "add",
+              "entity",
+              "_S."
+            ]
+          ]
+        }
+      },
+      {
+        "type": "rest",
+        "system": "xxxxxxxx-hubspot",
+        "operation": "get",
+        "replace_entity": false
+      },
+      {
+        "type": "dtl",
+        "rules": {
+          "default": [
+            [
+              "comment",
+              "**** OPTIMISTIC LOCKING ****"
+            ],
+            [
+              "add",
+              "_old",
+              [
+                "first",
+                [
+                  "hops",
+                  {
+                    "datasets": [
+                      "xxxxxxxx-hubspot-company-collect a"
+                    ],
+                    "where": [
+                      [
+                        "eq",
+                        "_S.entity.id",
+                        "a.id"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ],
+            [
+              "add",
+              "_json_old",
+              [
+                "json-transit",
+                [
+                  "apply",
+                  "remove-under",
+                  "_T._old"
+                ]
+              ]
+            ],
+            [
+              "add",
+              "_json_new",
+              [
+                "first",
+                [
+                  "json-transit",
+                  [
+                    "apply",
+                    "remove-under",
+                    "_S.response"
+                  ]
+                ]
+              ]
+            ],
+            [
+              "add",
+              "_hash_old",
+              [
+                "hash128",
+                "murmur3",
+                "_T._json_old"
+              ]
+            ],
+            [
+              "add",
+              "_hash_new",
+              [
+                "hash128",
+                "murmur3",
+                "_T._json_new"
+              ]
+            ],
+            [
+              "if",
+              [
+                "eq",
+                "_T._hash_old",
+                "_T._hash_new"
+              ],
+              [
+                [
+                  "comment",
+                  "**** SAME DATA IN SYSTEM AS IN SESAM ****"
+                ],
+                [
+                  "add",
+                  "::payload",
+                  [
+                    "dict",
+                    "properties",
+                    "_S.entity.properties"
+                  ]
+                ],
+                [
+                  "add",
+                  "::properties",
+                  [
+                    "dict",
+                    "id",
+                    "_S.entity.id",
+                    "url",
+                    "companies"
+                  ]
+                ]
+              ],
+              [
+                [
+                  "comment",
+                  "**** DIFFERENT DATA IN SYSTEM THAN IN SESAM ****"
+                ],
+                [
+                  "discard"
+                ]
+              ]
+            ]
+          ],
+          "remove-under": [
+            [
+              "copy",
+              "*",
+              "_*"
+            ]
+          ]
+        }
+      }
+    ],
+    "batch_size": 1
+  }
+]

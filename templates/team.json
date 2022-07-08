@@ -1,0 +1,17 @@
+[
+  {
+    "_id": "xxxxxxxx-hubspot-team-collect",
+    "type": "pipe",
+    "source": {
+      "type": "rest",
+      "system": "xxxxxxxx-hubspot",
+      "id_expression": "{{ id }}",
+      "operation": "get-settings",
+      "payload_property": "results",
+      "properties": {
+        "url": "users/teams"
+      }
+    },
+    "add_namespaces": false
+  }
+]

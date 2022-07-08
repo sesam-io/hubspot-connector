@@ -1,0 +1,19 @@
+{
+  "datatypes": {
+    "company": {
+      "template": "templates/company.json",
+      "bidirectional": true
+    },
+    "contact": {
+      "template": "templates/contact.json"
+    },
+    "team": {
+      "template": "templates/team.json"
+    },
+    "user": {
+      "template": "templates/user.json",
+      "bidirectional": true
+    }
+  },
+  "system-template": "templates/system.json"
+}
