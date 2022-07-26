@@ -23,7 +23,7 @@
     "type": "pipe",
     "source": {
       "type": "dataset",
-      "dataset": "<todo>",
+      "dataset": "{{@ system @}}-company-transform",
       "subset": [
         "eq",
         [
@@ -130,7 +130,7 @@
     "type": "pipe",
     "source": {
       "type": "dataset",
-      "dataset": "<todo>",
+      "dataset": "{{@ system @}}-company-transform",
       "subset": [
         "eq",
         [
