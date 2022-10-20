@@ -16,6 +16,66 @@
     "add_namespaces": false
   },
   {
+    "_id": "{{@ system @}}-hubspot-user-share-insert",
+    "type": "pipe",
+    "source": {
+      "type": "dataset",
+      "dataset": "{{@ system @}}-hubspot-user-transform",
+      "subset": ["eq",
+        ["is-empty", "_S.id"], true]
+    },
+    "sink": {
+      "set_initial_offset": "onload"
+    },
+    "transform": [{
+      "type": "dtl",
+      "rules": {
+        "default": [
+          ["discard",
+            ["is-null", "_S.id"]
+          ],
+          ["discard",
+            ["is-empty",
+              ["hops", {
+                "datasets": ["{{@ system @}}-hubspot-user-share-insert chi"],
+                "where": [
+                  ["eq", "_S.sesam-id", "chi.sesam-id"]
+                ]
+              }]
+            ]
+          ],
+          ["add", "::payload",
+            ["dict", "email", "_S.email", "sendWelcomeEmail", true]
+          ],
+          ["copy", "sesam-id"]
+        ]
+      }
+    }, {
+      "type": "rest",
+      "system": "{{@ system @}}-hubspot",
+      "operation": "insert-settings",
+      "properties": {
+        "url": "users"
+      },
+      "replace_entity": false
+    }, {
+      "type": "dtl",
+      "rules": {
+        "default": [
+          ["copy", "sesam-id"],
+          ["merge-union", "_S.response"],
+          ["add", "_id", "_T.id"]
+        ]
+      }
+    }],
+    "pump": {
+      "run_at_startup_if_not_populated": true
+    },
+    "add_namespaces": false,
+    "disable_set_last_seen": true,
+    "reprocessing_policy": "continue"
+  },
+  {
     "_id": "{{@ system @}}-user-share-update",
     "type": "pipe",
     "source": {
