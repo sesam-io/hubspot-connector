@@ -14,7 +14,8 @@
       "updated_expression": "{{ updatedAt }}"
     },
     "pump": {
-      "cron_expression": "0 * * * ?"
+      "cron_expression": "0 * * * ?",
+      "schedule_interval": 10
     },
     "add_namespaces": false
   },
@@ -112,7 +113,8 @@
       }
     ],
     "pump": {
-      "run_at_startup_if_not_populated": true
+      "run_at_startup_if_not_populated": true,
+      "schedule_interval": 10
     },
     "add_namespaces": false,
     "disable_set_last_seen": true,
@@ -302,6 +304,9 @@
         }
       }
     ],
-    "batch_size": 1
+    "batch_size": 1,
+    "pump": {
+      "schedule_interval": 10
+    }
   }
 ]
