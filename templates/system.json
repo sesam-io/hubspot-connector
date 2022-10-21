@@ -34,6 +34,11 @@
       "method": "PUT",
       "payload-type": "json",
       "url": "settings/v3/{{ properties.url }}"
+    },
+    "insert-settings": {
+      "method": "POST",
+      "payload-type": "json",
+      "url": "settings/v3/{{ properties.url }}"
     }
   },
   "rate_limiting_delay": 30,
