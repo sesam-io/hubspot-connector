@@ -51,7 +51,7 @@
             [
               "discard",
               [
-                "is-not-empty",
+                "is-empty",
                 [
                   "hops",
                   {
