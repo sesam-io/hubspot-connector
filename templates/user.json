@@ -16,11 +16,11 @@
     "add_namespaces": false
   },
   {
-    "_id": "{{@ system @}}-hubspot-user-share-insert",
+    "_id": "{{@ system @}}-user-share-insert",
     "type": "pipe",
     "source": {
       "type": "dataset",
-      "dataset": "{{@ system @}}-hubspot-user-transform",
+      "dataset": "{{@ system @}}-user-transform",
       "subset": ["eq",
         ["is-empty", "_S.id"], true]
     },
@@ -37,7 +37,7 @@
           ["discard",
             ["is-empty",
               ["hops", {
-                "datasets": ["{{@ system @}}-hubspot-user-share-insert chi"],
+                "datasets": ["{{@ system @}}-user-share-insert chi"],
                 "where": [
                   ["eq", "_S.sesam-id", "chi.sesam-id"]
                 ]
@@ -52,7 +52,7 @@
       }
     }, {
       "type": "rest",
-      "system": "{{@ system @}}-hubspot",
+      "system": "{{@ system @}}",
       "operation": "insert-settings",
       "properties": {
         "url": "users"
