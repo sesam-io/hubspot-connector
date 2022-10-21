@@ -92,7 +92,8 @@
         "properties": {
           "url": "companies"
         },
-        "replace_entity": false
+        "replace_entity": false,
+        "side_effects": true
       },
       {
         "type": "dtl",
@@ -120,9 +121,6 @@
     },
     "add_namespaces": false,
     "disable_set_last_seen": true,
-    "exclude_completeness": [
-      "hubspot-company"
-    ],
     "reprocessing_policy": "continue"
   },
   {
