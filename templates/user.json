@@ -61,7 +61,8 @@
       "properties": {
         "url": "users"
       },
-      "replace_entity": false
+      "replace_entity": false,
+      "ignored_status_codes": "409"
     }, {
       "type": "dtl",
       "rules": {
