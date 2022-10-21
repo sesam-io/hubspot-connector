@@ -23,15 +23,7 @@
     "type": "pipe",
     "source": {
       "type": "dataset",
-      "dataset": "{{@ system @}}-company-transform",
-      "subset": [
-        "eq",
-        [
-          "is-empty",
-          "_S.id"
-        ],
-        true
-      ]
+      "dataset": "{{@ system @}}-company-transform"
     },
     "sink": {
       "set_initial_offset": "onload"
@@ -128,15 +120,7 @@
     "type": "pipe",
     "source": {
       "type": "dataset",
-      "dataset": "{{@ system @}}-company-transform",
-      "subset": [
-        "eq",
-        [
-          "is-not-empty",
-          "_S.id"
-        ],
-        true
-      ]
+      "dataset": "{{@ system @}}-company-transform"
     },
     "sink": {
       "type": "rest",
