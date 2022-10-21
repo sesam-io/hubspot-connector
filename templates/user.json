@@ -13,16 +13,17 @@
       },
       "updated_expression": "{{ updatedAt }}"
     },
-    "add_namespaces": false
+    "add_namespaces": false,
+    "pump": {
+      "schedule_interval": 10
+    }
   },
   {
     "_id": "{{@ system @}}-hubspot-user-share-insert",
     "type": "pipe",
     "source": {
       "type": "dataset",
-      "dataset": "{{@ system @}}-hubspot-user-transform",
-      "subset": ["eq",
-        ["is-empty", "_S.id"], true]
+      "dataset": "{{@ system @}}-hubspot-user-transform"
     },
     "sink": {
       "set_initial_offset": "onload"
@@ -31,6 +32,9 @@
       "type": "dtl",
       "rules": {
         "default": [
+          ["discard",
+            ["not", "_S._deleted"]
+          ],
           ["discard",
             ["is-null", "_S.id"]
           ],
@@ -69,7 +73,8 @@
       }
     }],
     "pump": {
-      "run_at_startup_if_not_populated": true
+      "run_at_startup_if_not_populated": true,
+      "schedule_interval": 10
     },
     "add_namespaces": false,
     "disable_set_last_seen": true,
@@ -92,6 +97,9 @@
         "type": "dtl",
         "rules": {
           "default": [
+            ["discard",
+              ["not", "_S._deleted"]
+            ],
             [
               "discard",
               [
@@ -260,6 +268,9 @@
         }
       }
     ],
-    "batch_size": 1
+    "batch_size": 1,
+    "pump": {
+      "schedule_interval": 10
+    }
   }
 ]
