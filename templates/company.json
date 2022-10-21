@@ -14,7 +14,6 @@
       "updated_expression": "{{ updatedAt }}"
     },
     "pump": {
-      "cron_expression": "0 * * * ?",
       "schedule_interval": 10
     },
     "add_namespaces": false
