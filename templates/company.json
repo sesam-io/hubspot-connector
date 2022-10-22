@@ -47,21 +47,17 @@
               "discard",
               [
                 "is-empty",
-                [
-                  "hops",
-                  {
-                    "datasets": [
-                      "{{@ system @}}-company-share-insert chi"
-                    ],
-                    "where": [
-                      [
-                        "eq",
-                        "_S.sesam-id",
-                        "chi.sesam-id"
-                      ]
+                ["hops", {
+                  "datasets": ["25646270-global-organisation g", "25646270-hubspot-company-share-insert chi"],
+                  "where": [
+                    ["eq",
+                      ["ni", "_S.sesam-id"], "g.$ids"],
+                    ["eq", "g.$ids",
+                      ["ni", "chi.sesam-id"]
                     ]
-                  }
-                ]
+                  ],
+                  "track-dependencies": false
+                }]
               ]
             ],
             [
