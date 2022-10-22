@@ -59,7 +59,8 @@
                         "_S.sesam-id",
                         "chi.sesam-id"
                       ]
-                    ]
+                    ],
+                    "track-dependencies": false
                   }
                 ]
               ]
