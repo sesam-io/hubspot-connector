@@ -13,6 +13,17 @@
       },
       "updated_expression": "{{ updatedAt }}"
     },
+    "transform": [
+      {
+        "type": "dtl",
+        "rules": {
+          "default": [
+            ["copy","*"],
+            ["add","$last-modified","_S.updatedAt"]
+          ]
+        }
+      }
+    ],
     "pump": {
       "schedule_interval": 10
     },
