@@ -75,8 +75,7 @@
       }
     }],
     "pump": {
-      "run_at_startup_if_not_populated": true,
-      "schedule_interval": 10
+      "run_at_startup_if_not_populated": true
     },
     "add_namespaces": false,
     "disable_set_last_seen": true,
@@ -266,9 +265,6 @@
         }
       }
     ],
-    "batch_size": 1,
-    "pump": {
-      "schedule_interval": 10
-    }
+    "batch_size": 1
   }
 ]
