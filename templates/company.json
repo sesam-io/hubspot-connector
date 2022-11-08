@@ -111,14 +111,13 @@
               "sesam-id"
             ],
             [
-              "add",
-              "debug",
+              "merge-union",
               "_S.response"
             ],
             [
               "add",
               "_id",
-              "_S.response.id"
+              "_T.id"
             ]
           ]
         }
