@@ -1,315 +1,507 @@
 [
-  {
-    "_id": "{{@ system @}}-company-collect",
-    "type": "pipe",
-    "source": {
-      "type": "rest",
-      "system": "{{@ system @}}",
-      "id_expression": "{{ id }}",
-      "operation": "get",
-      "payload_property": "results",
-      "properties": {
-        "url": "companies?properties=hs_analytics_first_timestamp,hs_analytics_last_timestamp,hs_analytics_last_visit_timestamp,hs_analytics_num_page_views,hs_analytics_num_visits,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_source,hs_last_booked_meeting_date,hs_last_logged_call_date,hs_last_open_task_date,hs_last_sales_activity_timestamp,hs_lastmodifieddate,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,about_us,address,address2,annualrevenue,city,closedate,country,createdate,days_to_close,description,domain,engagements_last_meeting_booked_medium,first_contact_createdate,founded_year,hs_analytics_last_touch_converting_campaign,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,hs_createdate,hs_num_child_companies,hs_object_id,hs_parent_company_id,industry,is_public,lifecyclestage,name,num_associated_contacts,numberofemployees,phone,state,timezone,total_money_raised,total_revenue,type,web_technologies,website,zip,hs_analytics_first_touch_converting_campaign,hs_analytics_first_visit_timestamp,first_deal_created_date,hs_num_open_deals,hs_total_deal_value,num_associated_deals,recent_deal_amount,recent_deal_close_date,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,facebook_company_page,facebookfans,googleplus_page,linkedin_company_page,linkedinbio,twitterbio,twitterfollowers,twitterhandle,hs_ideal_customer_profile,hs_is_target_account,hs_num_blockers,hs_num_contacts_with_buying_roles,hs_num_decision_makers&"
-      },
-      "updated_expression": "{{ updatedAt }}"
-    },
-    "transform": [
-      {
-        "type": "dtl",
-        "rules": {
-          "default": [
-            ["copy","*"],
-            ["add","$last-modified","_S.updatedAt"]
-          ]
-        }
-      }
-    ],
-    "pump": {
-      "schedule_interval": 10
-    },
-    "add_namespaces": false
-  },
-  {
-    "_id": "{{@ system @}}-company-share-insert",
-    "type": "pipe",
-    "source": {
-      "type": "dataset",
-      "dataset": "{{@ system @}}-company-transform"
-    },
-    "sink": {
-      "set_initial_offset": "onload"
-    },
-    "transform": [
-      {
-        "type": "dtl",
-        "rules": {
-          "default": [
-            ["discard",
-              ["not", "_S._deleted"]
-            ],
-            [
-              "discard",
-              [
-                "is-null",
-                "_S.id"
-              ]
-            ],
-            [
-              "discard",
-              [
-                "is-empty",
-                [
-                  "hops",
-                  {
-                    "datasets": [
-                      "{{@ system @}}-company-share-insert chi"
-                    ],
-                    "where": [
-                      [
-                        "eq",
-                        "_S.sesam-id",
-                        "chi.sesam-id"
-                      ]
-                    ],
-                    "track-dependencies": false
-                  }
-                ]
-              ]
-            ],
-            [
-              "add",
-              "::payload",
-              [
-                "dict",
-                "properties",
-                "_S.properties"
-              ]
-            ],
-            [
-              "copy",
-              "sesam-id"
-            ]
-          ]
-        }
-      },
-      {
-        "type": "rest",
-        "system": "{{@ system @}}",
-        "operation": "insert",
-        "properties": {
-          "url": "companies"
+    {
+        "_id": "{{@ system @}}-company-event",
+        "namespaced_identifiers": false,
+        "sink": {
+            "set_initial_offset": "onload"
         },
-        "replace_entity": false,
-        "side_effects": true
-      },
-      {
-        "type": "dtl",
-        "rules": {
-          "default": [
-            [
-              "copy",
-              "sesam-id"
-            ],
-            [
-              "merge-union",
-              "_S.response"
-            ],
-            [
-              "add",
-              "_id",
-              "_T.id"
-            ]
-          ]
-        }
-      }
-    ],
-    "pump": {
-      "run_at_startup_if_not_populated": true
-    },
-    "add_namespaces": false,
-    "disable_set_last_seen": true,
-    "reprocessing_policy": "continue"
-  },
-  {
-    "_id": "{{@ system @}}-company-share-update",
-    "type": "pipe",
-    "source": {
-      "type": "dataset",
-      "dataset": "{{@ system @}}-company-transform"
-    },
-    "sink": {
-      "type": "rest",
-      "system": "{{@ system @}}",
-      "operation": "update"
-    },
-    "transform": [
-      {
-        "type": "dtl",
-        "rules": {
-          "default": [
-            ["discard",
-              ["not", "_S._deleted"]
-            ],
-            [
-              "discard",
-              [
-                "is-not-empty",
-                "_S.id"
-              ]
-            ],
-            [
-              "add",
-              "::properties",
-              [
-                "dict",
-                "url",
-                [
-                  "concat",
-                  "companies/",
-                  "_S.id",
-                  "?properties=hs_analytics_first_timestamp,hs_analytics_last_timestamp,hs_analytics_last_visit_timestamp,hs_analytics_num_page_views,hs_analytics_num_visits,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_source,hs_last_booked_meeting_date,hs_last_logged_call_date,hs_last_open_task_date,hs_last_sales_activity_timestamp,hs_lastmodifieddate,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,about_us,address,address2,annualrevenue,city,closedate,country,createdate,days_to_close,description,domain,engagements_last_meeting_booked_medium,first_contact_createdate,founded_year,hs_analytics_last_touch_converting_campaign,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,hs_createdate,hs_num_child_companies,hs_object_id,hs_parent_company_id,industry,is_public,lifecyclestage,name,num_associated_contacts,numberofemployees,phone,state,timezone,total_money_raised,total_revenue,type,web_technologies,website,zip,hs_analytics_first_touch_converting_campaign,hs_analytics_first_visit_timestamp,first_deal_created_date,hs_num_open_deals,hs_total_deal_value,num_associated_deals,recent_deal_amount,recent_deal_close_date,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,facebook_company_page,facebookfans,googleplus_page,linkedin_company_page,linkedinbio,twitterbio,twitterfollowers,twitterhandle,hs_ideal_customer_profile,hs_is_target_account,hs_num_blockers,hs_num_contacts_with_buying_roles,hs_num_decision_makers&"
-                ]
-              ]
-            ],
-            [
-              "add",
-              "entity",
-              "_S."
-            ]
-          ]
-        }
-      },
-      {
-        "type": "rest",
-        "system": "{{@ system @}}",
-        "operation": "get",
-        "replace_entity": false
-      },
-      {
-        "type": "dtl",
-        "rules": {
-          "default": [
-            [
-              "comment",
-              "**** OPTIMISTIC LOCKING ****"
-            ],
-            [
-              "add",
-              "_old",
-              [
-                "first",
-                [
-                  "hops",
-                  {
-                    "datasets": [
-                      "{{@ system @}}-company-collect a"
-                    ],
-                    "where": [
-                      [
-                        "eq",
-                        "_S.entity.id",
-                        "a.id"
-                      ]
-                    ]
-                  }
-                ]
-              ]
-            ],
-            [
-              "add",
-              "_json_old",
-              [
-                "json-transit",
-                [
-                  "apply",
-                  "remove-under",
-                  "_T._old"
-                ]
-              ]
-            ],
-            [
-              "add",
-              "_json_new",
-              [
-                "first",
-                [
-                  "json-transit",
-                  [
-                    "apply",
-                    "remove-under",
-                    "_S.response"
-                  ]
-                ]
-              ]
-            ],
-            [
-              "add",
-              "_hash_old",
-              [
-                "hash128",
-                "murmur3",
-                "_T._json_old"
-              ]
-            ],
-            [
-              "add",
-              "_hash_new",
-              [
-                "hash128",
-                "murmur3",
-                "_T._json_new"
-              ]
-            ],
-            [
-              "if",
-              [
+        "source": {
+            "dataset": "hubspot-webhook-event-18JWxtqA",
+            "subset": [
                 "eq",
-                "_T._hash_old",
-                "_T._hash_new"
-              ],
-              [
                 [
-                  "comment",
-                  "**** SAME DATA IN SYSTEM AS IN SESAM ****"
+                    "and",
+                    [
+                        "eq",
+                        "_S.portalId",
+                        "{{@ account_id @}}"
+                    ],
+                    [
+                        "matches",
+                        "company.*",
+                        [
+                            "list",
+                            "_S.subscriptionType"
+                        ]
+                    ]
                 ],
-                [
-                  "add",
-                  "::payload",
-                  [
-                    "dict",
-                    "properties",
-                    "_S.entity.properties"
-                  ]
-                ],
-                [
-                  "add",
-                  "::properties",
-                  [
-                    "dict",
-                    "id",
-                    "_S.entity.id",
-                    "url",
-                    "companies"
-                  ]
+                true
+            ],
+            "type": "dataset"
+        },
+        "transform": [
+            {
+                "rules": {
+                    "default": [
+                        [
+                            "comment",
+                            "objectId contains the company id"
+                        ],
+                        [
+                            "add",
+                            "_id",
+                            [
+                                "string",
+                                "_S.objectId"
+                            ]
+                        ],
+                        [
+                            "add",
+                            "id",
+                            "_S.objectId"
+                        ],
+                        [
+                            "comment",
+                            "need this in the last transform to determine what to emit"
+                        ],
+                        [
+                            "copy",
+                            "subscriptionType"
+                        ],
+                        [
+                            "add",
+                            "$original_id",
+                            "_S._id"
+                        ]
+                    ]
+                },
+                "type": "dtl"
+            }
+        ],
+        "type": "pipe"
+    },
+    {
+        "_id": "{{@ system @}}-company-all",
+        "add_namespaces": false,
+        "source": {
+            "id_expression": "{{ id }}",
+            "operation": "get",
+            "payload_property": "results",
+            "properties": {
+                "url": "companies?properties=hs_analytics_first_timestamp,hs_analytics_last_timestamp,hs_analytics_last_visit_timestamp,hs_analytics_num_page_views,hs_analytics_num_visits,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_source,hs_last_booked_meeting_date,hs_last_logged_call_date,hs_last_open_task_date,hs_last_sales_activity_timestamp,hs_lastmodifieddate,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,about_us,address,address2,annualrevenue,city,closedate,country,createdate,days_to_close,description,domain,engagements_last_meeting_booked_medium,first_contact_createdate,founded_year,hs_analytics_last_touch_converting_campaign,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,hs_createdate,hs_num_child_companies,hs_object_id,hs_parent_company_id,industry,is_public,lifecyclestage,name,num_associated_contacts,numberofemployees,phone,state,timezone,total_money_raised,total_revenue,type,web_technologies,website,zip,hs_analytics_first_touch_converting_campaign,hs_analytics_first_visit_timestamp,first_deal_created_date,hs_num_open_deals,hs_total_deal_value,num_associated_deals,recent_deal_amount,recent_deal_close_date,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,facebook_company_page,facebookfans,googleplus_page,linkedin_company_page,linkedinbio,twitterbio,twitterfollowers,twitterhandle,hs_ideal_customer_profile,hs_is_target_account,hs_num_blockers,hs_num_contacts_with_buying_roles,hs_num_decision_makers&"
+            },
+            "system": "{{@ system @}}",
+            "type": "rest",
+            "updated_expression": "{{ updatedAt }}"
+        },
+        "transform": [
+            {
+                "rules": {
+                    "default": [
+                        [
+                            "copy",
+                            "*"
+                        ],
+                        [
+                            "add",
+                            "$last-modified",
+                            "_S.updatedAt"
+                        ]
+                    ]
+                },
+                "type": "dtl"
+            }
+        ],
+        "type": "pipe"
+    },
+    {
+        "_id": "{{@ system @}}-company-event2",
+        "source": {
+            "dataset": "{{@ system @}}-company-event",
+            "type": "dataset"
+        },
+        "transform": [
+            {
+                "allowed_status_codes": "200,404",
+                "operation": "hash",
+                "replace_entity": false,
+                "response_status_property": "status",
+                "system": "{{@ system @}}",
+                "type": "rest"
+            },
+            {
+                "rules": {
+                    "default": [
+                        [
+                            "copy",
+                            "id"
+                        ],
+                        [
+                            "comment",
+                            "if deletion, always mark the output as deleted"
+                        ],
+                        [
+                            "if",
+                            [
+                                "eq",
+                                "company.deletion",
+                                "_S.subscriptionType"
+                            ],
+                            [
+                                "add",
+                                "_deleted",
+                                true
+                            ]
+                        ],
+                        [
+                            "comment",
+                            "if we find the entity, always include it (will probably never happen if we get a deletion event)"
+                        ],
+                        [
+                            "comment",
+                            "discard if we get a 404 unless we have a deletion event"
+                        ],
+                        [
+                            "if",
+                            [
+                                "neq",
+                                404,
+                                "_S.status"
+                            ],
+                            [
+                                "merge",
+                                "_S.response"
+                            ],
+                            [
+                                "discard",
+                                [
+                                    "eq",
+                                    "company.deletion",
+                                    "_S.subscriptionType"
+                                ]
+                            ]
+                        ]
+                    ]
+                },
+                "type": "dtl"
+            }
+        ],
+        "type": "pipe"
+    },
+    {
+        "_id": "{{@ system @}}-company-share-insert",
+        "add_namespaces": false,
+        "disable_set_last_seen": true,
+        "pump": {
+            "run_at_startup_if_not_populated": true
+        },
+        "reprocessing_policy": "continue",
+        "sink": {
+            "set_initial_offset": "onload"
+        },
+        "source": {
+            "dataset": "{{@ system @}}-company-transform",
+            "type": "dataset"
+        },
+        "transform": [
+            {
+                "rules": {
+                    "default": [
+                        [
+                            "discard",
+                            [
+                                "not",
+                                "_S._deleted"
+                            ]
+                        ],
+                        [
+                            "discard",
+                            [
+                                "is-null",
+                                "_S.id"
+                            ]
+                        ],
+                        [
+                            "discard",
+                            [
+                                "is-empty",
+                                [
+                                    "hops",
+                                    {
+                                        "datasets": [
+                                            "{{@ system @}}-company-share-insert chi"
+                                        ],
+                                        "track-dependencies": false,
+                                        "where": [
+                                            [
+                                                "eq",
+                                                "_S.sesam-id",
+                                                "chi.sesam-id"
+                                            ]
+                                        ]
+                                    }
+                                ]
+                            ]
+                        ],
+                        [
+                            "add",
+                            "::payload",
+                            [
+                                "dict",
+                                "properties",
+                                "_S.properties"
+                            ]
+                        ],
+                        [
+                            "copy",
+                            "sesam-id"
+                        ]
+                    ]
+                },
+                "type": "dtl"
+            },
+            {
+                "operation": "insert",
+                "properties": {
+                    "url": "companies"
+                },
+                "replace_entity": false,
+                "side_effects": true,
+                "system": "{{@ system @}}",
+                "type": "rest"
+            },
+            {
+                "rules": {
+                    "default": [
+                        [
+                            "copy",
+                            "sesam-id"
+                        ],
+                        [
+                            "merge-union",
+                            "_S.response"
+                        ],
+                        [
+                            "add",
+                            "_id",
+                            "_T.id"
+                        ]
+                    ]
+                },
+                "type": "dtl"
+            }
+        ],
+        "type": "pipe"
+    },
+    {
+        "_id": "{{@ system @}}-company-collect",
+        "source": {
+            "datasets": [
+                "{{@ system @}}-company-event2",
+                "{{@ system @}}-company-all"
+            ],
+            "type": "merge_datasets"
+        },
+        "transform": {
+            "rules": {
+                "default": [
+                    [
+                        "copy",
+                        "*"
+                    ],
+                    [
+                        "add",
+                        "$last-modified",
+                        "_S.updatedAt"
+                    ]
                 ]
-              ],
-              [
-                [
-                  "comment",
-                  "**** DIFFERENT DATA IN SYSTEM THAN IN SESAM ****"
-                ],
-                [
-                  "discard"
-                ]
-              ]
-            ]
-          ],
-          "remove-under": [
-            ["copy", "*", ["list", "_*", "$*"]]
-          ]
-        }
-      }
-    ],
-    "batch_size": 1
-  }
+            },
+            "type": "dtl"
+        },
+        "type": "pipe"
+    },
+    {
+        "_id": "{{@ system @}}-company-share-update",
+        "batch_size": 1,
+        "sink": {
+            "operation": "update",
+            "system": "{{@ system @}}",
+            "type": "rest"
+        },
+        "source": {
+            "dataset": "{{@ system @}}-company-transform",
+            "type": "dataset"
+        },
+        "transform": [
+            {
+                "rules": {
+                    "default": [
+                        [
+                            "discard",
+                            [
+                                "not",
+                                "_S._deleted"
+                            ]
+                        ],
+                        [
+                            "discard",
+                            [
+                                "is-not-empty",
+                                "_S.id"
+                            ]
+                        ],
+                        [
+                            "add",
+                            "::properties",
+                            [
+                                "dict",
+                                "url",
+                                [
+                                    "concat",
+                                    "companies/",
+                                    "_S.id",
+                                    "?properties=hs_analytics_first_timestamp,hs_analytics_last_timestamp,hs_analytics_last_visit_timestamp,hs_analytics_num_page_views,hs_analytics_num_visits,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_source,hs_last_booked_meeting_date,hs_last_logged_call_date,hs_last_open_task_date,hs_last_sales_activity_timestamp,hs_lastmodifieddate,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,about_us,address,address2,annualrevenue,city,closedate,country,createdate,days_to_close,description,domain,engagements_last_meeting_booked_medium,first_contact_createdate,founded_year,hs_analytics_last_touch_converting_campaign,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,hs_createdate,hs_num_child_companies,hs_object_id,hs_parent_company_id,industry,is_public,lifecyclestage,name,num_associated_contacts,numberofemployees,phone,state,timezone,total_money_raised,total_revenue,type,web_technologies,website,zip,hs_analytics_first_touch_converting_campaign,hs_analytics_first_visit_timestamp,first_deal_created_date,hs_num_open_deals,hs_total_deal_value,num_associated_deals,recent_deal_amount,recent_deal_close_date,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,facebook_company_page,facebookfans,googleplus_page,linkedin_company_page,linkedinbio,twitterbio,twitterfollowers,twitterhandle,hs_ideal_customer_profile,hs_is_target_account,hs_num_blockers,hs_num_contacts_with_buying_roles,hs_num_decision_makers&"
+                                ]
+                            ]
+                        ],
+                        [
+                            "add",
+                            "entity",
+                            "_S."
+                        ]
+                    ]
+                },
+                "type": "dtl"
+            },
+            {
+                "operation": "get",
+                "replace_entity": false,
+                "system": "{{@ system @}}",
+                "type": "rest"
+            },
+            {
+                "rules": {
+                    "default": [
+                        [
+                            "comment",
+                            "**** OPTIMISTIC LOCKING ****"
+                        ],
+                        [
+                            "add",
+                            "_old",
+                            [
+                                "first",
+                                [
+                                    "hops",
+                                    {
+                                        "datasets": [
+                                            "{{@ system @}}-company-collect a"
+                                        ],
+                                        "where": [
+                                            [
+                                                "eq",
+                                                "_S.entity.id",
+                                                "a.id"
+                                            ]
+                                        ]
+                                    }
+                                ]
+                            ]
+                        ],
+                        [
+                            "add",
+                            "_json_old",
+                            [
+                                "json-transit",
+                                [
+                                    "apply",
+                                    "remove-under",
+                                    "_T._old"
+                                ]
+                            ]
+                        ],
+                        [
+                            "add",
+                            "_json_new",
+                            [
+                                "first",
+                                [
+                                    "json-transit",
+                                    [
+                                        "apply",
+                                        "remove-under",
+                                        "_S.response"
+                                    ]
+                                ]
+                            ]
+                        ],
+                        [
+                            "add",
+                            "_hash_old",
+                            [
+                                "hash128",
+                                "murmur3",
+                                "_T._json_old"
+                            ]
+                        ],
+                        [
+                            "add",
+                            "_hash_new",
+                            [
+                                "hash128",
+                                "murmur3",
+                                "_T._json_new"
+                            ]
+                        ],
+                        [
+                            "if",
+                            [
+                                "eq",
+                                "_T._hash_old",
+                                "_T._hash_new"
+                            ],
+                            [
+                                [
+                                    "comment",
+                                    "**** SAME DATA IN SYSTEM AS IN SESAM ****"
+                                ],
+                                [
+                                    "add",
+                                    "::payload",
+                                    [
+                                        "dict",
+                                        "properties",
+                                        "_S.entity.properties"
+                                    ]
+                                ],
+                                [
+                                    "add",
+                                    "::properties",
+                                    [
+                                        "dict",
+                                        "id",
+                                        "_S.entity.id",
+                                        "url",
+                                        "companies"
+                                    ]
+                                ]
+                            ],
+                            [
+                                [
+                                    "comment",
+                                    "**** DIFFERENT DATA IN SYSTEM THAN IN SESAM ****"
+                                ],
+                                [
+                                    "discard"
+                                ]
+                            ]
+                        ]
+                    ],
+                    "remove-under": [
+                        [
+                            "copy",
+                            "*",
+                            [
+                                "list",
+                                "_*",
+                                "$*"
+                            ]
+                        ]
+                    ]
+                },
+                "type": "dtl"
+            }
+        ],
+        "type": "pipe"
+    }
 ]

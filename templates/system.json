@@ -1,51 +1,51 @@
 {
-  "_id": "{{@ system @}}",
-  "type": "system:rest",
-  "oauth2": {
-    "access_token": "$SECRET(oauth_access_token)",
-    "client_id": "$SECRET(oauth_client_id)",
-    "client_secret": "$SECRET(oauth_client_secret)",
-    "refresh_token": "$SECRET(oauth_refresh_token)",
-    "token_url": "{{@ token_url @}}"
-  },
-  "operations": {
-    "get": {
-      "method": "GET",
-      "next_page_link": "{{ body.paging.next.link }}",
-      "url": "crm/v3/objects/{{ properties.url }}associations=contacts,companies,deals,tickets,products,quotes"
+    "_id": "{{@ system @}}",
+    "oauth2": {
+        "access_token": "$SECRET(oauth_access_token)",
+        "client_id": "$SECRET(oauth_client_id)",
+        "client_secret": "$SECRET(oauth_client_secret)",
+        "refresh_token": "$SECRET(oauth_refresh_token)",
+        "token_url": "{{@ token_url @}}"
     },
-    "get-settings": {
-      "method": "GET",
-      "next_page_link": "{{ body.paging.next.link }}",
-      "url": "settings/v3/{{ properties.url }}"
+    "operations": {
+        "get": {
+            "method": "GET",
+            "next_page_link": "{{ body.paging.next.link }}",
+            "url": "crm/v3/objects/{{ properties.url }}associations=contacts,companies,deals,tickets,products,quotes"
+        },
+        "get-settings": {
+            "method": "GET",
+            "next_page_link": "{{ body.paging.next.link }}",
+            "url": "settings/v3/{{ properties.url }}"
+        },
+        "hash": {
+            "method": "GET",
+            "url": "crm/v3/objects/companies/{{ id }}?properties=hs_analytics_first_timestamp,hs_analytics_last_timestamp,hs_analytics_last_visit_timestamp,hs_analytics_num_page_views,hs_analytics_num_visits,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_source,hs_last_booked_meeting_date,hs_last_logged_call_date,hs_last_open_task_date,hs_last_sales_activity_timestamp,hs_lastmodifieddate,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,about_us,address,address2,annualrevenue,city,closedate,country,createdate,days_to_close,description,domain,engagements_last_meeting_booked_medium,first_contact_createdate,founded_year,hs_analytics_last_touch_converting_campaign,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,hs_createdate,hs_num_child_companies,hs_object_id,hs_parent_company_id,industry,is_public,lifecyclestage,name,num_associated_contacts,numberofemployees,phone,state,timezone,total_money_raised,total_revenue,type,web_technologies,website,zip,hs_analytics_first_touch_converting_campaign,hs_analytics_first_visit_timestamp,first_deal_created_date,hs_num_open_deals,hs_total_deal_value,num_associated_deals,recent_deal_amount,recent_deal_close_date,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,facebook_company_page,facebookfans,googleplus_page,linkedin_company_page,linkedinbio,twitterbio,twitterfollowers,twitterhandle,hs_ideal_customer_profile,hs_is_target_account,hs_num_blockers,hs_num_contacts_with_buying_roles,hs_num_decision_makers"
+        },
+        "insert": {
+            "method": "POST",
+            "payload-type": "json",
+            "url": "crm/v3/objects/{{ properties.url }}"
+        },
+        "insert-settings": {
+            "method": "POST",
+            "payload-type": "json",
+            "url": "settings/v3/{{ properties.url }}"
+        },
+        "update": {
+            "method": "PATCH",
+            "payload-type": "json",
+            "url": "crm/v3/objects/{{ properties.url }}/{{ properties.id }}"
+        },
+        "update-settings": {
+            "method": "PUT",
+            "payload-type": "json",
+            "url": "settings/v3/{{ properties.url }}"
+        }
     },
-    "hash": {
-      "method": "GET",
-      "url": "crm/v3/objects/companies/{{ id }}?properties=hs_analytics_first_timestamp,hs_analytics_last_timestamp,hs_analytics_last_visit_timestamp,hs_analytics_num_page_views,hs_analytics_num_visits,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_source,hs_last_booked_meeting_date,hs_last_logged_call_date,hs_last_open_task_date,hs_last_sales_activity_timestamp,hs_lastmodifieddate,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,about_us,address,address2,annualrevenue,city,closedate,country,createdate,days_to_close,description,domain,engagements_last_meeting_booked_medium,first_contact_createdate,founded_year,hs_analytics_last_touch_converting_campaign,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,hs_createdate,hs_num_child_companies,hs_object_id,hs_parent_company_id,industry,is_public,lifecyclestage,name,num_associated_contacts,numberofemployees,phone,state,timezone,total_money_raised,total_revenue,type,web_technologies,website,zip,hs_analytics_first_touch_converting_campaign,hs_analytics_first_visit_timestamp,first_deal_created_date,hs_num_open_deals,hs_total_deal_value,num_associated_deals,recent_deal_amount,recent_deal_close_date,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,facebook_company_page,facebookfans,googleplus_page,linkedin_company_page,linkedinbio,twitterbio,twitterfollowers,twitterhandle,hs_ideal_customer_profile,hs_is_target_account,hs_num_blockers,hs_num_contacts_with_buying_roles,hs_num_decision_makers"
-    },
-    "insert": {
-      "method": "POST",
-      "payload-type": "json",
-      "url": "crm/v3/objects/{{ properties.url }}"
-    },
-    "update": {
-      "method": "PATCH",
-      "payload-type": "json",
-      "url": "crm/v3/objects/{{ properties.url }}/{{ properties.id }}"
-    },
-    "update-settings": {
-      "method": "PUT",
-      "payload-type": "json",
-      "url": "settings/v3/{{ properties.url }}"
-    },
-    "insert-settings": {
-      "method": "POST",
-      "payload-type": "json",
-      "url": "settings/v3/{{ properties.url }}"
-    }
-  },
-  "rate_limiting_delay": 30,
-  "rate_limiting_retries": 3,
-  "url_pattern": "https://api.hubapi.com/%s",
-  "verify_ssl": true
+    "rate_limiting_delay": 30,
+    "rate_limiting_retries": 3,
+    "type": "system:rest",
+    "url_pattern": "https://api.hubapi.com/%s",
+    "verify_ssl": true
 }

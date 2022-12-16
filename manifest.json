@@ -1,8 +1,12 @@
 {
+  "additional_parameters": {
+    "account_id": {},
+    "token_url": {}
+  },
+  "auth": "oauth2",
   "datatypes": {
     "company": {
-      "template": "templates/company.json",
-      "bidirectional": true
+      "template": "templates/company.json"
     },
     "contact": {
       "template": "templates/contact.json"
@@ -11,10 +15,24 @@
       "template": "templates/team.json"
     },
     "user": {
-      "template": "templates/user.json",
-      "bidirectional": true
+      "template": "templates/user.json"
     }
   },
-  "system-template": "templates/system.json",
-  "auth": "oauth2"
+  "oauth2": {
+    "login_url": "https://app-eu1.hubspot.com/oauth/authorize",
+    "scopes": [
+      "crm.objects.contacts.read",
+      "settings.users.read",
+      "settings.users.teams.read",
+      "crm.objects.deals.read",
+      "crm.objects.companies.read",
+      "crm.objects.contacts.write",
+      "settings.users.write",
+      "crm.objects.deals.write",
+      "crm.objects.companies.write",
+      "timeline"
+    ],
+    "token_url": "https://api.hubapi.com/oauth/v1/token"
+  },
+  "system-template": "templates/system.json"
 }

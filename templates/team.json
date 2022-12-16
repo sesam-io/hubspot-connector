@@ -1,17 +1,15 @@
-[
-  {
+{
     "_id": "{{@ system @}}-team-collect",
-    "type": "pipe",
+    "add_namespaces": false,
     "source": {
-      "type": "rest",
-      "system": "{{@ system @}}",
-      "id_expression": "{{ id }}",
-      "operation": "get-settings",
-      "payload_property": "results",
-      "properties": {
-        "url": "users/teams"
-      }
+        "id_expression": "{{ id }}",
+        "operation": "get-settings",
+        "payload_property": "results",
+        "properties": {
+            "url": "users/teams"
+        },
+        "system": "{{@ system @}}",
+        "type": "rest"
     },
-    "add_namespaces": false
-  }
-]
+    "type": "pipe"
+}
