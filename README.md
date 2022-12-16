@@ -89,4 +89,4 @@ Example deletion event:
 }
 ```
 
-If you want to test live events from Hubspot you will need an application registration in Hubspot and point the events to `https://<your-service-url>/api/pipes/hubspot-webhook-event/entities`.
+If you want to test live events from Hubspot you will need an application registration in Hubspot and point the events to `https://<your-service-url>/api/receivers/hubspot-webhook-event/entities`.
