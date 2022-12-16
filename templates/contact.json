@@ -1,304 +1,320 @@
 [
-  {
-    "_id": "{{@ system @}}-contact-collect",
-    "type": "pipe",
-    "source": {
-      "type": "rest",
-      "system": "{{@ system @}}",
-      "id_expression": "{{ id }}",
-      "operation": "get",
-      "payload_property": "results",
-      "properties": {
-        "url": "contacts?properties=hs_analytics_average_page_views,hs_analytics_first_referrer,hs_analytics_first_timestamp,hs_analytics_first_touch_converting_campaign,hs_analytics_first_url,hs_analytics_first_visit_timestamp,hs_analytics_last_referrer,hs_analytics_last_timestamp,hs_analytics_last_touch_converting_campaign,hs_analytics_last_url,hs_analytics_last_visit_timestamp,hs_analytics_num_event_completions,hs_analytics_num_page_views,hs_analytics_num_visits,hs_analytics_revenue,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_medium,engagements_last_meeting_booked_source,first_conversion_date,first_conversion_event_name,hs_content_membership_notes,hs_content_membership_status,hs_last_sales_activity_timestamp,hs_sales_email_last_clicked,hs_sales_email_last_opened,hs_sales_email_last_replied,hs_sequences_is_enrolled,message,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,num_notes,address,annualrevenue,city,company,country,createdate,email,fax,firstname,hs_content_membership_email_confirmed,hs_content_membership_registered_at,hs_content_membership_registration_domain_sent_to,hs_content_membership_registration_email_sent_at,hs_createdate,hs_email_domain,hs_language,hs_latest_sequence_ended_date,hs_latest_sequence_enrolled,hs_latest_sequence_enrolled_date,hs_lifecyclestage_customer_date,hs_lifecyclestage_evangelist_date,hs_lifecyclestage_lead_date,hs_lifecyclestage_marketingqualifiedlead_date,hs_lifecyclestage_opportunity_date,hs_lifecyclestage_other_date,hs_lifecyclestage_salesqualifiedlead_date,hs_lifecyclestage_subscriber_date,hs_object_id,hs_persona,hs_sequences_enrolled_count,industry,jobtitle,lastmodifieddate,lastname,lifecyclestage,mobilephone,numemployees,phone,salutation,state,twitterhandle,website,zip,hs_facebook_click_id,hs_google_click_id,hs_ip_timezone,ip_city,ip_country,ip_country_code,ip_state,ip_state_code,num_conversion_events,num_unique_conversion_events,recent_conversion_date,recent_conversion_event_name,closedate,days_to_close,first_deal_created_date,hs_buying_role,num_associated_deals,recent_deal_amount,recent_deal_close_date,total_revenue,hs_email_bad_address,hs_email_bounce,hs_email_click,hs_email_customer_quarantined_reason,hs_email_delivered,hs_email_first_click_date,hs_email_first_open_date,hs_email_first_reply_date,hs_email_first_send_date,hs_email_hard_bounce_reason_enum,hs_email_last_click_date,hs_email_last_email_name,hs_email_last_open_date,hs_email_last_reply_date,hs_email_last_send_date,hs_email_open,hs_email_optout,hs_email_optout_12507603,hs_email_optout_12515121,hs_email_quarantined,hs_email_quarantined_reason,hs_email_replied,hs_email_sends_since_last_engagement,hs_emailconfirmationstatus,hs_legal_basis,company_size,date_of_birth,degree,field_of_study,gender,graduation_date,job_function,marital_status,military_status,relationship_status,school,seniority,start_date,work_email,hs_is_unworked,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,hubspotscore&"
-      },
-      "updated_expression": "{{ updatedAt }}"
-    },
-    "pump": {
-      "schedule_interval": 300
-    },
-    "add_namespaces": false
-  },
-  {
-    "_id": "{{@ system @}}-contact-share-insert",
-    "type": "pipe",
-    "source": {
-      "type": "dataset",
-      "dataset": "{{@ system @}}-contact-transform"
-    },
-    "sink": {
-      "set_initial_offset": "onload"
-    },
-    "transform": [
-      {
-        "type": "dtl",
-        "rules": {
-          "default": [
-            ["discard",
-              ["not", "_S._deleted"]
-            ],
-            [
-              "discard",
-              [
-                "is-null",
-                "_S.id"
-              ]
-            ],
-            [
-              "discard",
-              [
-                "is-empty",
-                [
-                  "hops",
-                  {
-                    "datasets": [
-                      "{{@ system @}}-contact-share-insert chi"
-                    ],
-                    "where": [
-                      [
-                        "eq",
-                        "_S.sesam-id",
-                        "chi.sesam-id"
-                      ]
-                    ],
-                    "track-dependencies": false
-                  }
-                ]
-              ]
-            ],
-            [
-              "add",
-              "::payload",
-              [
-                "dict",
-                "properties",
-                "_S.properties"
-              ]
-            ],
-            [
-              "copy",
-              "sesam-id"
-            ]
-          ]
-        }
-      },
-      {
-        "type": "rest",
-        "system": "{{@ system @}}",
-        "operation": "insert",
-        "properties": {
-          "url": "contacts"
+    {
+        "_id": "{{@ system @}}-contact-collect",
+        "add_namespaces": false,
+        "pump": {
+            "schedule_interval": 300
         },
-        "replace_entity": false,
-        "side_effects": true
-      },
-      {
-        "type": "dtl",
-        "rules": {
-          "default": [
-            [
-              "copy",
-              "sesam-id"
-            ],
-            [
-              "merge-union",
-              "_S.response"
-            ],
-            [
-              "add",
-              "_id",
-              "_T.id"
-            ]
-          ]
-        }
-      }
-    ],
-    "pump": {
-      "run_at_startup_if_not_populated": true
+        "source": {
+            "id_expression": "{{ id }}",
+            "operation": "get",
+            "payload_property": "results",
+            "properties": {
+                "url": "contacts?properties=hs_analytics_average_page_views,hs_analytics_first_referrer,hs_analytics_first_timestamp,hs_analytics_first_touch_converting_campaign,hs_analytics_first_url,hs_analytics_first_visit_timestamp,hs_analytics_last_referrer,hs_analytics_last_timestamp,hs_analytics_last_touch_converting_campaign,hs_analytics_last_url,hs_analytics_last_visit_timestamp,hs_analytics_num_event_completions,hs_analytics_num_page_views,hs_analytics_num_visits,hs_analytics_revenue,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_medium,engagements_last_meeting_booked_source,first_conversion_date,first_conversion_event_name,hs_content_membership_notes,hs_content_membership_status,hs_last_sales_activity_timestamp,hs_sales_email_last_clicked,hs_sales_email_last_opened,hs_sales_email_last_replied,hs_sequences_is_enrolled,message,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,num_notes,address,annualrevenue,city,company,country,createdate,email,fax,firstname,hs_content_membership_email_confirmed,hs_content_membership_registered_at,hs_content_membership_registration_domain_sent_to,hs_content_membership_registration_email_sent_at,hs_createdate,hs_email_domain,hs_language,hs_latest_sequence_ended_date,hs_latest_sequence_enrolled,hs_latest_sequence_enrolled_date,hs_lifecyclestage_customer_date,hs_lifecyclestage_evangelist_date,hs_lifecyclestage_lead_date,hs_lifecyclestage_marketingqualifiedlead_date,hs_lifecyclestage_opportunity_date,hs_lifecyclestage_other_date,hs_lifecyclestage_salesqualifiedlead_date,hs_lifecyclestage_subscriber_date,hs_object_id,hs_persona,hs_sequences_enrolled_count,industry,jobtitle,lastmodifieddate,lastname,lifecyclestage,mobilephone,numemployees,phone,salutation,state,twitterhandle,website,zip,hs_facebook_click_id,hs_google_click_id,hs_ip_timezone,ip_city,ip_country,ip_country_code,ip_state,ip_state_code,num_conversion_events,num_unique_conversion_events,recent_conversion_date,recent_conversion_event_name,closedate,days_to_close,first_deal_created_date,hs_buying_role,num_associated_deals,recent_deal_amount,recent_deal_close_date,total_revenue,hs_email_bad_address,hs_email_bounce,hs_email_click,hs_email_customer_quarantined_reason,hs_email_delivered,hs_email_first_click_date,hs_email_first_open_date,hs_email_first_reply_date,hs_email_first_send_date,hs_email_hard_bounce_reason_enum,hs_email_last_click_date,hs_email_last_email_name,hs_email_last_open_date,hs_email_last_reply_date,hs_email_last_send_date,hs_email_open,hs_email_optout,hs_email_optout_12507603,hs_email_optout_12515121,hs_email_quarantined,hs_email_quarantined_reason,hs_email_replied,hs_email_sends_since_last_engagement,hs_emailconfirmationstatus,hs_legal_basis,company_size,date_of_birth,degree,field_of_study,gender,graduation_date,job_function,marital_status,military_status,relationship_status,school,seniority,start_date,work_email,hs_is_unworked,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,hubspotscore&"
+            },
+            "system": "{{@ system @}}",
+            "type": "rest",
+            "updated_expression": "{{ updatedAt }}"
+        },
+        "type": "pipe"
     },
-    "add_namespaces": false,
-    "disable_set_last_seen": true,
-    "reprocessing_policy": "continue"
-  },
-  {
-    "_id": "{{@ system @}}-contact-share-update",
-    "type": "pipe",
-    "source": {
-      "type": "dataset",
-      "dataset": "{{@ system @}}-contact-transform"
-    },
-    "sink": {
-      "type": "rest",
-      "system": "{{@ system @}}",
-      "operation": "update"
-    },
-    "transform": [
-      {
-        "type": "dtl",
-        "rules": {
-          "default": [
-            ["discard",
-              ["not", "_S._deleted"]
-            ],
-            [
-              "discard",
-              [
-                "is-not-empty",
-                "_S.id"
-              ]
-            ],
-            [
-              "add",
-              "::properties",
-              [
-                "dict",
-                "url",
-                [
-                  "concat",
-                  "contacts/",
-                  "_S.id",
-                  "?properties=hs_analytics_average_page_views,hs_analytics_first_referrer,hs_analytics_first_timestamp,hs_analytics_first_touch_converting_campaign,hs_analytics_first_url,hs_analytics_first_visit_timestamp,hs_analytics_last_referrer,hs_analytics_last_timestamp,hs_analytics_last_touch_converting_campaign,hs_analytics_last_url,hs_analytics_last_visit_timestamp,hs_analytics_num_event_completions,hs_analytics_num_page_views,hs_analytics_num_visits,hs_analytics_revenue,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_medium,engagements_last_meeting_booked_source,first_conversion_date,first_conversion_event_name,hs_content_membership_notes,hs_content_membership_status,hs_last_sales_activity_timestamp,hs_sales_email_last_clicked,hs_sales_email_last_opened,hs_sales_email_last_replied,hs_sequences_is_enrolled,message,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,num_notes,address,annualrevenue,city,company,country,createdate,email,fax,firstname,hs_content_membership_email_confirmed,hs_content_membership_registered_at,hs_content_membership_registration_domain_sent_to,hs_content_membership_registration_email_sent_at,hs_createdate,hs_email_domain,hs_language,hs_latest_sequence_ended_date,hs_latest_sequence_enrolled,hs_latest_sequence_enrolled_date,hs_lifecyclestage_customer_date,hs_lifecyclestage_evangelist_date,hs_lifecyclestage_lead_date,hs_lifecyclestage_marketingqualifiedlead_date,hs_lifecyclestage_opportunity_date,hs_lifecyclestage_other_date,hs_lifecyclestage_salesqualifiedlead_date,hs_lifecyclestage_subscriber_date,hs_object_id,hs_persona,hs_sequences_enrolled_count,industry,jobtitle,lastmodifieddate,lastname,lifecyclestage,mobilephone,numemployees,phone,salutation,state,twitterhandle,website,zip,hs_facebook_click_id,hs_google_click_id,hs_ip_timezone,ip_city,ip_country,ip_country_code,ip_state,ip_state_code,num_conversion_events,num_unique_conversion_events,recent_conversion_date,recent_conversion_event_name,closedate,days_to_close,first_deal_created_date,hs_buying_role,num_associated_deals,recent_deal_amount,recent_deal_close_date,total_revenue,hs_email_bad_address,hs_email_bounce,hs_email_click,hs_email_customer_quarantined_reason,hs_email_delivered,hs_email_first_click_date,hs_email_first_open_date,hs_email_first_reply_date,hs_email_first_send_date,hs_email_hard_bounce_reason_enum,hs_email_last_click_date,hs_email_last_email_name,hs_email_last_open_date,hs_email_last_reply_date,hs_email_last_send_date,hs_email_open,hs_email_optout,hs_email_optout_12507603,hs_email_optout_12515121,hs_email_quarantined,hs_email_quarantined_reason,hs_email_replied,hs_email_sends_since_last_engagement,hs_emailconfirmationstatus,hs_legal_basis,company_size,date_of_birth,degree,field_of_study,gender,graduation_date,job_function,marital_status,military_status,relationship_status,school,seniority,start_date,work_email,hs_is_unworked,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,hubspotscore&"
-                ]
-              ]
-            ],
-            [
-              "add",
-              "entity",
-              "_S."
-            ]
-          ]
-        }
-      },
-      {
-        "type": "rest",
-        "system": "{{@ system @}}",
-        "operation": "get",
-        "replace_entity": false
-      },
-      {
-        "type": "dtl",
-        "rules": {
-          "default": [
-            [
-              "comment",
-              "**** OPTIMISTIC LOCKING ****"
-            ],
-            [
-              "add",
-              "_old",
-              [
-                "first",
-                [
-                  "hops",
-                  {
-                    "datasets": [
-                      "{{@ system @}}-contact-collect a"
-                    ],
-                    "where": [
-                      [
-                        "eq",
-                        "_S.entity.id",
-                        "a.id"
-                      ]
+    {
+        "_id": "{{@ system @}}-contact-share-update",
+        "batch_size": 1,
+        "sink": {
+            "operation": "update",
+            "system": "{{@ system @}}",
+            "type": "rest"
+        },
+        "source": {
+            "dataset": "{{@ system @}}-contact-transform",
+            "type": "dataset"
+        },
+        "transform": [
+            {
+                "rules": {
+                    "default": [
+                        [
+                            "discard",
+                            [
+                                "not",
+                                "_S._deleted"
+                            ]
+                        ],
+                        [
+                            "discard",
+                            [
+                                "is-not-empty",
+                                "_S.id"
+                            ]
+                        ],
+                        [
+                            "add",
+                            "::properties",
+                            [
+                                "dict",
+                                "url",
+                                [
+                                    "concat",
+                                    "contacts/",
+                                    "_S.id",
+                                    "?properties=hs_analytics_average_page_views,hs_analytics_first_referrer,hs_analytics_first_timestamp,hs_analytics_first_touch_converting_campaign,hs_analytics_first_url,hs_analytics_first_visit_timestamp,hs_analytics_last_referrer,hs_analytics_last_timestamp,hs_analytics_last_touch_converting_campaign,hs_analytics_last_url,hs_analytics_last_visit_timestamp,hs_analytics_num_event_completions,hs_analytics_num_page_views,hs_analytics_num_visits,hs_analytics_revenue,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_medium,engagements_last_meeting_booked_source,first_conversion_date,first_conversion_event_name,hs_content_membership_notes,hs_content_membership_status,hs_last_sales_activity_timestamp,hs_sales_email_last_clicked,hs_sales_email_last_opened,hs_sales_email_last_replied,hs_sequences_is_enrolled,message,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,num_notes,address,annualrevenue,city,company,country,createdate,email,fax,firstname,hs_content_membership_email_confirmed,hs_content_membership_registered_at,hs_content_membership_registration_domain_sent_to,hs_content_membership_registration_email_sent_at,hs_createdate,hs_email_domain,hs_language,hs_latest_sequence_ended_date,hs_latest_sequence_enrolled,hs_latest_sequence_enrolled_date,hs_lifecyclestage_customer_date,hs_lifecyclestage_evangelist_date,hs_lifecyclestage_lead_date,hs_lifecyclestage_marketingqualifiedlead_date,hs_lifecyclestage_opportunity_date,hs_lifecyclestage_other_date,hs_lifecyclestage_salesqualifiedlead_date,hs_lifecyclestage_subscriber_date,hs_object_id,hs_persona,hs_sequences_enrolled_count,industry,jobtitle,lastmodifieddate,lastname,lifecyclestage,mobilephone,numemployees,phone,salutation,state,twitterhandle,website,zip,hs_facebook_click_id,hs_google_click_id,hs_ip_timezone,ip_city,ip_country,ip_country_code,ip_state,ip_state_code,num_conversion_events,num_unique_conversion_events,recent_conversion_date,recent_conversion_event_name,closedate,days_to_close,first_deal_created_date,hs_buying_role,num_associated_deals,recent_deal_amount,recent_deal_close_date,total_revenue,hs_email_bad_address,hs_email_bounce,hs_email_click,hs_email_customer_quarantined_reason,hs_email_delivered,hs_email_first_click_date,hs_email_first_open_date,hs_email_first_reply_date,hs_email_first_send_date,hs_email_hard_bounce_reason_enum,hs_email_last_click_date,hs_email_last_email_name,hs_email_last_open_date,hs_email_last_reply_date,hs_email_last_send_date,hs_email_open,hs_email_optout,hs_email_optout_12507603,hs_email_optout_12515121,hs_email_quarantined,hs_email_quarantined_reason,hs_email_replied,hs_email_sends_since_last_engagement,hs_emailconfirmationstatus,hs_legal_basis,company_size,date_of_birth,degree,field_of_study,gender,graduation_date,job_function,marital_status,military_status,relationship_status,school,seniority,start_date,work_email,hs_is_unworked,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,hubspotscore&"
+                                ]
+                            ]
+                        ],
+                        [
+                            "add",
+                            "entity",
+                            "_S."
+                        ]
                     ]
-                  }
-                ]
-              ]
-            ],
-            [
-              "add",
-              "_json_old",
-              [
-                "json-transit",
-                [
-                  "apply",
-                  "remove-under",
-                  "_T._old"
-                ]
-              ]
-            ],
-            [
-              "add",
-              "_json_new",
-              [
-                "first",
-                [
-                  "json-transit",
-                  [
-                    "apply",
-                    "remove-under",
-                    "_S.response"
-                  ]
-                ]
-              ]
-            ],
-            [
-              "add",
-              "_hash_old",
-              [
-                "hash128",
-                "murmur3",
-                "_T._json_old"
-              ]
-            ],
-            [
-              "add",
-              "_hash_new",
-              [
-                "hash128",
-                "murmur3",
-                "_T._json_new"
-              ]
-            ],
-            [
-              "if",
-              [
-                "eq",
-                "_T._hash_old",
-                "_T._hash_new"
-              ],
-              [
-                [
-                  "comment",
-                  "**** SAME DATA IN SYSTEM AS IN SESAM ****"
-                ],
-                [
-                  "add",
-                  "::payload",
-                  [
-                    "dict",
-                    "properties",
-                    "_S.entity.properties"
-                  ]
-                ],
-                [
-                  "add",
-                  "::properties",
-                  [
-                    "dict",
-                    "id",
-                    "_S.entity.id",
-                    "url",
-                    "contacts"
-                  ]
-                ]
-              ],
-              [
-                [
-                  "comment",
-                  "**** DIFFERENT DATA IN SYSTEM THAN IN SESAM ****"
-                ],
-                [
-                  "discard"
-                ]
-              ]
-            ]
-          ],
-          "remove-under": [
-            ["copy", "*", ["list", "_*", "$*"]]
-          ]
-        }
-      }
-    ],
-    "batch_size": 1
-  }
+                },
+                "type": "dtl"
+            },
+            {
+                "operation": "get",
+                "replace_entity": false,
+                "system": "{{@ system @}}",
+                "type": "rest"
+            },
+            {
+                "rules": {
+                    "default": [
+                        [
+                            "comment",
+                            "**** OPTIMISTIC LOCKING ****"
+                        ],
+                        [
+                            "add",
+                            "_old",
+                            [
+                                "first",
+                                [
+                                    "hops",
+                                    {
+                                        "datasets": [
+                                            "{{@ system @}}-contact-collect a"
+                                        ],
+                                        "where": [
+                                            [
+                                                "eq",
+                                                "_S.entity.id",
+                                                "a.id"
+                                            ]
+                                        ]
+                                    }
+                                ]
+                            ]
+                        ],
+                        [
+                            "add",
+                            "_json_old",
+                            [
+                                "json-transit",
+                                [
+                                    "apply",
+                                    "remove-under",
+                                    "_T._old"
+                                ]
+                            ]
+                        ],
+                        [
+                            "add",
+                            "_json_new",
+                            [
+                                "first",
+                                [
+                                    "json-transit",
+                                    [
+                                        "apply",
+                                        "remove-under",
+                                        "_S.response"
+                                    ]
+                                ]
+                            ]
+                        ],
+                        [
+                            "add",
+                            "_hash_old",
+                            [
+                                "hash128",
+                                "murmur3",
+                                "_T._json_old"
+                            ]
+                        ],
+                        [
+                            "add",
+                            "_hash_new",
+                            [
+                                "hash128",
+                                "murmur3",
+                                "_T._json_new"
+                            ]
+                        ],
+                        [
+                            "if",
+                            [
+                                "eq",
+                                "_T._hash_old",
+                                "_T._hash_new"
+                            ],
+                            [
+                                [
+                                    "comment",
+                                    "**** SAME DATA IN SYSTEM AS IN SESAM ****"
+                                ],
+                                [
+                                    "add",
+                                    "::payload",
+                                    [
+                                        "dict",
+                                        "properties",
+                                        "_S.entity.properties"
+                                    ]
+                                ],
+                                [
+                                    "add",
+                                    "::properties",
+                                    [
+                                        "dict",
+                                        "id",
+                                        "_S.entity.id",
+                                        "url",
+                                        "contacts"
+                                    ]
+                                ]
+                            ],
+                            [
+                                [
+                                    "comment",
+                                    "**** DIFFERENT DATA IN SYSTEM THAN IN SESAM ****"
+                                ],
+                                [
+                                    "discard"
+                                ]
+                            ]
+                        ]
+                    ],
+                    "remove-under": [
+                        [
+                            "copy",
+                            "*",
+                            [
+                                "list",
+                                "_*",
+                                "$*"
+                            ]
+                        ]
+                    ]
+                },
+                "type": "dtl"
+            }
+        ],
+        "type": "pipe"
+    },
+    {
+        "_id": "{{@ system @}}-contact-share-insert",
+        "add_namespaces": false,
+        "disable_set_last_seen": true,
+        "pump": {
+            "run_at_startup_if_not_populated": true
+        },
+        "reprocessing_policy": "continue",
+        "sink": {
+            "set_initial_offset": "onload"
+        },
+        "source": {
+            "dataset": "{{@ system @}}-contact-transform",
+            "type": "dataset"
+        },
+        "transform": [
+            {
+                "rules": {
+                    "default": [
+                        [
+                            "discard",
+                            [
+                                "not",
+                                "_S._deleted"
+                            ]
+                        ],
+                        [
+                            "discard",
+                            [
+                                "is-null",
+                                "_S.id"
+                            ]
+                        ],
+                        [
+                            "discard",
+                            [
+                                "is-empty",
+                                [
+                                    "hops",
+                                    {
+                                        "datasets": [
+                                            "{{@ system @}}-contact-share-insert chi"
+                                        ],
+                                        "track-dependencies": false,
+                                        "where": [
+                                            [
+                                                "eq",
+                                                "_S.sesam-id",
+                                                "chi.sesam-id"
+                                            ]
+                                        ]
+                                    }
+                                ]
+                            ]
+                        ],
+                        [
+                            "add",
+                            "::payload",
+                            [
+                                "dict",
+                                "properties",
+                                "_S.properties"
+                            ]
+                        ],
+                        [
+                            "copy",
+                            "sesam-id"
+                        ]
+                    ]
+                },
+                "type": "dtl"
+            },
+            {
+                "operation": "insert",
+                "properties": {
+                    "url": "contacts"
+                },
+                "replace_entity": false,
+                "side_effects": true,
+                "system": "{{@ system @}}",
+                "type": "rest"
+            },
+            {
+                "rules": {
+                    "default": [
+                        [
+                            "copy",
+                            "sesam-id"
+                        ],
+                        [
+                            "merge-union",
+                            "_S.response"
+                        ],
+                        [
+                            "add",
+                            "_id",
+                            "_T.id"
+                        ]
+                    ]
+                },
+                "type": "dtl"
+            }
+        ],
+        "type": "pipe"
+    }
 ]

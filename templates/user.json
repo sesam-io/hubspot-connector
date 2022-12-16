@@ -1,270 +1,326 @@
 [
-  {
-    "_id": "{{@ system @}}-user-collect",
-    "type": "pipe",
-    "source": {
-      "type": "rest",
-      "system": "{{@ system @}}",
-      "id_expression": "{{ id }}",
-      "operation": "get-settings",
-      "payload_property": "results",
-      "properties": {
-        "url": "users/"
-      },
-      "updated_expression": "{{ updatedAt }}"
-    },
-    "add_namespaces": false,
-    "pump": {
-      "schedule_interval": 10
-    }
-  },
-  {
-    "_id": "{{@ system @}}-user-share-insert",
-    "type": "pipe",
-    "source": {
-      "type": "dataset",
-      "dataset": "{{@ system @}}-user-transform"
-    },
-    "sink": {
-      "set_initial_offset": "onload"
-    },
-    "transform": [{
-      "type": "dtl",
-      "rules": {
-        "default": [
-          ["discard",
-            ["not", "_S._deleted"]
-          ],
-          ["discard",
-            ["is-null", "_S.id"]
-          ],
-          ["discard",
-            ["is-empty",
-              ["hops", {
-                "datasets": ["{{@ system @}}-user-share-insert chi"],
-                "where": [
-                  ["eq", "_S.sesam-id", "chi.sesam-id"]
-                ],
-                "track-dependencies": false
-              }]
-            ]
-          ],
-          ["add", "::payload",
-            ["dict", "email", "_S.email", "sendWelcomeEmail", true]
-          ],
-          ["copy", "sesam-id"]
-        ]
-      }
-    }, {
-      "type": "rest",
-      "system": "{{@ system @}}",
-      "operation": "insert-settings",
-      "properties": {
-        "url": "users"
-      },
-      "replace_entity": false,
-      "ignored_status_codes": "409"
-    }, {
-      "type": "dtl",
-      "rules": {
-        "default": [
-          ["copy", "sesam-id"],
-          ["merge-union", "_S.response"],
-          ["add", "_id", "_T.id"]
-        ]
-      }
-    }],
-    "pump": {
-      "run_at_startup_if_not_populated": true
-    },
-    "add_namespaces": false,
-    "disable_set_last_seen": true,
-    "reprocessing_policy": "continue"
-  },
-  {
-    "_id": "{{@ system @}}-user-share-update",
-    "type": "pipe",
-    "source": {
-      "type": "dataset",
-      "dataset": "{{@ system @}}-user-transform"
-    },
-    "sink": {
-      "type": "rest",
-      "system": "{{@ system @}}",
-      "operation": "update-settings"
-    },
-    "transform": [
-      {
-        "type": "dtl",
-        "rules": {
-          "default": [
-            ["discard",
-              ["not", "_S._deleted"]
-            ],
-            [
-              "discard",
-              [
-                "is-not-empty",
-                "_S.id"
-              ]
-            ],
-            [
-              "add",
-              "::properties",
-              [
-                "dict",
-                "url",
-                [
-                  "concat",
-                  "users/",
-                  "_S.id"
-                ]
-              ]
-            ],
-            [
-              "add",
-              "::entity",
-              "_S."
-            ]
-          ]
-        }
-      },
-      {
-        "type": "rest",
-        "system": "{{@ system @}}",
-        "operation": "get-settings",
-        "replace_entity": false
-      },
-      {
-        "type": "dtl",
-        "rules": {
-          "default": [
-            [
-              "comment",
-              "**** OPTIMISTIC LOCKING ****"
-            ],
-            [
-              "add",
-              "_old",
-              [
-                "first",
-                [
-                  "hops",
-                  {
-                    "datasets": [
-                      "{{@ system @}}-user-collect a"
+    {
+        "_id": "{{@ system @}}-user-share-update",
+        "batch_size": 1,
+        "sink": {
+            "operation": "update-settings",
+            "system": "{{@ system @}}",
+            "type": "rest"
+        },
+        "source": {
+            "dataset": "{{@ system @}}-user-transform",
+            "type": "dataset"
+        },
+        "transform": [
+            {
+                "rules": {
+                    "default": [
+                        [
+                            "discard",
+                            [
+                                "not",
+                                "_S._deleted"
+                            ]
+                        ],
+                        [
+                            "discard",
+                            [
+                                "is-not-empty",
+                                "_S.id"
+                            ]
+                        ],
+                        [
+                            "add",
+                            "::properties",
+                            [
+                                "dict",
+                                "url",
+                                [
+                                    "concat",
+                                    "users/",
+                                    "_S.id"
+                                ]
+                            ]
+                        ],
+                        [
+                            "add",
+                            "::entity",
+                            "_S."
+                        ]
+                    ]
+                },
+                "type": "dtl"
+            },
+            {
+                "operation": "get-settings",
+                "replace_entity": false,
+                "system": "{{@ system @}}",
+                "type": "rest"
+            },
+            {
+                "rules": {
+                    "default": [
+                        [
+                            "comment",
+                            "**** OPTIMISTIC LOCKING ****"
+                        ],
+                        [
+                            "add",
+                            "_old",
+                            [
+                                "first",
+                                [
+                                    "hops",
+                                    {
+                                        "datasets": [
+                                            "{{@ system @}}-user-collect a"
+                                        ],
+                                        "where": [
+                                            [
+                                                "eq",
+                                                "_S.entity.id",
+                                                "a.id"
+                                            ]
+                                        ]
+                                    }
+                                ]
+                            ]
+                        ],
+                        [
+                            "add",
+                            "_json_old",
+                            [
+                                "json-transit",
+                                [
+                                    "apply",
+                                    "remove-under",
+                                    "_T._old"
+                                ]
+                            ]
+                        ],
+                        [
+                            "add",
+                            "_json_new",
+                            [
+                                "first",
+                                [
+                                    "json-transit",
+                                    [
+                                        "apply",
+                                        "remove-under",
+                                        [
+                                            "first",
+                                            "_S.response"
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ],
+                        [
+                            "add",
+                            "_hash_old",
+                            [
+                                "hash128",
+                                "murmur3",
+                                "_T._json_old"
+                            ]
+                        ],
+                        [
+                            "add",
+                            "_hash_new",
+                            [
+                                "hash128",
+                                "murmur3",
+                                "_T._json_new"
+                            ]
+                        ],
+                        [
+                            "if",
+                            [
+                                "eq",
+                                "_T._hash_old",
+                                "_T._hash_new"
+                            ],
+                            [
+                                [
+                                    "comment",
+                                    "**** SAME DATA IN SYSTEM AS IN SESAM ****"
+                                ],
+                                [
+                                    "add",
+                                    "::payload",
+                                    [
+                                        "apply",
+                                        "remove-under",
+                                        "_S.entity"
+                                    ]
+                                ],
+                                [
+                                    "add",
+                                    "::properties",
+                                    [
+                                        "dict",
+                                        "url",
+                                        [
+                                            "concat",
+                                            "users/",
+                                            "_S.entity.id"
+                                        ]
+                                    ]
+                                ]
+                            ],
+                            [
+                                [
+                                    "comment",
+                                    "**** DIFFERENT DATA IN SYSTEM THAN IN SESAM ****"
+                                ],
+                                [
+                                    "discard"
+                                ]
+                            ]
+                        ]
                     ],
-                    "where": [
-                      [
-                        "eq",
-                        "_S.entity.id",
-                        "a.id"
-                      ]
+                    "remove-under": [
+                        [
+                            "copy",
+                            "*",
+                            [
+                                "list",
+                                "_*",
+                                "$*"
+                            ]
+                        ]
                     ]
-                  }
-                ]
-              ]
-            ],
-            [
-              "add",
-              "_json_old",
-              [
-                "json-transit",
-                [
-                  "apply",
-                  "remove-under",
-                  "_T._old"
-                ]
-              ]
-            ],
-            [
-              "add",
-              "_json_new",
-              [
-                "first",
-                [
-                  "json-transit",
-                  [
-                    "apply",
-                    "remove-under",
-                    [
-                      "first",
-                      "_S.response"
+                },
+                "type": "dtl"
+            }
+        ],
+        "type": "pipe"
+    },
+    {
+        "_id": "{{@ system @}}-user-collect",
+        "add_namespaces": false,
+        "pump": {
+            "schedule_interval": 10
+        },
+        "source": {
+            "id_expression": "{{ id }}",
+            "operation": "get-settings",
+            "payload_property": "results",
+            "properties": {
+                "url": "users/"
+            },
+            "system": "{{@ system @}}",
+            "type": "rest",
+            "updated_expression": "{{ updatedAt }}"
+        },
+        "type": "pipe"
+    },
+    {
+        "_id": "{{@ system @}}-user-share-insert",
+        "add_namespaces": false,
+        "disable_set_last_seen": true,
+        "pump": {
+            "run_at_startup_if_not_populated": true
+        },
+        "reprocessing_policy": "continue",
+        "sink": {
+            "set_initial_offset": "onload"
+        },
+        "source": {
+            "dataset": "{{@ system @}}-user-transform",
+            "type": "dataset"
+        },
+        "transform": [
+            {
+                "rules": {
+                    "default": [
+                        [
+                            "discard",
+                            [
+                                "not",
+                                "_S._deleted"
+                            ]
+                        ],
+                        [
+                            "discard",
+                            [
+                                "is-null",
+                                "_S.id"
+                            ]
+                        ],
+                        [
+                            "discard",
+                            [
+                                "is-empty",
+                                [
+                                    "hops",
+                                    {
+                                        "datasets": [
+                                            "{{@ system @}}-user-share-insert chi"
+                                        ],
+                                        "track-dependencies": false,
+                                        "where": [
+                                            [
+                                                "eq",
+                                                "_S.sesam-id",
+                                                "chi.sesam-id"
+                                            ]
+                                        ]
+                                    }
+                                ]
+                            ]
+                        ],
+                        [
+                            "add",
+                            "::payload",
+                            [
+                                "dict",
+                                "email",
+                                "_S.email",
+                                "sendWelcomeEmail",
+                                true
+                            ]
+                        ],
+                        [
+                            "copy",
+                            "sesam-id"
+                        ]
                     ]
-                  ]
-                ]
-              ]
-            ],
-            [
-              "add",
-              "_hash_old",
-              [
-                "hash128",
-                "murmur3",
-                "_T._json_old"
-              ]
-            ],
-            [
-              "add",
-              "_hash_new",
-              [
-                "hash128",
-                "murmur3",
-                "_T._json_new"
-              ]
-            ],
-            [
-              "if",
-              [
-                "eq",
-                "_T._hash_old",
-                "_T._hash_new"
-              ],
-              [
-                [
-                  "comment",
-                  "**** SAME DATA IN SYSTEM AS IN SESAM ****"
-                ],
-                [
-                  "add",
-                  "::payload",
-                  [
-                    "apply",
-                    "remove-under",
-                    "_S.entity"
-                  ]
-                ],
-                [
-                  "add",
-                  "::properties",
-                  [
-                    "dict",
-                    "url",
-                    [
-                      "concat",
-                      "users/",
-                      "_S.entity.id"
+                },
+                "type": "dtl"
+            },
+            {
+                "ignored_status_codes": "409",
+                "operation": "insert-settings",
+                "properties": {
+                    "url": "users"
+                },
+                "replace_entity": false,
+                "system": "{{@ system @}}",
+                "type": "rest"
+            },
+            {
+                "rules": {
+                    "default": [
+                        [
+                            "copy",
+                            "sesam-id"
+                        ],
+                        [
+                            "merge-union",
+                            "_S.response"
+                        ],
+                        [
+                            "add",
+                            "_id",
+                            "_T.id"
+                        ]
                     ]
-                  ]
-                ]
-              ],
-              [
-                [
-                  "comment",
-                  "**** DIFFERENT DATA IN SYSTEM THAN IN SESAM ****"
-                ],
-                [
-                  "discard"
-                ]
-              ]
-            ]
-          ],
-          "remove-under": [
-            ["copy", "*", ["list", "_*", "$*"]]
-          ]
-        }
-      }
-    ],
-    "batch_size": 1
-  }
+                },
+                "type": "dtl"
+            }
+        ],
+        "type": "pipe"
+    }
 ]
