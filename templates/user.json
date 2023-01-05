@@ -211,8 +211,7 @@
                 "url": "users/"
             },
             "system": "{{@ system @}}",
-            "type": "rest",
-            "updated_expression": "{{ updatedAt }}"
+            "type": "rest"
         },
         "type": "pipe"
     },
