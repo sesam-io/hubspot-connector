@@ -6,7 +6,7 @@
             "set_initial_offset": "onload"
         },
         "source": {
-            "dataset": "{{@ webhook_dataset @}}",
+            "dataset": "$ENV(hubspot_webhook_dataset)",
             "subset": [
                 "eq",
                 [
