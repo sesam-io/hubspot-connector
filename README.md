@@ -3,9 +3,9 @@ An example of a new Sesam component - a connector - to the Hubspot CRM system.
 
 # Webhooks
 
-To test webhook events you need to set `webhook_dataset` environment variable to point to a dataset with all the events you want to test. 
+To test webhook events you need to set the `hubspot_webhook_dataset` environment variable to point to a dataset with all the events you want to test. 
 
-You can use this pipe in Sesam to receive all the events for your Hubspot application registration. You can add the following pipe to your subscription and set `webhook_dataset` to `hubspot-webhook-event`.
+You can use this pipe in Sesam to receive all the events for your Hubspot application registration. You can add the following pipe to your subscription and set `hubspot_webhook_dataset` to `hubspot-webhook-event`.
 ```
 {
   "_id": "hubspot-webhook-event",

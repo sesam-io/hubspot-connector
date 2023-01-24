@@ -1,8 +1,7 @@
 {
   "additional_parameters": {
     "account_id": {},
-    "token_url": {},
-    "webhook_dataset": {}
+    "token_url": {}
   },
   "auth": "oauth2",
   "datatypes": {
