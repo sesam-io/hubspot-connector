@@ -1,507 +1,1019 @@
 [
-    {
-        "_id": "{{@ system @}}-company-event",
-        "namespaced_identifiers": false,
-        "sink": {
-            "set_initial_offset": "onload"
-        },
-        "source": {
-            "dataset": "$ENV(hubspot_webhook_dataset)",
-            "subset": [
-                "eq",
+  {
+    "_id": "{{@ system @}}-{{@ datatype @}}-share",
+    "batch_size": 1,
+    "namespaced_identifiers": false,
+    "sink": {
+      "deletion_tracking": false,
+      "set_initial_offset": "onload"
+    },
+    "source": {
+      "dataset": "{{@ system @}}-{{@ datatype @}}-transform",
+      "type": "dataset"
+    },
+    "transform": [
+      {
+        "rules": {
+          "default": [
+            [
+              "if",
+              [
+                "and",
                 [
-                    "and",
-                    [
-                        "eq",
-                        "_S.portalId",
-                        "{{@ account_id @}}"
-                    ],
-                    [
-                        "matches",
-                        "company.*",
-                        [
-                            "list",
-                            "_S.subscriptionType"
-                        ]
-                    ]
+                  "eq",
+                  "_S.$replaced",
+                  true
                 ],
-                true
-            ],
-            "type": "dataset"
-        },
-        "transform": [
-            {
-                "rules": {
-                    "default": [
-                        [
-                            "comment",
-                            "objectId contains the company id"
-                        ],
-                        [
-                            "add",
-                            "_id",
-                            [
-                                "string",
-                                "_S.objectId"
-                            ]
-                        ],
-                        [
-                            "add",
-                            "id",
-                            "_S.objectId"
-                        ],
-                        [
-                            "comment",
-                            "need this in the last transform to determine what to emit"
-                        ],
-                        [
-                            "copy",
-                            "subscriptionType"
-                        ],
-                        [
-                            "add",
-                            "$original_id",
-                            "_S._id"
-                        ]
-                    ]
-                },
-                "type": "dtl"
-            }
-        ],
-        "type": "pipe"
-    },
-    {
-        "_id": "{{@ system @}}-company-all",
-        "add_namespaces": false,
-        "source": {
-            "id_expression": "{{ id }}",
-            "operation": "get",
-            "payload_property": "results",
-            "properties": {
-                "url": "companies?properties=hs_analytics_first_timestamp,hs_analytics_last_timestamp,hs_analytics_last_visit_timestamp,hs_analytics_num_page_views,hs_analytics_num_visits,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_source,hs_last_booked_meeting_date,hs_last_logged_call_date,hs_last_open_task_date,hs_last_sales_activity_timestamp,hs_lastmodifieddate,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,about_us,address,address2,annualrevenue,city,closedate,country,createdate,days_to_close,description,domain,engagements_last_meeting_booked_medium,first_contact_createdate,founded_year,hs_analytics_last_touch_converting_campaign,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,hs_createdate,hs_num_child_companies,hs_object_id,hs_parent_company_id,industry,is_public,lifecyclestage,name,num_associated_contacts,numberofemployees,phone,state,timezone,total_money_raised,total_revenue,type,web_technologies,website,zip,hs_analytics_first_touch_converting_campaign,hs_analytics_first_visit_timestamp,first_deal_created_date,hs_num_open_deals,hs_total_deal_value,num_associated_deals,recent_deal_amount,recent_deal_close_date,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,facebook_company_page,facebookfans,googleplus_page,linkedin_company_page,linkedinbio,twitterbio,twitterfollowers,twitterhandle,hs_ideal_customer_profile,hs_is_target_account,hs_num_blockers,hs_num_contacts_with_buying_roles,hs_num_decision_makers&"
-            },
-            "system": "{{@ system @}}",
-            "type": "rest",
-            "updated_expression": "{{ updatedAt }}"
-        },
-        "transform": [
-            {
-                "rules": {
-                    "default": [
-                        [
-                            "copy",
-                            "*"
-                        ],
-                        [
-                            "add",
-                            "$last-modified",
-                            "_S.updatedAt"
-                        ]
-                    ]
-                },
-                "type": "dtl"
-            }
-        ],
-        "type": "pipe"
-    },
-    {
-        "_id": "{{@ system @}}-company-event2",
-        "source": {
-            "dataset": "{{@ system @}}-company-event",
-            "type": "dataset"
-        },
-        "transform": [
-            {
-                "allowed_status_codes": "200,404",
-                "operation": "hash",
-                "replace_entity": false,
-                "response_status_property": "status",
-                "system": "{{@ system @}}",
-                "type": "rest"
-            },
-            {
-                "rules": {
-                    "default": [
-                        [
-                            "copy",
-                            "id"
-                        ],
-                        [
-                            "comment",
-                            "if deletion, always mark the output as deleted"
-                        ],
-                        [
-                            "if",
-                            [
-                                "eq",
-                                "company.deletion",
-                                "_S.subscriptionType"
-                            ],
-                            [
-                                "add",
-                                "_deleted",
-                                true
-                            ]
-                        ],
-                        [
-                            "comment",
-                            "if we find the entity, always include it (will probably never happen if we get a deletion event)"
-                        ],
-                        [
-                            "comment",
-                            "discard if we get a 404 unless we have a deletion event"
-                        ],
-                        [
-                            "if",
-                            [
-                                "neq",
-                                404,
-                                "_S.status"
-                            ],
-                            [
-                                "merge",
-                                "_S.response"
-                            ],
-                            [
-                                "discard",
-                                [
-                                    "eq",
-                                    "company.deletion",
-                                    "_S.subscriptionType"
-                                ]
-                            ]
-                        ]
-                    ]
-                },
-                "type": "dtl"
-            }
-        ],
-        "type": "pipe"
-    },
-    {
-        "_id": "{{@ system @}}-company-share-insert",
-        "add_namespaces": false,
-        "disable_set_last_seen": true,
-        "pump": {
-            "run_at_startup_if_not_populated": true
-        },
-        "reprocessing_policy": "continue",
-        "sink": {
-            "set_initial_offset": "onload"
-        },
-        "source": {
-            "dataset": "{{@ system @}}-company-transform",
-            "type": "dataset"
-        },
-        "transform": [
-            {
-                "rules": {
-                    "default": [
-                        [
-                            "discard",
-                            [
-                                "not",
-                                "_S._deleted"
-                            ]
-                        ],
-                        [
-                            "discard",
-                            [
-                                "is-null",
-                                "_S.id"
-                            ]
-                        ],
-                        [
-                            "discard",
-                            [
-                                "is-empty",
-                                [
-                                    "hops",
-                                    {
-                                        "datasets": [
-                                            "{{@ system @}}-company-share-insert chi"
-                                        ],
-                                        "track-dependencies": false,
-                                        "where": [
-                                            [
-                                                "eq",
-                                                "_S.sesam-id",
-                                                "chi.sesam-id"
-                                            ]
-                                        ]
-                                    }
-                                ]
-                            ]
-                        ],
-                        [
-                            "add",
-                            "::payload",
-                            [
-                                "dict",
-                                "properties",
-                                "_S.properties"
-                            ]
-                        ],
-                        [
-                            "copy",
-                            "sesam-id"
-                        ]
-                    ]
-                },
-                "type": "dtl"
-            },
-            {
-                "operation": "insert",
-                "properties": {
-                    "url": "companies"
-                },
-                "replace_entity": false,
-                "side_effects": true,
-                "system": "{{@ system @}}",
-                "type": "rest"
-            },
-            {
-                "rules": {
-                    "default": [
-                        [
-                            "copy",
-                            "sesam-id"
-                        ],
-                        [
-                            "merge-union",
-                            "_S.response"
-                        ],
-                        [
-                            "add",
-                            "_id",
-                            "_T.id"
-                        ]
-                    ]
-                },
-                "type": "dtl"
-            }
-        ],
-        "type": "pipe"
-    },
-    {
-        "_id": "{{@ system @}}-company-collect",
-        "source": {
-            "datasets": [
-                "{{@ system @}}-company-event2",
-                "{{@ system @}}-company-all"
-            ],
-            "type": "merge_datasets"
-        },
-        "transform": {
-            "rules": {
-                "default": [
-                    [
-                        "copy",
-                        "*"
-                    ],
-                    [
-                        "add",
-                        "$last-modified",
-                        "_S.updatedAt"
-                    ]
+                [
+                  "eq",
+                  "_S._deleted",
+                  true
                 ]
-            },
-            "type": "dtl"
-        },
-        "type": "pipe"
-    },
-    {
-        "_id": "{{@ system @}}-company-share-update",
-        "batch_size": 1,
-        "sink": {
-            "operation": "update",
-            "system": "{{@ system @}}",
-            "type": "rest"
-        },
-        "source": {
-            "dataset": "{{@ system @}}-company-transform",
-            "type": "dataset"
-        },
-        "transform": [
-            {
-                "rules": {
-                    "default": [
-                        [
-                            "discard",
-                            [
-                                "not",
-                                "_S._deleted"
-                            ]
-                        ],
-                        [
-                            "discard",
-                            [
-                                "is-not-empty",
-                                "_S.id"
-                            ]
-                        ],
-                        [
-                            "add",
-                            "::properties",
-                            [
-                                "dict",
-                                "url",
-                                [
-                                    "concat",
-                                    "companies/",
-                                    "_S.id",
-                                    "?properties=hs_analytics_first_timestamp,hs_analytics_last_timestamp,hs_analytics_last_visit_timestamp,hs_analytics_num_page_views,hs_analytics_num_visits,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_source,hs_last_booked_meeting_date,hs_last_logged_call_date,hs_last_open_task_date,hs_last_sales_activity_timestamp,hs_lastmodifieddate,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,about_us,address,address2,annualrevenue,city,closedate,country,createdate,days_to_close,description,domain,engagements_last_meeting_booked_medium,first_contact_createdate,founded_year,hs_analytics_last_touch_converting_campaign,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,hs_createdate,hs_num_child_companies,hs_object_id,hs_parent_company_id,industry,is_public,lifecyclestage,name,num_associated_contacts,numberofemployees,phone,state,timezone,total_money_raised,total_revenue,type,web_technologies,website,zip,hs_analytics_first_touch_converting_campaign,hs_analytics_first_visit_timestamp,first_deal_created_date,hs_num_open_deals,hs_total_deal_value,num_associated_deals,recent_deal_amount,recent_deal_close_date,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,facebook_company_page,facebookfans,googleplus_page,linkedin_company_page,linkedinbio,twitterbio,twitterfollowers,twitterhandle,hs_ideal_customer_profile,hs_is_target_account,hs_num_blockers,hs_num_contacts_with_buying_roles,hs_num_decision_makers&"
-                                ]
-                            ]
-                        ],
-                        [
-                            "add",
-                            "entity",
-                            "_S."
-                        ]
-                    ]
-                },
-                "type": "dtl"
-            },
-            {
-                "operation": "get",
-                "replace_entity": false,
-                "system": "{{@ system @}}",
-                "type": "rest"
-            },
-            {
-                "rules": {
-                    "default": [
-                        [
-                            "comment",
-                            "**** OPTIMISTIC LOCKING ****"
-                        ],
-                        [
-                            "add",
-                            "_old",
-                            [
-                                "first",
-                                [
-                                    "hops",
-                                    {
-                                        "datasets": [
-                                            "{{@ system @}}-company-collect a"
-                                        ],
-                                        "where": [
-                                            [
-                                                "eq",
-                                                "_S.entity.id",
-                                                "a.id"
-                                            ]
-                                        ]
-                                    }
-                                ]
-                            ]
-                        ],
-                        [
-                            "add",
-                            "_json_old",
-                            [
-                                "json-transit",
-                                [
-                                    "apply",
-                                    "remove-under",
-                                    "_T._old"
-                                ]
-                            ]
-                        ],
-                        [
-                            "add",
-                            "_json_new",
-                            [
-                                "first",
-                                [
-                                    "json-transit",
-                                    [
-                                        "apply",
-                                        "remove-under",
-                                        "_S.response"
-                                    ]
-                                ]
-                            ]
-                        ],
-                        [
-                            "add",
-                            "_hash_old",
-                            [
-                                "hash128",
-                                "murmur3",
-                                "_T._json_old"
-                            ]
-                        ],
-                        [
-                            "add",
-                            "_hash_new",
-                            [
-                                "hash128",
-                                "murmur3",
-                                "_T._json_new"
-                            ]
-                        ],
-                        [
-                            "if",
-                            [
-                                "eq",
-                                "_T._hash_old",
-                                "_T._hash_new"
-                            ],
-                            [
-                                [
-                                    "comment",
-                                    "**** SAME DATA IN SYSTEM AS IN SESAM ****"
-                                ],
-                                [
-                                    "add",
-                                    "::payload",
-                                    [
-                                        "dict",
-                                        "properties",
-                                        "_S.entity.properties"
-                                    ]
-                                ],
-                                [
-                                    "add",
-                                    "::properties",
-                                    [
-                                        "dict",
-                                        "id",
-                                        "_S.entity.id",
-                                        "url",
-                                        "companies"
-                                    ]
-                                ]
-                            ],
-                            [
-                                [
-                                    "comment",
-                                    "**** DIFFERENT DATA IN SYSTEM THAN IN SESAM ****"
-                                ],
-                                [
-                                    "discard"
-                                ]
-                            ]
-                        ]
+              ],
+              [
+                "merge",
+                [
+                  "apply",
+                  "discard-replaced",
+                  "_S."
+                ]
+              ],
+              [
+                "if",
+                [
+                  "is-not-null",
+                  "_S.id"
+                ],
+                [
+                  "if",
+                  [
+                    "eq",
+                    "_S._deleted",
+                    true
+                  ],
+                  [
+                    [
+                      "comment",
+                      "Entity is deleted and it does have a system specific id."
                     ],
-                    "remove-under": [
-                        [
-                            "copy",
-                            "*",
-                            [
-                                "list",
-                                "_*",
-                                "$*"
-                            ]
-                        ]
+                    [
+                      "merge",
+                      [
+                        "apply",
+                        "delete",
+                        "_S."
+                      ]
                     ]
-                },
-                "type": "dtl"
-            }
+                  ],
+                  [
+                    [
+                      "comment",
+                      "Entity is not deleted and it does have a system specific id."
+                    ],
+                    [
+                      "merge",
+                      [
+                        "apply",
+                        "lookup",
+                        "_S."
+                      ]
+                    ]
+                  ]
+                ],
+                [
+                  "if",
+                  [
+                    "eq",
+                    "_S._deleted",
+                    true
+                  ],
+                  [
+                    "merge",
+                    [
+                      "apply",
+                      "discard-delete-non-existent",
+                      "_S."
+                    ]
+                  ],
+                  [
+                    [
+                      "comment",
+                      "At this point there is no primary key, so we should do an insert unless there are sink entity ids in $ids with $generated_id in them."
+                    ],
+                    [
+                      "if",
+                      [
+                        "is-not-empty",
+                        [
+                          "filter",
+                          [
+                            "is-not-null",
+                            "_."
+                          ],
+                          [
+                            "hops",
+                            {
+                              "datasets": [
+                                "{{@ system @}}-{{@ datatype @}}-share st"
+                              ],
+                              "return": "st.$generated_id",
+                              "track-dependencies": false,
+                              "where": [
+                                [
+                                  "eq",
+                                  "_S.$ids",
+                                  [
+                                    "ni",
+                                    "st._id"
+                                  ]
+                                ]
+                              ]
+                            }
+                          ]
+                        ]
+                      ],
+                      [
+                        "merge",
+                        [
+                          "apply",
+                          "discard-already-inserted",
+                          "_S."
+                        ]
+                      ],
+                      [
+                        [
+                          "comment",
+                          "Entity is not deleted, it does not have a system specific id and it does not exist in sink dataset."
+                        ],
+                        [
+                          "merge",
+                          [
+                            "apply",
+                            "insert",
+                            "_S."
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ],
+            [
+              "add",
+              "$source",
+              "_S."
+            ],
+            [
+              "copy",
+              "id"
+            ],
+            [
+              "copy",
+              "$replaced"
+            ],
+            [
+              "add",
+              "$trace_operations",
+              [
+                "list"
+              ]
+            ]
+          ],
+          "delete": [
+            [
+              "add",
+              "$operation",
+              "delete"
+            ]
+          ],
+          "discard-already-inserted": [
+            [
+              "add",
+              "$operation",
+              "discard-already-inserted"
+            ]
+          ],
+          "discard-delete-non-existent": [
+            [
+              "add",
+              "$operation",
+              "discard-delete-non-existent"
+            ]
+          ],
+          "discard-replaced": [
+            [
+              "add",
+              "$operation",
+              "discard-replaced"
+            ]
+          ],
+          "insert": [
+            [
+              "add",
+              "$operation",
+              "insert"
+            ],
+            [
+              "add",
+              "payload",
+              [
+                "apply",
+                "payload",
+                "_S."
+              ]
+            ]
+          ],
+          "lookup": [
+            [
+              "add",
+              "$operation",
+              "lookup"
+            ]
+          ],
+          "payload": [
+            [
+              "merge",
+              [
+                "dict",
+                [
+                  "filter",
+                  [
+                    "not",
+                    [
+                      "or",
+                      [
+                        "matches",
+                        "_*",
+                        [
+                          "first",
+                          "_."
+                        ]
+                      ],
+                      [
+                        "matches",
+                        "$*",
+                        [
+                          "first",
+                          "_."
+                        ]
+                      ]
+                    ]
+                  ],
+                  [
+                    "items",
+                    "_S."
+                  ]
+                ]
+              ]
+            ]
+          ]
+        },
+        "type": "dtl"
+      },
+      {
+        "allowed_status_codes": "200,400,404",
+        "operation": "lookup",
+        "properties": {
+          "associations": "contacts,companies,deals,tickets,products,quotes",
+          "datatype": "companies",
+          "properties": "hs_analytics_first_timestamp,hs_analytics_last_timestamp,hs_analytics_last_visit_timestamp,hs_analytics_num_page_views,hs_analytics_num_visits,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_source,hs_last_booked_meeting_date,hs_last_logged_call_date,hs_last_open_task_date,hs_last_sales_activity_timestamp,hs_lastmodifieddate,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,about_us,address,address2,annualrevenue,city,closedate,country,createdate,days_to_close,description,domain,engagements_last_meeting_booked_medium,first_contact_createdate,founded_year,hs_analytics_last_touch_converting_campaign,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,hs_createdate,hs_num_child_companies,hs_object_id,hs_parent_{{@ datatype @}}_id,industry,is_public,lifecyclestage,name,num_associated_contacts,numberofemployees,phone,state,timezone,total_money_raised,total_revenue,type,web_technologies,website,zip,hs_analytics_first_touch_converting_campaign,hs_analytics_first_visit_timestamp,first_deal_created_date,hs_num_open_deals,hs_total_deal_value,num_associated_deals,recent_deal_amount,recent_deal_close_date,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,facebook_{{@ datatype @}}_page,facebookfans,googleplus_page,linkedin_{{@ datatype @}}_page,linkedinbio,twitterbio,twitterfollowers,twitterhandle,hs_ideal_customer_profile,hs_is_target_account,hs_num_blockers,hs_num_contacts_with_buying_roles,hs_num_decision_makers"
+        },
+        "replace_entity": false,
+        "response_property": "response_body",
+        "response_status_property": "response_status",
+        "side_effects": false,
+        "system": "{{@ system @}}",
+        "trigger_on": {
+          "key": "$operation",
+          "value": "lookup"
+        },
+        "type": "rest"
+      },
+      {
+        "rules": {
+          "based-on-comparison": [
+            [
+              "comment",
+              "If looked up entity is different from $based_on then noop. If looked up entity is same as _S then noop - otherwise perform update"
+            ],
+            [
+              "add",
+              "$based_on_source",
+              "_S.$source.$based_on.properties"
+            ],
+            [
+              "merge",
+              [
+                "apply",
+                "based-on-lookup",
+                "_S."
+              ]
+            ],
+            [
+              "merge",
+              [
+                "apply",
+                "based-on-update",
+                "_S."
+              ]
+            ],
+            [
+              "if",
+              [
+                "neq",
+                "_T.$based_on_lookup",
+                "_T.$based_on_source"
+              ],
+              [
+                "add",
+                "$result",
+                "modified-in-system"
+              ],
+              [
+                "if",
+                [
+                  "neq",
+                  "_T.$based_on_update",
+                  "_T.$based_on_source"
+                ],
+                [
+                  "add",
+                  "$result",
+                  "needs-update"
+                ],
+                [
+                  "add",
+                  "$result",
+                  "entity-not-changed"
+                ]
+              ]
+            ]
+          ],
+          "based-on-lookup": [
+            [
+              "add",
+              "$based_on_lookup",
+              [
+                "dict",
+                [
+                  "filter",
+                  [
+                    "in",
+                    [
+                      "first",
+                      "_."
+                    ],
+                    [
+                      "keys",
+                      "_S.$source.$based_on.properties"
+                    ]
+                  ],
+                  [
+                    "items",
+                    [
+                      "first",
+                      "_S.response_body.properties"
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ],
+          "based-on-update": [
+            [
+              "add",
+              "$based_on_update",
+              [
+                "dict",
+                [
+                  "filter",
+                  [
+                    "in",
+                    [
+                      "first",
+                      "_."
+                    ],
+                    [
+                      "keys",
+                      "_S.$source.$based_on.properties"
+                    ]
+                  ],
+                  [
+                    "items",
+                    "_S.$source.properties"
+                  ]
+                ]
+              ]
+            ]
+          ],
+          "default": [
+            [
+              "if",
+              [
+                "neq",
+                "_S.$operation",
+                "lookup"
+              ],
+              [
+                "copy",
+                "*"
+              ],
+              [
+                [
+                  "if",
+                  [
+                    "neq",
+                    "_S.response_status",
+                    200
+                  ],
+                  [
+                    "copy",
+                    "*"
+                  ],
+                  [
+                    [
+                      "add",
+                      "$comparison",
+                      [
+                        "apply",
+                        "based-on-comparison",
+                        "_S."
+                      ]
+                    ],
+                    [
+                      "case-eq",
+                      [
+                        "path",
+                        "$result",
+                        "_T.$comparison"
+                      ],
+                      "modified-in-system",
+                      [
+                        "merge",
+                        [
+                          "apply",
+                          "discard-modified-in-system",
+                          "_S."
+                        ]
+                      ],
+                      "entity-not-changed",
+                      [
+                        "merge",
+                        [
+                          "apply",
+                          "discard-entity-not-changed",
+                          "_S."
+                        ]
+                      ],
+                      [
+                        "merge",
+                        [
+                          "apply",
+                          "update",
+                          "_S."
+                        ]
+                      ]
+                    ],
+                    [
+                      "copy",
+                      "$source"
+                    ],
+                    [
+                      "copy",
+                      "$replaced"
+                    ],
+                    [
+                      "add",
+                      "$trace_operations",
+                      [
+                        "combine",
+                        "_S.$trace_operations",
+                        "_S."
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ],
+          "discard-entity-not-changed": [
+            [
+              "add",
+              "$operation",
+              "discard-entity-not-changed"
+            ]
+          ],
+          "discard-modified-in-system": [
+            [
+              "add",
+              "$operation",
+              "discard-modified-in-system"
+            ]
+          ],
+          "payload": [
+            [
+              "merge",
+              [
+                "dict",
+                [
+                  "filter",
+                  [
+                    "not",
+                    [
+                      "or",
+                      [
+                        "matches",
+                        "_*",
+                        [
+                          "first",
+                          "_."
+                        ]
+                      ],
+                      [
+                        "matches",
+                        "$*",
+                        [
+                          "first",
+                          "_."
+                        ]
+                      ]
+                    ]
+                  ],
+                  [
+                    "items",
+                    "_S."
+                  ]
+                ]
+              ]
+            ]
+          ],
+          "update": [
+            [
+              "comment",
+              "May need to shape payload somewhat?"
+            ],
+            [
+              "merge",
+              [
+                "apply",
+                "payload",
+                "_S."
+              ]
+            ],
+            [
+              "add",
+              "$operation",
+              "update"
+            ],
+            [
+              "add",
+              "payload",
+              [
+                "apply",
+                "payload",
+                "_S.$source"
+              ]
+            ]
+          ]
+        },
+        "type": "dtl"
+      },
+      {
+        "allowed_status_codes": "200,400,404",
+        "operation": "update",
+        "properties": {
+          "datatype": "companies"
+        },
+        "replace_entity": false,
+        "response_property": "response_body",
+        "response_status_property": "response_status",
+        "side_effects": true,
+        "system": "{{@ system @}}",
+        "trigger_on": {
+          "key": "$operation",
+          "value": "update"
+        },
+        "type": "rest"
+      },
+      {
+        "allowed_status_codes": "200,201,400",
+        "operation": "insert",
+        "properties": {
+          "datatype": "companies"
+        },
+        "replace_entity": false,
+        "response_property": "response_body",
+        "response_status_property": "response_status",
+        "side_effects": true,
+        "system": "{{@ system @}}",
+        "trigger_on": {
+          "key": "$operation",
+          "value": "insert"
+        },
+        "type": "rest"
+      },
+      {
+        "allowed_status_codes": "200,204,400,404",
+        "operation": "delete",
+        "properties": {
+          "datatype": "companies"
+        },
+        "replace_entity": false,
+        "response_property": "response_body",
+        "response_status_property": "response_status",
+        "side_effects": true,
+        "system": "{{@ system @}}",
+        "trigger_on": {
+          "key": "$operation",
+          "value": "delete"
+        },
+        "type": "rest"
+      },
+      {
+        "rules": {
+          "default": [
+            [
+              "copy",
+              "$source"
+            ],
+            [
+              "copy",
+              "$replaced"
+            ],
+            [
+              "add",
+              "$last_operation",
+              "_S.$operation"
+            ],
+            [
+              "add",
+              "$trace_operations",
+              [
+                "combine",
+                "_S.$trace_operations",
+                "_S."
+              ]
+            ],
+            [
+              "if",
+              [
+                "eq",
+                "_S.$operation",
+                "insert"
+              ],
+              [
+                [
+                  "add",
+                  "$origin",
+                  "_S._id"
+                ],
+                [
+                  "add",
+                  "$generated_id",
+                  [
+                    "first",
+                    "_S.response_body.id"
+                  ]
+                ]
+              ]
+            ],
+            [
+              "add",
+              "$previous",
+              [
+                "apply",
+                "previous",
+                [
+                  "first",
+                  [
+                    "hops",
+                    {
+                      "datasets": [
+                        "{{@ system @}}-{{@ datatype @}}-share st"
+                      ],
+                      "track-dependencies": false,
+                      "where": [
+                        [
+                          "eq",
+                          "_S._id",
+                          "st._id"
+                        ]
+                      ]
+                    }
+                  ]
+                ]
+              ]
+            ],
+            [
+              "if",
+              [
+                "and",
+                [
+                  "is-null",
+                  "_T.$generated_id"
+                ],
+                [
+                  "is-not-null",
+                  "_T.$previous.$generated_id"
+                ]
+              ],
+              [
+                "add",
+                "$generated_id",
+                "_T.$previous.$generated_id"
+              ]
+            ],
+            [
+              "comment",
+              "If entity is $replaced and it has a $generated_id then we must not delete it."
+            ],
+            [
+              "if",
+              [
+                "and",
+                [
+                  "is-not-null",
+                  "_T.$generated_id"
+                ],
+                [
+                  "eq",
+                  "_S.$operation",
+                  "discard-replaced"
+                ]
+              ],
+              [
+                "add",
+                "_deleted",
+                false
+              ]
+            ],
+            [
+              "if",
+              [
+                "and",
+                [
+                  "is-null",
+                  "_T.$origin"
+                ],
+                [
+                  "is-not-null",
+                  "_T.$previous.$origin"
+                ]
+              ],
+              [
+                "add",
+                "$origin",
+                "_T.$previous.$origin"
+              ]
+            ]
+          ],
+          "previous": [
+            [
+              "copy",
+              "$generated_id"
+            ],
+            [
+              "copy",
+              "$origin"
+            ]
+          ]
+        },
+        "type": "dtl"
+      }
+    ],
+    "type": "pipe"
+  },
+  {
+    "_id": "{{@ system @}}-{{@ datatype @}}-event",
+    "namespaced_identifiers": false,
+    "sink": {
+      "set_initial_offset": "onload"
+    },
+    "source": {
+      "dataset": "{{@ hubspot_webhook_dataset @}}",
+      "subset": [
+        "eq",
+        [
+          "and",
+          [
+            "eq",
+            "_S.portalId",
+            "{{@ account_id @}}"
+          ],
+          [
+            "matches",
+            "{{@ datatype @}}.*",
+            [
+              "list",
+              "_S.subscriptionType"
+            ]
+          ]
         ],
-        "type": "pipe"
-    }
+        true
+      ],
+      "type": "dataset"
+    },
+    "transform": [
+      {
+        "rules": {
+          "default": [
+            [
+              "comment",
+              "objectId contains the {{@ datatype @}} id"
+            ],
+            [
+              "add",
+              "_id",
+              [
+                "string",
+                "_S.objectId"
+              ]
+            ],
+            [
+              "add",
+              "id",
+              "_S.objectId"
+            ],
+            [
+              "comment",
+              "need this in the last transform to determine what to emit"
+            ],
+            [
+              "copy",
+              "subscriptionType"
+            ],
+            [
+              "add",
+              "$original_id",
+              "_S._id"
+            ]
+          ]
+        },
+        "type": "dtl"
+      }
+    ],
+    "type": "pipe"
+  },
+  {
+    "_id": "{{@ system @}}-{{@ datatype @}}-all",
+    "namespaced_identifiers": false,
+    "source": {
+      "id_expression": "{{ id }}",
+      "operation": "list",
+      "payload_property": "results",
+      "properties": {
+        "associations": "contacts,companies,deals,tickets,products,quotes",
+        "datatype": "companies",
+        "properties": "hs_analytics_first_timestamp,hs_analytics_last_timestamp,hs_analytics_last_visit_timestamp,hs_analytics_num_page_views,hs_analytics_num_visits,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_source,hs_last_booked_meeting_date,hs_last_logged_call_date,hs_last_open_task_date,hs_last_sales_activity_timestamp,hs_lastmodifieddate,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,about_us,address,address2,annualrevenue,city,closedate,country,createdate,days_to_close,description,domain,engagements_last_meeting_booked_medium,first_contact_createdate,founded_year,hs_analytics_last_touch_converting_campaign,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,hs_createdate,hs_num_child_companies,hs_object_id,hs_parent_{{@ datatype @}}_id,industry,is_public,lifecyclestage,name,num_associated_contacts,numberofemployees,phone,state,timezone,total_money_raised,total_revenue,type,web_technologies,website,zip,hs_analytics_first_touch_converting_campaign,hs_analytics_first_visit_timestamp,first_deal_created_date,hs_num_open_deals,hs_total_deal_value,num_associated_deals,recent_deal_amount,recent_deal_close_date,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,facebook_{{@ datatype @}}_page,facebookfans,googleplus_page,linkedin_{{@ datatype @}}_page,linkedinbio,twitterbio,twitterfollowers,twitterhandle,hs_ideal_customer_profile,hs_is_target_account,hs_num_blockers,hs_num_contacts_with_buying_roles,hs_num_decision_makers"
+      },
+      "system": "{{@ system @}}",
+      "type": "rest"
+    },
+    "type": "pipe"
+  },
+  {
+    "_id": "{{@ system @}}-{{@ datatype @}}-event2",
+    "namespaced_identifiers": false,
+    "source": {
+      "dataset": "{{@ system @}}-{{@ datatype @}}-event",
+      "type": "dataset"
+    },
+    "transform": [
+      {
+        "allowed_status_codes": "200,404",
+        "operation": "lookup",
+        "properties": {
+          "associations": "contacts,companies,deals,tickets,products,quotes",
+          "datatype": "companies",
+          "properties": "hs_analytics_first_timestamp,hs_analytics_last_timestamp,hs_analytics_last_visit_timestamp,hs_analytics_num_page_views,hs_analytics_num_visits,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_source,hs_last_booked_meeting_date,hs_last_logged_call_date,hs_last_open_task_date,hs_last_sales_activity_timestamp,hs_lastmodifieddate,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,about_us,address,address2,annualrevenue,city,closedate,country,createdate,days_to_close,description,domain,engagements_last_meeting_booked_medium,first_contact_createdate,founded_year,hs_analytics_last_touch_converting_campaign,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,hs_createdate,hs_num_child_companies,hs_object_id,hs_parent_{{@ datatype @}}_id,industry,is_public,lifecyclestage,name,num_associated_contacts,numberofemployees,phone,state,timezone,total_money_raised,total_revenue,type,web_technologies,website,zip,hs_analytics_first_touch_converting_campaign,hs_analytics_first_visit_timestamp,first_deal_created_date,hs_num_open_deals,hs_total_deal_value,num_associated_deals,recent_deal_amount,recent_deal_close_date,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,facebook_{{@ datatype @}}_page,facebookfans,googleplus_page,linkedin_{{@ datatype @}}_page,linkedinbio,twitterbio,twitterfollowers,twitterhandle,hs_ideal_customer_profile,hs_is_target_account,hs_num_blockers,hs_num_contacts_with_buying_roles,hs_num_decision_makers"
+        },
+        "replace_entity": false,
+        "response_status_property": "status",
+        "system": "{{@ system @}}",
+        "type": "rest"
+      },
+      {
+        "rules": {
+          "default": [
+            [
+              "copy",
+              "id"
+            ],
+            [
+              "comment",
+              "if deletion, always mark the output as deleted"
+            ],
+            [
+              "if",
+              [
+                "eq",
+                "{{@ datatype @}}.deletion",
+                "_S.subscriptionType"
+              ],
+              [
+                "add",
+                "_deleted",
+                true
+              ]
+            ],
+            [
+              "comment",
+              "if we find the entity, always include it (will probably never happen if we get a deletion event)"
+            ],
+            [
+              "comment",
+              "discard if we get a 404 unless we have a deletion event"
+            ],
+            [
+              "if",
+              [
+                "neq",
+                404,
+                "_S.status"
+              ],
+              [
+                "merge",
+                "_S.response"
+              ],
+              [
+                "discard",
+                [
+                  "eq",
+                  "{{@ datatype @}}.deletion",
+                  "_S.subscriptionType"
+                ]
+              ]
+            ]
+          ]
+        },
+        "type": "dtl"
+      }
+    ],
+    "type": "pipe"
+  },
+  {
+    "_id": "{{@ system @}}-{{@ datatype @}}-collect",
+    "namespaced_identifiers": false,
+    "source": {
+      "datasets": [
+        "{{@ system @}}-{{@ datatype @}}-event2",
+        "{{@ system @}}-{{@ datatype @}}-all"
+      ],
+      "type": "merge_datasets"
+    },
+    "transform": {
+      "rules": {
+        "default": [
+          [
+            "copy",
+            "*"
+          ],
+          [
+            "add",
+            "_origin",
+            [
+              "first",
+              [
+                "hops",
+                {
+                  "datasets": [
+                    "{{@ system @}}-{{@ datatype @}}-share st"
+                  ],
+                  "return": "st.$origin",
+                  "track-dependencies": false,
+                  "where": [
+                    [
+                      "eq",
+                      "_S.id",
+                      "st.$generated_id"
+                    ]
+                  ]
+                }
+              ]
+            ]
+          ],
+          [
+            "if",
+            [
+              "is-not-null",
+              "_T._origin"
+            ],
+            [
+              "add",
+              "$origin",
+              "_T._origin"
+            ]
+          ],
+          [
+            "add",
+            "$last-modified",
+            "_S.updatedAt"
+          ]
+        ]
+      },
+      "type": "dtl"
+    },
+    "type": "pipe"
+  }
 ]

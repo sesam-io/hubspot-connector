@@ -1,21 +1,13 @@
 {
   "additional_parameters": {
     "account_id": {},
+    "hubspot_webhook_dataset": {},
     "token_url": {}
   },
   "auth": "oauth2",
   "datatypes": {
     "company": {
       "template": "templates/company.json"
-    },
-    "contact": {
-      "template": "templates/contact.json"
-    },
-    "team": {
-      "template": "templates/team.json"
-    },
-    "user": {
-      "template": "templates/user.json"
     }
   },
   "oauth2": {
