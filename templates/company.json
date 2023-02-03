@@ -169,8 +169,12 @@
               "id"
             ],
             [
-              "copy",
-              "$replaced"
+                "copy",
+                "$origin"
+            ],
+            [
+                "copy",
+                "$replaced"
             ],
             [
               "add",
@@ -480,8 +484,12 @@
                       "$source"
                     ],
                     [
-                      "copy",
-                      "$replaced"
+                        "copy",
+                        "$origin"
+                    ],
+                    [
+                        "copy",
+                        "$replaced"
                     ],
                     [
                       "add",
@@ -638,8 +646,12 @@
               "$source"
             ],
             [
-              "copy",
-              "$replaced"
+                "copy",
+                "$origin"
+            ],
+            [
+                "copy",
+                "$replaced"
             ],
             [
               "add",
@@ -663,10 +675,16 @@
                 "insert"
               ],
               [
-                [
-                  "add",
-                  "$origin",
-                  "_S._id"
+                ["if",
+                 [
+                    "is-null",
+                    "_T.$origin"
+                 ],
+                 [
+                    "add",
+                    "$origin",
+                    "_S._id"
+                 ]
                 ],
                 [
                   "add",
