@@ -170,6 +170,7 @@
   {
     "_id": "{{@ system @}}-{{@ datatype @}}-collect",
     "namespaced_identifiers": false,
+    "exclude_completeness": ["{{@ system @}}-{{@ datatype @}}-event2", "{{@ system @}}-{{@ datatype @}}-share"],
     "source": {
       "datasets": [
         "{{@ system @}}-{{@ datatype @}}-event2",
