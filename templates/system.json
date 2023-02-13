@@ -19,7 +19,7 @@
     "list": {
       "method": "GET",
       "next_page_link": "{{ body.paging.next.link }}",
-      "url": "crm/v3/objects/{{ properties.datatype }}?properties={{ properties.properties }}&associations={{ properties.associations }}"
+      "url": "{{ properties.datatype }}?properties={{ properties.properties }}&associations={{ properties.associations }}"
     },
     "lookup": {
       "method": "GET",
