@@ -10,7 +10,7 @@
       "template": "templates/company.json"
     },
     "contact": {
-      "template": "templates/contact.json"
+      "template": "templates/company.json"
     },
     "user": {
       "template": "templates/user.json"

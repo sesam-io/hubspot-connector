@@ -1,5 +1,5 @@
 {
-  "_id": "{{@ system @}}-user-all",
+  "_id": "{{@ system @}}-user-collect",
   "namespaced_identifiers": false,
   "source": {
     "id_expression": "{{ id }}",
