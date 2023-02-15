@@ -8,6 +8,12 @@
   "datatypes": {
     "company": {
       "template": "templates/company.json"
+    },
+    "contact": {
+      "template": "templates/company.json"
+    },
+    "user": {
+      "template": "templates/user.json"
     }
   },
   "oauth2": {
