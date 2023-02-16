@@ -970,7 +970,7 @@
                   "$generated_id",
                   [
                     "first",
-                    "_S.response_body.id"
+                    "_S.response_body.value.id"
                   ]
                 ]
               ]
