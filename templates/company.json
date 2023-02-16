@@ -224,7 +224,10 @@
           [
             "add",
             "$last-modified",
-            "_S.updatedAt"
+            [
+              "datetime", 
+              "_S.updatedAt"
+            ]
           ]
         ]
       },
