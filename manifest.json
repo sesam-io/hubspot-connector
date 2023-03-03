@@ -12,6 +12,21 @@
     "contact": {
       "template": "templates/company.json"
     },
+    "deal": {
+      "template": "templates/deal.json"
+    },
+    "lineitem": {
+      "template": "templates/lineitem.json"
+    },
+    "product": {
+      "template": "templates/product.json"
+    },
+    "quote": {
+      "template": "templates/quote.json"
+    },
+    "ticket": {
+      "template": "templates/ticket.json"
+    },
     "user": {
       "template": "templates/user.json"
     }
