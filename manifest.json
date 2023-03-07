@@ -1,9 +1,5 @@
 {
-  "additional_parameters": {
-    "account_id": {},
-    "hubspot_webhook_dataset": {},
-    "token_url": {}
-  },
+  "additional_parameters": {},
   "auth": "oauth2",
   "datatypes": {
     "company": {
@@ -18,14 +14,23 @@
     "lineitem": {
       "template": "templates/lineitem.json"
     },
+    "owner": {
+      "template": "templates/owner.json"
+    },
+    "pipelinedeal": {
+      "template": "templates/pipelinedeal.json"
+    },
+    "pipelineticket": {
+      "template": "templates/pipelineticket.json"
+    },
     "product": {
-      "template": "templates/product.json"
+      "template": "templates/deal.json"
     },
     "quote": {
       "template": "templates/quote.json"
     },
     "ticket": {
-      "template": "templates/ticket.json"
+      "template": "templates/deal.json"
     },
     "user": {
       "template": "templates/user.json"
@@ -38,6 +43,7 @@
       "settings.users.read",
       "settings.users.teams.read",
       "crm.objects.deals.read",
+      "crm.objects.owners.read",
       "crm.objects.companies.read",
       "crm.objects.contacts.write",
       "settings.users.write",
