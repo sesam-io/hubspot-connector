@@ -1,5 +1,9 @@
 {
-  "additional_parameters": {},
+  "additional_parameters": {
+    "account_id": {},
+    "hubspot_webhook_dataset": {},
+    "token_url": {}
+  },
   "auth": "oauth2",
   "datatypes": {
     "company": {
