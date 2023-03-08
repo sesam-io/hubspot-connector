@@ -6,7 +6,7 @@
       "set_initial_offset": "onload"
     },
     "source": {
-      "dataset": "",
+      "dataset": "{{@ hubspot_webhook_dataset @}}",
       "subset": [
         "eq",
         [
@@ -14,7 +14,7 @@
           [
             "eq",
             "_S.portalId",
-            ""
+            "{{@ account_id @}}"
           ],
           [
             "matches",
