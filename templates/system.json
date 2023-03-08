@@ -5,7 +5,7 @@
     "client_id": "$SECRET(oauth_client_id)",
     "client_secret": "$SECRET(oauth_client_secret)",
     "refresh_token": "$SECRET(oauth_refresh_token)",
-    "token_url": ""
+    "token_url": "{{@ token_url @}}"
   },
   "operations": {
     "alternate_list": {
