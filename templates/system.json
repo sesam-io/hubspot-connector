@@ -8,6 +8,14 @@
     "token_url": "{{@ token_url @}}"
   },
   "operations": {
+    "alternate_list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "params": {
+        "since": "{{ since }}"
+      },
+      "url": "{{ properties.datatype }}"
+    },
     "delete": {
       "method": "DELETE",
       "url": "crm/v3/objects/{{ properties.datatype }}/{{ entity.id }}"
@@ -19,6 +27,9 @@
     "list": {
       "method": "GET",
       "next_page_link": "{{ body.paging.next.link }}",
+      "params": {
+        "since": "{{ since }}"
+      },
       "url": "{{ properties.datatype }}?properties={{ properties.properties }}&associations={{ properties.associations }}"
     },
     "lookup": {

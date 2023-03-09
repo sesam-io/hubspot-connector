@@ -12,6 +12,30 @@
     "contact": {
       "template": "templates/company.json"
     },
+    "deal": {
+      "template": "templates/deal.json"
+    },
+    "lineitem": {
+      "template": "templates/lineitem.json"
+    },
+    "owner": {
+      "template": "templates/owner.json"
+    },
+    "pipelinedeal": {
+      "template": "templates/pipelinedeal.json"
+    },
+    "pipelineticket": {
+      "template": "templates/pipelineticket.json"
+    },
+    "product": {
+      "template": "templates/deal.json"
+    },
+    "quote": {
+      "template": "templates/quote.json"
+    },
+    "ticket": {
+      "template": "templates/deal.json"
+    },
     "user": {
       "template": "templates/user.json"
     }
@@ -23,11 +47,16 @@
       "settings.users.read",
       "settings.users.teams.read",
       "crm.objects.deals.read",
+      "crm.objects.owners.read",
+      "crm.schemas.quotes.read",
+      "crm.objects.quotes.write",
       "crm.objects.companies.read",
       "crm.objects.contacts.write",
       "settings.users.write",
       "crm.objects.deals.write",
       "crm.objects.companies.write",
+      "tickets",
+      "e-commerce",
       "timeline"
     ],
     "token_url": "https://api.hubapi.com/oauth/v1/token"

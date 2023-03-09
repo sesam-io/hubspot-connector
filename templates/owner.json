@@ -6,7 +6,7 @@
     "operation": "alternate_list",
     "payload_property": "results",
     "properties": {
-      "datatype": "settings/v3/{{@ datatype @}}s"
+      "datatype": "crm/v3/{{@ datatype @}}s"
     },
     "system": "{{@ system @}}",
     "type": "rest"
