@@ -8,6 +8,14 @@
     "token_url": "{{@ token_url @}}"
   },
   "operations": {
+    "alternate_delete": {
+      "method": "DELETE",
+      "url": "{{ properties.datatype }}/{{ entity.id }}"
+    },
+    "alternate_insert": {
+      "method": "POST",
+      "url": "{{ properties.datatype }}"
+    },
     "alternate_list": {
       "method": "GET",
       "next_page_link": "{{ body.paging.next.link }}",
@@ -15,6 +23,18 @@
         "since": "{{ since }}"
       },
       "url": "{{ properties.datatype }}"
+    },
+    "alternate_lookup": {
+      "method": "GET",
+      "url": "{{ properties.datatype }}/{{ entity.id }}"
+    },
+    "alternate_update": {
+      "method": "PATCH",
+      "url": "{{ properties.datatype }}/{{ entity.id }}"
+    },
+    "alternate_update2": {
+      "method": "PUT",
+      "url": "{{ properties.datatype }}/{{ entity.id }}"
     },
     "delete": {
       "method": "DELETE",

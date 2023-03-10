@@ -1,15 +1,67 @@
-{
-  "_id": "{{@ system @}}-{{@ datatype @}}-collect",
-  "namespaced_identifiers": false,
-  "source": {
-    "id_expression": "{{ id }}",
-    "operation": "alternate_list",
-    "payload_property": "results",
-    "properties": {
-      "datatype": "settings/v3/{{@ datatype @}}s"
+[
+  {
+    "_id": "{{@ system @}}-{{@ datatype @}}-share",
+    "batch_size": 1,
+    "namespaced_identifiers": false,
+    "sink": {
+      "deletion_tracking": false,
+      "set_initial_offset": "onload"
     },
-    "system": "{{@ system @}}",
-    "type": "rest"
+    "source": {
+      "dataset": "{{@ system @}}-{{@ datatype @}}-transform",
+      "type": "dataset"
+    },
+    "transform": {
+      "properties": {
+        "operation_delete": "alternate_delete",
+        "operation_delete_properties": {
+          "datatype": "settings/v3/{{@ datatype @}}s"
+        },
+        "operation_insert": "alternate_insert",
+        "operation_insert_properties": {
+          "datatype": "settings/v3/{{@ datatype @}}s"
+        },
+        "operation_lookup": "alternate_lookup",
+        "operation_lookup_properties": {
+          "datatype": "settings/v3/{{@ datatype @}}s"
+        },
+        "operation_update": "alternate_update2",
+        "operation_update_properties": {
+          "datatype": "settings/v3/{{@ datatype @}}s"
+        },
+        "primary_key": "id",
+        "rest_system": "{{@ system @}}",
+        "share_dataset": "{{@ system @}}-{{@ datatype @}}-share"
+      },
+      "template": "transform-share-rest",
+      "type": "template"
+    },
+    "type": "pipe"
   },
-  "type": "pipe"
-}
+  {
+    "_id": "{{@ system @}}-{{@ datatype @}}-collect",
+    "exclude_completeness": [
+      "{{@ system @}}-{{@ datatype @}}-share"
+    ],
+    "namespaced_identifiers": false,
+    "source": {
+      "id_expression": "{{ id }}",
+      "operation": "alternate_list",
+      "payload_property": "results",
+      "properties": {
+        "datatype": "settings/v3/{{@ datatype @}}s"
+      },
+      "system": "{{@ system @}}",
+      "type": "rest"
+    },
+    "transform": {
+      "properties": {
+        "primary_key": "id",
+        "share_dataset": "{{@ system @}}-{{@ datatype @}}-share"
+      },
+      "template": "transform-collect-rest",
+      "type": "template"
+    },
+    "type": "pipe"
+  }
+]
