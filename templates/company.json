@@ -14,6 +14,50 @@
       "system": "{{@ system @}}",
       "type": "rest"
     },
+    "transform": {
+      "rules": {
+        "default": [
+          [
+            "copy",
+            "*"
+          ],
+          [
+            "add",
+            "updatedAt",
+            [
+              "datetime-parse",
+              "%Y-%m-%dT%H:%M:%S.%fZ",
+              "_S.updatedAt"
+            ]
+          ]
+        ]
+      },
+      "type": "dtl"
+    },
+    "type": "pipe"
+  },
+  {
+    "_id": "{{@ system @}}-{{@ datatype @}}-collect",
+    "exclude_completeness": [
+      "{{@ system @}}-{{@ datatype @}}-event2",
+      "{{@ system @}}-{{@ datatype @}}-share"
+    ],
+    "namespaced_identifiers": false,
+    "source": {
+      "datasets": [
+        "{{@ system @}}-{{@ datatype @}}-event2",
+        "{{@ system @}}-{{@ datatype @}}-all"
+      ],
+      "type": "merge_datasets"
+    },
+    "transform": {
+      "properties": {
+        "primary_key": "id",
+        "share_dataset": "{{@ system @}}-{{@ datatype @}}-share"
+      },
+      "template": "transform-collect-rest",
+      "type": "template"
+    },
     "type": "pipe"
   },
   {
@@ -159,36 +203,21 @@
                   "_S.subscriptionType"
                 ]
               ]
+            ],
+            [
+              "add",
+              "updatedAt",
+              [
+                "datetime-parse",
+                "%Y-%m-%dT%H:%M:%S.%fZ",
+                "_T.updatedAt"
+              ]
             ]
           ]
         },
         "type": "dtl"
       }
     ],
-    "type": "pipe"
-  },
-  {
-    "_id": "{{@ system @}}-{{@ datatype @}}-collect",
-    "exclude_completeness": [
-      "{{@ system @}}-{{@ datatype @}}-event2",
-      "{{@ system @}}-{{@ datatype @}}-share"
-    ],
-    "namespaced_identifiers": false,
-    "source": {
-      "datasets": [
-        "{{@ system @}}-{{@ datatype @}}-event2",
-        "{{@ system @}}-{{@ datatype @}}-all"
-      ],
-      "type": "merge_datasets"
-    },
-    "transform": {
-      "properties": {
-        "primary_key": "id",
-        "share_dataset": "{{@ system @}}-{{@ datatype @}}-share"
-      },
-      "template": "transform-collect-rest",
-      "type": "template"
-    },
     "type": "pipe"
   },
   {
