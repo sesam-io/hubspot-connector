@@ -11,24 +11,5 @@
     "system": "{{@ system @}}",
     "type": "rest"
   },
-  "transform": {
-    "rules": {
-      "default": [
-        [
-          "copy",
-          "*"
-        ],
-        [
-          "add",
-          "_id",
-          [
-            "string",
-            "_S.typeId"
-          ]
-        ]
-      ]
-    },
-    "type": "dtl"
-  },
   "type": "pipe"
 }
