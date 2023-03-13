@@ -12,6 +12,12 @@
     "contact": {
       "template": "templates/company.json"
     },
+    "contactcompanyassociations": {
+      "template": "templates/contactcompanyassociations.json"
+    },
+    "contactcompanyassociationtype": {
+      "template": "templates/contactcompanyassociationtype.json"
+    },
     "deal": {
       "template": "templates/deal.json"
     },

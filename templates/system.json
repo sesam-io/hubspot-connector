@@ -36,6 +36,10 @@
       "method": "PUT",
       "url": "{{ properties.datatype }}/{{ entity.id }}"
     },
+    "associations_lookup": {
+      "method": "GET",
+      "url": "crm/v4/objects/{{ properties.datatype }}/{{ entity.id }}/associations/{{ properties.toObjectType }}"
+    },
     "delete": {
       "method": "DELETE",
       "url": "crm/v3/objects/{{ properties.datatype }}/{{ entity.id }}"

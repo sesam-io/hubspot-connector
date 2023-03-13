@@ -1,0 +1,34 @@
+{
+  "_id": "{{@ system @}}-{{@ datatype @}}-collect",
+  "namespaced_identifiers": false,
+  "source": {
+    "id_expression": "{{ typeId }}",
+    "operation": "alternate_list",
+    "payload_property": "results",
+    "properties": {
+      "datatype": "crm/v4/associations/contact/company/labels"
+    },
+    "system": "{{@ system @}}",
+    "type": "rest"
+  },
+  "transform": {
+    "rules": {
+      "default": [
+        [
+          "copy",
+          "*"
+        ],
+        [
+          "add",
+          "_id",
+          [
+            "string",
+            "_S.typeId"
+          ]
+        ]
+      ]
+    },
+    "type": "dtl"
+  },
+  "type": "pipe"
+}
