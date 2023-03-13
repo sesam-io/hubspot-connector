@@ -29,11 +29,7 @@
         "type": "dtl"
       },
       {
-        "operation": "associations_lookup",
-        "properties": {
-          "datatype": "contact",
-          "toObjectType": "company"
-        },
+        "operation": "{{@ datatype @}}_list",
         "replace_entity": false,
         "system": "{{@ system @}}",
         "type": "rest"
@@ -82,13 +78,16 @@
   },
   {
     "_id": "{{@ system @}}-{{@ datatype @}}-collect",
+    "namespaced_identifiers": false,
     "source": {
       "dataset": "{{@ system @}}-{{@ datatype @}}-children",
       "type": "dataset"
     },
-    "transform": {
-      "type": "emit_children"
-    },
+    "transform": [
+      {
+        "type": "emit_children"
+      }
+    ],
     "type": "pipe"
   }
 ]
