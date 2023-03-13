@@ -3,11 +3,8 @@
   "namespaced_identifiers": false,
   "source": {
     "id_expression": "{{ typeId }}",
-    "operation": "alternate_list",
+    "operation": "{{@ datatype @}}_list",
     "payload_property": "results",
-    "properties": {
-      "datatype": "crm/v4/associations/contact/company/labels"
-    },
     "system": "{{@ system @}}",
     "type": "rest"
   },

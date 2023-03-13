@@ -18,6 +18,36 @@
     "contactcompanyassociationtype": {
       "template": "templates/contactcompanyassociationtype.json"
     },
+    "contactcontactassociation": {
+      "template": "templates/contactcompanyassociation.json"
+    },
+    "contactcontactassociationtype": {
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "contactdealassociation": {
+      "template": "templates/contactcompanyassociation.json"
+    },
+    "contactdealassociationtype": {
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "contactticketassociation": {
+      "template": "templates/contactcompanyassociation.json"
+    },
+    "contactticketassociationtype": {
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "contactquoteassociation": {
+      "template": "templates/contactcompanyassociation.json"
+    },
+    "contactquoteassociationtype": {
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "contactproductassociation": {
+      "template": "templates/contactcompanyassociation.json"
+    },
+    "contactproductassociationtype": {
+      "template": "templates/contactcompanyassociationtype.json"
+    },
     "deal": {
       "template": "templates/deal.json"
     },

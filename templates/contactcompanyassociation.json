@@ -1,5 +1,32 @@
 [
   {
+    "_id": "{{@ system @}}-{{@ datatype @}}-share",
+    "batch_size": 1,
+    "namespaced_identifiers": false,
+    "sink": {
+      "deletion_tracking": false,
+      "set_initial_offset": "onload"
+    },
+    "source": {
+      "dataset": "{{@ system @}}-{{@ datatype @}}-transform",
+      "type": "dataset"
+    },
+    "transform": {
+      "properties": {
+        "operation_delete": "{{@ datatype @}}_delete",
+        "operation_insert": "{{@ datatype @}}_insert",
+        "operation_lookup": "{{@ datatype @}}_lookup",
+        "operation_update": "{{@ datatype @}}_update",
+        "primary_key": "toObjectId",
+        "rest_system": "{{@ system @}}",
+        "share_dataset": "{{@ system @}}-{{@ datatype @}}-share"
+      },
+      "template": "transform-share-rest",
+      "type": "template"
+    },
+    "type": "pipe"
+  },
+  {
     "_id": "{{@ system @}}-{{@ datatype @}}-children",
     "namespaced_identifiers": false,
     "source": {
@@ -29,11 +56,7 @@
         "type": "dtl"
       },
       {
-        "operation": "associations_lookup",
-        "properties": {
-          "datatype": "contact",
-          "toObjectType": "company"
-        },
+        "operation": "{{@ datatype @}}_list",
         "replace_entity": false,
         "system": "{{@ system @}}",
         "type": "rest"
@@ -82,13 +105,27 @@
   },
   {
     "_id": "{{@ system @}}-{{@ datatype @}}-collect",
+    "exclude_completeness": [
+      "{{@ system @}}-{{@ datatype @}}-share"
+    ],
+    "namespaced_identifiers": false,
     "source": {
       "dataset": "{{@ system @}}-{{@ datatype @}}-children",
       "type": "dataset"
     },
-    "transform": {
-      "type": "emit_children"
-    },
+    "transform": [
+      {
+        "type": "emit_children"
+      },
+      {
+        "properties": {
+          "primary_key": "toObjectId",
+          "share_dataset": "{{@ system @}}-{{@ datatype @}}-share"
+        },
+        "template": "transform-collect-rest",
+        "type": "template"
+      }
+    ],
     "type": "pipe"
   }
 ]
