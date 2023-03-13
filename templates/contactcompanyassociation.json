@@ -53,7 +53,7 @@
             ],
             [
               "add",
-              "$original_id",
+              "id",
               "_P._S.id"
             ],
             [
@@ -61,7 +61,7 @@
               "_id",
               [
                 "concat",
-                "_T.$original_id",
+                "_T.id",
                 "-",
                 [
                   "string",
