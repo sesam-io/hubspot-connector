@@ -93,9 +93,6 @@
   {
     "_id": "{{@ system @}}-{{@ datatype @}}-share",
     "namespaced_identifiers": false,
-    "principals": [
-      "group:Admin"
-    ],
     "pump": {
       "schedule_interval": "~f914.4",
       "type": "datasync"
@@ -592,11 +589,6 @@
                       ]
                     ]
                   ]
-                ],
-                [
-                  "add",
-                  "foo",
-                  "_T."
                 ]
               ],
               "discard-entity-not-changed": [
@@ -633,30 +625,21 @@
                   "add",
                   "payload",
                   [
-                    "list",
-                    [
-                      "apply",
-                      "payload",
-                      "_S.$source"
-                    ]
+                    "apply",
+                    "payload",
+                    "_S.$source.associationTypes"
                   ]
                 ]
               ],
               "payload": [
                 [
-                  "add",
-                  "associationCategory",
+                  "merge-union",
                   [
-                    "first",
-                    "_S.associationTypes.category"
-                  ]
-                ],
-                [
-                  "add",
-                  "associationTypeId",
-                  [
-                    "first",
-                    "_S.associationTypes.typeId"
+                    "dict",
+                    "associationCategory",
+                    "_S.category",
+                    "associationTypeId",
+                    "_S.typeId"
                   ]
                 ]
               ],
@@ -684,12 +667,9 @@
                   "add",
                   "payload",
                   [
-                    "list",
-                    [
-                      "apply",
-                      "payload",
-                      "_S.$source"
-                    ]
+                    "apply",
+                    "payload",
+                    "_S.$source.associationTypes"
                   ]
                 ]
               ]
