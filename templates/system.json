@@ -58,31 +58,6 @@
       "next_page_link": "{{ body.paging.next.link }}",
       "url": "crm/v4/associations/contact/company/labels"
     },
-    "contactcontactassociation_delete": {
-      "method": "DELETE",
-      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/contact/{{ entity['toObjectId'] }}"
-    },
-    "contactcontactassociation_insert": {
-      "method": "POST",
-      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/contact"
-    },
-    "contactcontactassociation_list": {
-      "method": "GET",
-      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/contact"
-    },
-    "contactcontactassociation_lookup": {
-      "method": "GET",
-      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/contact/{{ entity['toObjectId'] }}"
-    },
-    "contactcontactassociation_update": {
-      "method": "PUT",
-      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/contact/{{ entity['toObjectId'] }}"
-    },
-    "contactcontactassociationtype_list": {
-      "method": "GET",
-      "next_page_link": "{{ body.paging.next.link }}",
-      "url": "crm/v4/associations/contact/contact/labels"
-    },
     "contactdealassociation_delete": {
       "method": "DELETE",
       "url": "crm/v4/objects/contact/{{ entity.id }}/associations/deal/{{ entity['toObjectId'] }}"
@@ -107,56 +82,6 @@
       "method": "GET",
       "next_page_link": "{{ body.paging.next.link }}",
       "url": "crm/v4/associations/contact/deal/labels"
-    },
-    "contactproductassociation_delete": {
-      "method": "DELETE",
-      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/product/{{ entity['toObjectId'] }}"
-    },
-    "contactproductassociation_insert": {
-      "method": "POST",
-      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/product"
-    },
-    "contactproductassociation_list": {
-      "method": "GET",
-      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/product"
-    },
-    "contactproductassociation_lookup": {
-      "method": "GET",
-      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/product/{{ entity['toObjectId'] }}"
-    },
-    "contactproductassociation_update": {
-      "method": "PUT",
-      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/product/{{ entity['toObjectId'] }}"
-    },
-    "contactproductassociationtype_list": {
-      "method": "GET",
-      "next_page_link": "{{ body.paging.next.link }}",
-      "url": "crm/v4/associations/contact/product/labels"
-    },
-    "contactquoteassociation_delete": {
-      "method": "DELETE",
-      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/quote/{{ entity['toObjectId'] }}"
-    },
-    "contactquoteassociation_insert": {
-      "method": "POST",
-      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/quote"
-    },
-    "contactquoteassociation_list": {
-      "method": "GET",
-      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/quote"
-    },
-    "contactquoteassociation_lookup": {
-      "method": "GET",
-      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/quote/{{ entity['toObjectId'] }}"
-    },
-    "contactquoteassociation_update": {
-      "method": "PUT",
-      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/quote/{{ entity['toObjectId'] }}"
-    },
-    "contactquoteassociationtype_list": {
-      "method": "GET",
-      "next_page_link": "{{ body.paging.next.link }}",
-      "url": "crm/v4/associations/contact/quote/labels"
     },
     "contactticketassociation_delete": {
       "method": "DELETE",
