@@ -9,6 +9,30 @@
     "company": {
       "template": "templates/company.json"
     },
+    "companycompanyassociation": {
+      "template": "templates/companycontactassociation.json"
+    },
+    "companycompanyassociationtype": {
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "companycontactassociation": {
+      "template": "templates/companycontactassociation.json"
+    },
+    "companycontactassociationtype": {
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "companydealassociation": {
+      "template": "templates/companycontactassociation.json"
+    },
+    "companydealassociationtype": {
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "companyticketassociation": {
+      "template": "templates/companycontactassociation.json"
+    },
+    "companyticketassociationtype": {
+      "template": "templates/contactcompanyassociationtype.json"
+    },
     "contact": {
       "template": "templates/company.json"
     },
@@ -16,12 +40,6 @@
       "template": "templates/contactcompanyassociation.json"
     },
     "contactcompanyassociationtype": {
-      "template": "templates/contactcompanyassociationtype.json"
-    },
-    "contactcontactassociation": {
-      "template": "templates/contactcompanyassociation.json"
-    },
-    "contactcontactassociationtype": {
       "template": "templates/contactcompanyassociationtype.json"
     },
     "contactdealassociation": {
@@ -36,20 +54,26 @@
     "contactticketassociationtype": {
       "template": "templates/contactcompanyassociationtype.json"
     },
-    "contactquoteassociation": {
-      "template": "templates/contactcompanyassociation.json"
-    },
-    "contactquoteassociationtype": {
-      "template": "templates/contactcompanyassociationtype.json"
-    },
-    "contactproductassociation": {
-      "template": "templates/contactcompanyassociation.json"
-    },
-    "contactproductassociationtype": {
-      "template": "templates/contactcompanyassociationtype.json"
-    },
     "deal": {
       "template": "templates/deal.json"
+    },
+    "dealline_itemassociation": {
+      "template": "templates/dealticketassociation.json"
+    },
+    "dealline_itemassociationtype": {
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "dealticketassociation": {
+      "template": "templates/dealticketassociation.json"
+    },
+    "dealticketassociationtype": {
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "line_itemdealassociation": {
+      "template": "templates/line_itemdealassociation.json"
+    },
+    "line_itemdealassociationtype": {
+      "template": "templates/contactcompanyassociationtype.json"
     },
     "lineitem": {
       "template": "templates/lineitem.json"
@@ -71,6 +95,24 @@
     },
     "ticket": {
       "template": "templates/deal.json"
+    },
+    "ticketcompanyassociation": {
+      "template": "templates/ticketcompanyassociation.json"
+    },
+    "ticketcompanyassociationtype": {
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "ticketcontactassociation": {
+      "template": "templates/ticketcompanyassociation.json"
+    },
+    "ticketcontactassociationtype": {
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "ticketdealassociation": {
+      "template": "templates/ticketcompanyassociation.json"
+    },
+    "ticketdealassociationtype": {
+      "template": "templates/contactcompanyassociationtype.json"
     },
     "user": {
       "template": "templates/user.json"
