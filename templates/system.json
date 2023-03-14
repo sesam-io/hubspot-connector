@@ -139,24 +139,23 @@
     },
     "contactcompanyassociation_delete": {
       "method": "DELETE",
-      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/company/{{ entity['toObjectId'] }}"
+      "url": "crm/v4/objects/contact/{{ entity['id'] }}/associations/company/{{ entity['toObjectId'] }}"
     },
     "contactcompanyassociation_insert": {
-      "method": "POST",
-      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/company"
+      "method": "PUT",
+      "url": "crm/v4/objects/contact/{{ entity['id'] }}/associations/company/{{ entity['toObjectId'] }}"
     },
     "contactcompanyassociation_list": {
       "method": "GET",
-      "next_page_link": "{{ body.paging.next.link }}",
       "url": "crm/v4/objects/contact/{{ entity.id }}/associations/company"
     },
     "contactcompanyassociation_lookup": {
       "method": "GET",
-      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/company/{{ entity['toObjectId'] }}"
+      "url": "crm/v4/objects/contact/{{ entity['id'] }}/associations/company"
     },
     "contactcompanyassociation_update": {
       "method": "PUT",
-      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/company/{{ entity['toObjectId'] }}"
+      "url": "crm/v4/objects/contact/{{ entity['id'] }}/associations/company/{{ entity['toObjectId'] }}"
     },
     "contactcompanyassociationtype_list": {
       "method": "GET",
