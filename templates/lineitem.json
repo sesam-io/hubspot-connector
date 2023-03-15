@@ -77,7 +77,10 @@
           [
             "eq",
             "_S.portalId",
-            "{{@ account_id @}}"
+            [
+              "integer",
+              "{{@ account_id @}}"
+            ]
           ],
           [
             "matches",
