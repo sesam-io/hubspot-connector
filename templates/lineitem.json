@@ -71,15 +71,6 @@
                   "_S.subscriptionType"
                 ]
               ]
-            ],
-            [
-              "add",
-              "updatedAt",
-              [
-                "datetime-parse",
-                "%Y-%m-%dT%H:%M:%S.%fZ",
-                "_T.updatedAt"
-              ]
             ]
           ]
         },
