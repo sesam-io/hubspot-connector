@@ -214,24 +214,6 @@
           },
           {
             "rules": {
-              "associationtypes": [
-                [
-                  "add",
-                  "associationTypes",
-                  [
-                    "list",
-                    [
-                      "concat",
-                      "_S.category",
-                      "-",
-                      [
-                        "string",
-                        "_S.typeId"
-                      ]
-                    ]
-                  ]
-                ]
-              ],
               "based-on-comparison": [
                 [
                   "comment",
@@ -378,11 +360,7 @@
                       "b",
                       [
                         "first",
-                        [
-                          "apply",
-                          "rows",
-                          "_S.response_body"
-                        ]
+                        "_S.response_body"
                       ]
                     ]
                   ]
@@ -568,40 +546,9 @@
                   [
                     "dict",
                     "associationCategory",
-                    [
-                      "first",
-                      [
-                        "split",
-                        "-",
-                        "_S."
-                      ]
-                    ],
+                    "_S.category",
                     "associationTypeId",
-                    [
-                      "last",
-                      [
-                        "split",
-                        "-",
-                        "_S."
-                      ]
-                    ]
-                  ]
-                ]
-              ],
-              "rows": [
-                [
-                  "merge-union",
-                  [
-                    "apply",
-                    "associationtypes",
-                    [
-                      "filter",
-                      [
-                        "is-not-empty",
-                        "_.label"
-                      ],
-                      "_S.associationTypes"
-                    ]
+                    "_S.typeId"
                   ]
                 ]
               ],
@@ -609,11 +556,6 @@
                 [
                   "comment",
                   "May need to shape payload somewhat?"
-                ],
-                [
-                  "add",
-                  "$operation",
-                  "delete"
                 ],
                 [
                   "add",
