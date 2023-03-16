@@ -38,8 +38,8 @@
       "url": "crm/v4/objects/company/{{ entity.id }}/associations/company/{{ entity['toObjectId'] }}"
     },
     "companycompanyassociation_insert": {
-      "method": "POST",
-      "url": "crm/v4/objects/company/{{ entity.id }}/associations/company"
+      "method": "PUT",
+      "url": "crm/v4/objects/company/{{ entity.id }}/associations/company/{{ entity['toObjectId'] }}"
     },
     "companycompanyassociation_list": {
       "method": "GET",
@@ -48,7 +48,7 @@
     },
     "companycompanyassociation_lookup": {
       "method": "GET",
-      "url": "crm/v4/objects/company/{{ entity.id }}/associations/company/{{ entity['toObjectId'] }}"
+      "url": "crm/v4/objects/company/{{ entity.id }}/associations/company"
     },
     "companycompanyassociation_update": {
       "method": "PUT",
@@ -59,91 +59,13 @@
       "next_page_link": "{{ body.paging.next.link }}",
       "url": "crm/v4/associations/company/company/labels"
     },
-    "companycontactassociation_delete": {
-      "method": "DELETE",
-      "url": "crm/v4/objects/company/{{ entity.id }}/associations/contact/{{ entity['toObjectId'] }}"
-    },
-    "companycontactassociation_insert": {
-      "method": "POST",
-      "url": "crm/v4/objects/company/{{ entity.id }}/associations/contact"
-    },
-    "companycontactassociation_list": {
-      "method": "GET",
-      "next_page_link": "{{ body.paging.next.link }}",
-      "url": "crm/v4/objects/company/{{ entity.id }}/associations/contact"
-    },
-    "companycontactassociation_lookup": {
-      "method": "GET",
-      "url": "crm/v4/objects/company/{{ entity.id }}/associations/contact/{{ entity['toObjectId'] }}"
-    },
-    "companycontactassociation_update": {
-      "method": "PUT",
-      "url": "crm/v4/objects/company/{{ entity.id }}/associations/contact/{{ entity['toObjectId'] }}"
-    },
-    "companycontactassociationtype_list": {
-      "method": "GET",
-      "next_page_link": "{{ body.paging.next.link }}",
-      "url": "crm/v4/associations/company/contact/labels"
-    },
-    "companydealassociation_delete": {
-      "method": "DELETE",
-      "url": "crm/v4/objects/company/{{ entity.id }}/associations/deal/{{ entity['toObjectId'] }}"
-    },
-    "companydealassociation_insert": {
-      "method": "POST",
-      "url": "crm/v4/objects/company/{{ entity.id }}/associations/deal"
-    },
-    "companydealassociation_list": {
-      "method": "GET",
-      "next_page_link": "{{ body.paging.next.link }}",
-      "url": "crm/v4/objects/company/{{ entity.id }}/associations/deal"
-    },
-    "companydealassociation_lookup": {
-      "method": "GET",
-      "url": "crm/v4/objects/company/{{ entity.id }}/associations/deal/{{ entity['toObjectId'] }}"
-    },
-    "companydealassociation_update": {
-      "method": "PUT",
-      "url": "crm/v4/objects/company/{{ entity.id }}/associations/deal/{{ entity['toObjectId'] }}"
-    },
-    "companydealassociationtype_list": {
-      "method": "GET",
-      "next_page_link": "{{ body.paging.next.link }}",
-      "url": "crm/v4/associations/company/deal/labels"
-    },
-    "companyticketassociation_delete": {
-      "method": "DELETE",
-      "url": "crm/v4/objects/company/{{ entity.id }}/associations/ticket/{{ entity['toObjectId'] }}"
-    },
-    "companyticketassociation_insert": {
-      "method": "POST",
-      "url": "crm/v4/objects/company/{{ entity.id }}/associations/ticket"
-    },
-    "companyticketassociation_list": {
-      "method": "GET",
-      "next_page_link": "{{ body.paging.next.link }}",
-      "url": "crm/v4/objects/company/{{ entity.id }}/associations/ticket"
-    },
-    "companyticketassociation_lookup": {
-      "method": "GET",
-      "url": "crm/v4/objects/company/{{ entity.id }}/associations/ticket/{{ entity['toObjectId'] }}"
-    },
-    "companyticketassociation_update": {
-      "method": "PUT",
-      "url": "crm/v4/objects/company/{{ entity.id }}/associations/ticket/{{ entity['toObjectId'] }}"
-    },
-    "companyticketassociationtype_list": {
-      "method": "GET",
-      "next_page_link": "{{ body.paging.next.link }}",
-      "url": "crm/v4/associations/company/ticket/labels"
-    },
     "contactcompanyassociation_delete": {
       "method": "DELETE",
       "url": "crm/v4/objects/contact/{{ entity.id }}/associations/company/{{ entity['toObjectId'] }}"
     },
     "contactcompanyassociation_insert": {
-      "method": "POST",
-      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/company"
+      "method": "PUT",
+      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/company/{{ entity['toObjectId'] }}"
     },
     "contactcompanyassociation_list": {
       "method": "GET",
@@ -152,7 +74,7 @@
     },
     "contactcompanyassociation_lookup": {
       "method": "GET",
-      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/company/{{ entity['toObjectId'] }}"
+      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/company"
     },
     "contactcompanyassociation_update": {
       "method": "PUT",
@@ -168,8 +90,8 @@
       "url": "crm/v4/objects/contact/{{ entity.id }}/associations/deal/{{ entity['toObjectId'] }}"
     },
     "contactdealassociation_insert": {
-      "method": "POST",
-      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/deal"
+      "method": "PUT",
+      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/deal/{{ entity['toObjectId'] }}"
     },
     "contactdealassociation_list": {
       "method": "GET",
@@ -178,7 +100,7 @@
     },
     "contactdealassociation_lookup": {
       "method": "GET",
-      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/deal/{{ entity['toObjectId'] }}"
+      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/deal"
     },
     "contactdealassociation_update": {
       "method": "PUT",
@@ -194,8 +116,8 @@
       "url": "crm/v4/objects/contact/{{ entity.id }}/associations/ticket/{{ entity['toObjectId'] }}"
     },
     "contactticketassociation_insert": {
-      "method": "POST",
-      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/ticket"
+      "method": "PUT",
+      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/ticket/{{ entity['toObjectId'] }}"
     },
     "contactticketassociation_list": {
       "method": "GET",
@@ -204,7 +126,7 @@
     },
     "contactticketassociation_lookup": {
       "method": "GET",
-      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/ticket/{{ entity['toObjectId'] }}"
+      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/ticket"
     },
     "contactticketassociation_update": {
       "method": "PUT",
@@ -215,13 +137,65 @@
       "next_page_link": "{{ body.paging.next.link }}",
       "url": "crm/v4/associations/contact/ticket/labels"
     },
+    "dealcompanyassociation_delete": {
+      "method": "DELETE",
+      "url": "crm/v4/objects/deal/{{ entity.id }}/associations/company/{{ entity['toObjectId'] }}"
+    },
+    "dealcompanyassociation_insert": {
+      "method": "PUT",
+      "url": "crm/v4/objects/deal/{{ entity.id }}/associations/company/{{ entity['toObjectId'] }}"
+    },
+    "dealcompanyassociation_list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "url": "crm/v4/objects/deal/{{ entity.id }}/associations/company"
+    },
+    "dealcompanyassociation_lookup": {
+      "method": "GET",
+      "url": "crm/v4/objects/deal/{{ entity.id }}/associations/company"
+    },
+    "dealcompanyassociation_update": {
+      "method": "PUT",
+      "url": "crm/v4/objects/deal/{{ entity.id }}/associations/company/{{ entity['toObjectId'] }}"
+    },
+    "dealcompanyassociationtype_list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "url": "crm/v4/associations/deal/company/labels"
+    },
+    "dealcontactassociation_delete": {
+      "method": "DELETE",
+      "url": "crm/v4/objects/deal/{{ entity.id }}/associations/contact/{{ entity['toObjectId'] }}"
+    },
+    "dealcontactassociation_insert": {
+      "method": "PUT",
+      "url": "crm/v4/objects/deal/{{ entity.id }}/associations/contact/{{ entity['toObjectId'] }}"
+    },
+    "dealcontactassociation_list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "url": "crm/v4/objects/deal/{{ entity.id }}/associations/contact"
+    },
+    "dealcontactassociation_lookup": {
+      "method": "GET",
+      "url": "crm/v4/objects/deal/{{ entity.id }}/associations/contact"
+    },
+    "dealcontactassociation_update": {
+      "method": "PUT",
+      "url": "crm/v4/objects/deal/{{ entity.id }}/associations/contact/{{ entity['toObjectId'] }}"
+    },
+    "dealcontactassociationtype_list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "url": "crm/v4/associations/deal/contact/labels"
+    },
     "dealline_itemassociation_delete": {
       "method": "DELETE",
       "url": "crm/v4/objects/deal/{{ entity.id }}/associations/line_item/{{ entity['toObjectId'] }}"
     },
     "dealline_itemassociation_insert": {
-      "method": "POST",
-      "url": "crm/v4/objects/deal/{{ entity.id }}/associations/line_item"
+      "method": "PUT",
+      "url": "crm/v4/objects/deal/{{ entity.id }}/associations/line_item/{{ entity['toObjectId'] }}"
     },
     "dealline_itemassociation_list": {
       "method": "GET",
@@ -230,7 +204,7 @@
     },
     "dealline_itemassociation_lookup": {
       "method": "GET",
-      "url": "crm/v4/objects/deal/{{ entity.id }}/associations/line_item/{{ entity['toObjectId'] }}"
+      "url": "crm/v4/objects/deal/{{ entity.id }}/associations/line_item"
     },
     "dealline_itemassociation_update": {
       "method": "PUT",
@@ -246,8 +220,8 @@
       "url": "crm/v4/objects/deal/{{ entity.id }}/associations/ticket/{{ entity['toObjectId'] }}"
     },
     "dealticketassociation_insert": {
-      "method": "POST",
-      "url": "crm/v4/objects/deal/{{ entity.id }}/associations/ticket"
+      "method": "PUT",
+      "url": "crm/v4/objects/deal/{{ entity.id }}/associations/ticket/{{ entity['toObjectId'] }}"
     },
     "dealticketassociation_list": {
       "method": "GET",
@@ -256,7 +230,7 @@
     },
     "dealticketassociation_lookup": {
       "method": "GET",
-      "url": "crm/v4/objects/deal/{{ entity.id }}/associations/ticket/{{ entity['toObjectId'] }}"
+      "url": "crm/v4/objects/deal/{{ entity.id }}/associations/ticket"
     },
     "dealticketassociation_update": {
       "method": "PUT",
@@ -277,29 +251,55 @@
     },
     "line_itemdealassociation_delete": {
       "method": "DELETE",
-      "url": "crm/v4/objects/line_item/{{ entity.id }}/associations/deal/{{ entity['toObjectId'] }}"
+      "url": "crm/v4/objects/line_item/{{ entity.id }}/associations/deal/{{ entity['typeId'] }}"
     },
     "line_itemdealassociation_insert": {
-      "method": "POST",
-      "url": "crm/v4/objects/line_item/{{ entity.id }}/associations/deal"
+      "method": "PUT",
+      "url": "crm/v4/objects/line_item/{{ entity.id }}/associations/deal/{{ entity['typeId'] }}"
     },
     "line_itemdealassociation_list": {
       "method": "GET",
       "next_page_link": "{{ body.paging.next.link }}",
-      "url": "crm/v4/associations/line_item/deal/labels"
+      "url": "crm/v4/objects/line_item/{{ entity.id }}/associations/deal"
     },
     "line_itemdealassociation_lookup": {
       "method": "GET",
-      "url": "crm/v4/objects/line_item/{{ entity.id }}/associations/deal/{{ entity['toObjectId'] }}"
+      "url": "crm/v4/objects/line_item/{{ entity.id }}/associations/deal"
     },
     "line_itemdealassociation_update": {
       "method": "PUT",
-      "url": "crm/v4/objects/line_item/{{ entity.id }}/associations/deal/{{ entity['toObjectId'] }}"
+      "url": "crm/v4/objects/line_item/{{ entity.id }}/associations/deal/{{ entity['typeId'] }}"
     },
     "line_itemdealassociationtype_list": {
       "method": "GET",
       "next_page_link": "{{ body.paging.next.link }}",
       "url": "crm/v4/associations/line_item/deal/labels"
+    },
+    "line_itemquoteassociation_delete": {
+      "method": "DELETE",
+      "url": "crm/v4/objects/line_item/{{ entity.id }}/associations/quote/{{ entity['typeId'] }}"
+    },
+    "line_itemquoteassociation_insert": {
+      "method": "PUT",
+      "url": "crm/v4/objects/line_item/{{ entity.id }}/associations/quote/{{ entity['typeId'] }}"
+    },
+    "line_itemquoteassociation_list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "url": "crm/v4/objects/line_item/{{ entity.id }}/associations/quote"
+    },
+    "line_itemquoteassociation_lookup": {
+      "method": "GET",
+      "url": "crm/v4/objects/line_item/{{ entity.id }}/associations/quote"
+    },
+    "line_itemquoteassociation_update": {
+      "method": "PUT",
+      "url": "crm/v4/objects/line_item/{{ entity.id }}/associations/quote/{{ entity['typeId'] }}"
+    },
+    "line_itemquoteassociationtype_list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "url": "crm/v4/associations/line_item/quote/labels"
     },
     "list": {
       "method": "GET",
@@ -317,13 +317,143 @@
       },
       "url": "crm/v3/objects/{{ properties.datatype }}/{{ entity.id }}"
     },
+    "quotecompanyassociation_delete": {
+      "method": "DELETE",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/company/{{ entity['toObjectId'] }}"
+    },
+    "quotecompanyassociation_insert": {
+      "method": "PUT",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/company/{{ entity['toObjectId'] }}"
+    },
+    "quotecompanyassociation_list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/company"
+    },
+    "quotecompanyassociation_lookup": {
+      "method": "GET",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/company"
+    },
+    "quotecompanyassociation_update": {
+      "method": "PUT",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/company/{{ entity['toObjectId'] }}"
+    },
+    "quotecompanyassociationtype_list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "url": "crm/v4/associations/quote/company/labels"
+    },
+    "quotecontactassociation_delete": {
+      "method": "DELETE",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/contact/{{ entity['toObjectId'] }}"
+    },
+    "quotecontactassociation_insert": {
+      "method": "PUT",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/contact/{{ entity['toObjectId'] }}"
+    },
+    "quotecontactassociation_list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/contact"
+    },
+    "quotecontactassociation_lookup": {
+      "method": "GET",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/contact"
+    },
+    "quotecontactassociation_update": {
+      "method": "PUT",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/contact/{{ entity['toObjectId'] }}"
+    },
+    "quotecontactassociationtype_list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "url": "crm/v4/associations/quote/contact/labels"
+    },
+    "quotedealassociation_delete": {
+      "method": "DELETE",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/deal/{{ entity['toObjectId'] }}"
+    },
+    "quotedealassociation_insert": {
+      "method": "PUT",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/deal/{{ entity['toObjectId'] }}"
+    },
+    "quotedealassociation_list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/deal"
+    },
+    "quotedealassociation_lookup": {
+      "method": "GET",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/deal"
+    },
+    "quotedealassociation_update": {
+      "method": "PUT",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/deal/{{ entity['toObjectId'] }}"
+    },
+    "quotedealassociationtype_list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "url": "crm/v4/associations/quote/deal/labels"
+    },
+    "quoteline_itemassociation_delete": {
+      "method": "DELETE",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/line_item/{{ entity['toObjectId'] }}"
+    },
+    "quoteline_itemassociation_insert": {
+      "method": "PUT",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/line_item/{{ entity['toObjectId'] }}"
+    },
+    "quoteline_itemassociation_list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/line_item"
+    },
+    "quoteline_itemassociation_lookup": {
+      "method": "GET",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/line_item"
+    },
+    "quoteline_itemassociation_update": {
+      "method": "PUT",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/line_item/{{ entity['toObjectId'] }}"
+    },
+    "quoteline_itemassociationtype_list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "url": "crm/v4/associations/quote/line_item/labels"
+    },
+    "quotequote_templateassociation_delete": {
+      "method": "DELETE",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/quote_template/{{ entity['toObjectId'] }}"
+    },
+    "quotequote_templateassociation_insert": {
+      "method": "PUT",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/quote_template/{{ entity['toObjectId'] }}"
+    },
+    "quotequote_templateassociation_list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/quote_template"
+    },
+    "quotequote_templateassociation_lookup": {
+      "method": "GET",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/quote_template"
+    },
+    "quotequote_templateassociation_update": {
+      "method": "PUT",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/quote_template/{{ entity['toObjectId'] }}"
+    },
+    "quotequote_templateassociationtype_list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "url": "crm/v4/associations/quote/quote_template/labels"
+    },
     "ticketcompanyassociation_delete": {
       "method": "DELETE",
       "url": "crm/v4/objects/ticket/{{ entity.id }}/associations/company/{{ entity['toObjectId'] }}"
     },
     "ticketcompanyassociation_insert": {
-      "method": "POST",
-      "url": "crm/v4/objects/ticket/{{ entity.id }}/associations/company"
+      "method": "PUT",
+      "url": "crm/v4/objects/ticket/{{ entity.id }}/associations/company/{{ entity['toObjectId'] }}"
     },
     "ticketcompanyassociation_list": {
       "method": "GET",
@@ -332,7 +462,7 @@
     },
     "ticketcompanyassociation_lookup": {
       "method": "GET",
-      "url": "crm/v4/objects/ticket/{{ entity.id }}/associations/company/{{ entity['toObjectId'] }}"
+      "url": "crm/v4/objects/ticket/{{ entity.id }}/associations/company"
     },
     "ticketcompanyassociation_update": {
       "method": "PUT",
@@ -348,8 +478,8 @@
       "url": "crm/v4/objects/ticket/{{ entity.id }}/associations/contact/{{ entity['toObjectId'] }}"
     },
     "ticketcontactassociation_insert": {
-      "method": "POST",
-      "url": "crm/v4/objects/ticket/{{ entity.id }}/associations/contact"
+      "method": "PUT",
+      "url": "crm/v4/objects/ticket/{{ entity.id }}/associations/contact/{{ entity['toObjectId'] }}"
     },
     "ticketcontactassociation_list": {
       "method": "GET",
@@ -358,7 +488,7 @@
     },
     "ticketcontactassociation_lookup": {
       "method": "GET",
-      "url": "crm/v4/objects/ticket/{{ entity.id }}/associations/contact/{{ entity['toObjectId'] }}"
+      "url": "crm/v4/objects/ticket/{{ entity.id }}/associations/contact"
     },
     "ticketcontactassociation_update": {
       "method": "PUT",
@@ -374,8 +504,8 @@
       "url": "crm/v4/objects/ticket/{{ entity.id }}/associations/deal/{{ entity['toObjectId'] }}"
     },
     "ticketdealassociation_insert": {
-      "method": "POST",
-      "url": "crm/v4/objects/ticket/{{ entity.id }}/associations/deal"
+      "method": "PUT",
+      "url": "crm/v4/objects/ticket/{{ entity.id }}/associations/deal/{{ entity['toObjectId'] }}"
     },
     "ticketdealassociation_list": {
       "method": "GET",
@@ -384,7 +514,7 @@
     },
     "ticketdealassociation_lookup": {
       "method": "GET",
-      "url": "crm/v4/objects/ticket/{{ entity.id }}/associations/deal/{{ entity['toObjectId'] }}"
+      "url": "crm/v4/objects/ticket/{{ entity.id }}/associations/deal"
     },
     "ticketdealassociation_update": {
       "method": "PUT",

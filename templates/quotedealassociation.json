@@ -1,5 +1,130 @@
 [
   {
+    "_id": "{{@ system @}}-{{@ datatype @}}-children",
+    "namespaced_identifiers": false,
+    "source": {
+      "dataset": "{{@ system @}}-quote-collect",
+      "type": "dataset"
+    },
+    "transform": [
+      {
+        "rules": {
+          "default": [
+            [
+              "if",
+              [
+                "is-empty",
+                "_S.associations"
+              ],
+              [
+                "filter"
+              ]
+            ],
+            [
+              "copy",
+              "id"
+            ]
+          ]
+        },
+        "type": "dtl"
+      },
+      {
+        "operation": "{{@ datatype @}}_list",
+        "replace_entity": false,
+        "system": "{{@ system @}}",
+        "type": "rest"
+      },
+      {
+        "rules": {
+          "associationtypes": [
+            [
+              "add",
+              "associationTypes",
+              [
+                "list",
+                [
+                  "concat",
+                  "_S.category",
+                  "-",
+                  [
+                    "string",
+                    "_S.typeId"
+                  ]
+                ]
+              ]
+            ]
+          ],
+          "default": [
+            [
+              "create-child",
+              [
+                "apply",
+                "rows",
+                "_S.response.results"
+              ]
+            ]
+          ],
+          "rows": [
+            [
+              "merge-union",
+              [
+                "apply",
+                "associationtypes",
+                [
+                  "filter",
+                  [
+                    "is-not-empty",
+                    "_.label"
+                  ],
+                  "_S.associationTypes"
+                ]
+              ]
+            ],
+            [
+              "add",
+              "id",
+              "_P._S.id"
+            ],
+            [
+              "add",
+              "toObjectId",
+              [
+                "first",
+                "_S.toObjectId"
+              ]
+            ],
+            [
+              "add",
+              "_id",
+              [
+                "concat",
+                "_T.id",
+                "-",
+                [
+                  "string",
+                  "_T.toObjectId"
+                ]
+              ]
+            ],
+            [
+              "if",
+              [
+                "eq",
+                "_T.associationTypes",
+                null
+              ],
+              [
+                "filter"
+              ]
+            ]
+          ]
+        },
+        "type": "dtl"
+      }
+    ],
+    "type": "pipe"
+  },
+  {
     "_id": "{{@ system @}}-{{@ datatype @}}-share",
     "namespaced_identifiers": false,
     "pump": {
@@ -992,131 +1117,6 @@
     "transform": [
       {
         "type": "emit_children"
-      }
-    ],
-    "type": "pipe"
-  },
-  {
-    "_id": "{{@ system @}}-{{@ datatype @}}-children",
-    "namespaced_identifiers": false,
-    "source": {
-      "dataset": "{{@ system @}}-deal-collect",
-      "type": "dataset"
-    },
-    "transform": [
-      {
-        "rules": {
-          "default": [
-            [
-              "if",
-              [
-                "is-empty",
-                "_S.associations"
-              ],
-              [
-                "filter"
-              ]
-            ],
-            [
-              "copy",
-              "id"
-            ]
-          ]
-        },
-        "type": "dtl"
-      },
-      {
-        "operation": "{{@ datatype @}}_list",
-        "replace_entity": false,
-        "system": "{{@ system @}}",
-        "type": "rest"
-      },
-      {
-        "rules": {
-          "associationtypes": [
-            [
-              "add",
-              "associationTypes",
-              [
-                "list",
-                [
-                  "concat",
-                  "_S.category",
-                  "-",
-                  [
-                    "string",
-                    "_S.typeId"
-                  ]
-                ]
-              ]
-            ]
-          ],
-          "default": [
-            [
-              "create-child",
-              [
-                "apply",
-                "rows",
-                "_S.response.results"
-              ]
-            ]
-          ],
-          "rows": [
-            [
-              "merge-union",
-              [
-                "apply",
-                "associationtypes",
-                [
-                  "filter",
-                  [
-                    "is-not-empty",
-                    "_.label"
-                  ],
-                  "_S.associationTypes"
-                ]
-              ]
-            ],
-            [
-              "add",
-              "id",
-              "_P._S.id"
-            ],
-            [
-              "add",
-              "toObjectId",
-              [
-                "first",
-                "_S.toObjectId"
-              ]
-            ],
-            [
-              "add",
-              "_id",
-              [
-                "concat",
-                "_T.id",
-                "-",
-                [
-                  "string",
-                  "_T.toObjectId"
-                ]
-              ]
-            ],
-            [
-              "if",
-              [
-                "eq",
-                "_T.associationTypes",
-                null
-              ],
-              [
-                "filter"
-              ]
-            ]
-          ]
-        },
-        "type": "dtl"
       }
     ],
     "type": "pipe"

@@ -37,30 +37,6 @@
     "type": "pipe"
   },
   {
-    "_id": "{{@ system @}}-{{@ datatype @}}-collect",
-    "exclude_completeness": [
-      "{{@ system @}}-{{@ datatype @}}-event2",
-      "{{@ system @}}-{{@ datatype @}}-share"
-    ],
-    "namespaced_identifiers": false,
-    "source": {
-      "datasets": [
-        "{{@ system @}}-{{@ datatype @}}-event2",
-        "{{@ system @}}-{{@ datatype @}}-all"
-      ],
-      "type": "merge_datasets"
-    },
-    "transform": {
-      "properties": {
-        "primary_key": "id",
-        "share_dataset": "{{@ system @}}-{{@ datatype @}}-share"
-      },
-      "template": "transform-collect-rest",
-      "type": "template"
-    },
-    "type": "pipe"
-  },
-  {
     "_id": "{{@ system @}}-{{@ datatype @}}-event",
     "namespaced_identifiers": false,
     "sink": {
@@ -75,7 +51,10 @@
           [
             "eq",
             "_S.portalId",
-            "{{@ account_id @}}"
+            [
+              "integer",
+              "{{@ account_id @}}"
+            ]
           ],
           [
             "matches",
@@ -218,6 +197,30 @@
         "type": "dtl"
       }
     ],
+    "type": "pipe"
+  },
+  {
+    "_id": "{{@ system @}}-{{@ datatype @}}-collect",
+    "exclude_completeness": [
+      "{{@ system @}}-{{@ datatype @}}-event2",
+      "{{@ system @}}-{{@ datatype @}}-share"
+    ],
+    "namespaced_identifiers": false,
+    "source": {
+      "datasets": [
+        "{{@ system @}}-{{@ datatype @}}-event2",
+        "{{@ system @}}-{{@ datatype @}}-all"
+      ],
+      "type": "merge_datasets"
+    },
+    "transform": {
+      "properties": {
+        "primary_key": "id",
+        "share_dataset": "{{@ system @}}-{{@ datatype @}}-share"
+      },
+      "template": "transform-collect-rest",
+      "type": "template"
+    },
     "type": "pipe"
   },
   {

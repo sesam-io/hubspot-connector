@@ -15,24 +15,6 @@
     "companycompanyassociationtype": {
       "template": "templates/contactcompanyassociationtype.json"
     },
-    "companycontactassociation": {
-      "template": "templates/companycontactassociation.json"
-    },
-    "companycontactassociationtype": {
-      "template": "templates/contactcompanyassociationtype.json"
-    },
-    "companydealassociation": {
-      "template": "templates/companycontactassociation.json"
-    },
-    "companydealassociationtype": {
-      "template": "templates/contactcompanyassociationtype.json"
-    },
-    "companyticketassociation": {
-      "template": "templates/companycontactassociation.json"
-    },
-    "companyticketassociationtype": {
-      "template": "templates/contactcompanyassociationtype.json"
-    },
     "contact": {
       "template": "templates/company.json"
     },
@@ -57,6 +39,18 @@
     "deal": {
       "template": "templates/deal.json"
     },
+    "dealcompanyassociation": {
+      "template": "templates/dealticketassociation.json"
+    },
+    "dealcompanyassociationtype": {
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "dealcontactassociation": {
+      "template": "templates/dealticketassociation.json"
+    },
+    "dealcontactassociationtype": {
+      "template": "templates/contactcompanyassociationtype.json"
+    },
     "dealline_itemassociation": {
       "template": "templates/dealticketassociation.json"
     },
@@ -73,6 +67,12 @@
       "template": "templates/line_itemdealassociation.json"
     },
     "line_itemdealassociationtype": {
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "line_itemquoteassociation": {
+      "template": "templates/line_itemdealassociation.json"
+    },
+    "line_itemquoteassociationtype": {
       "template": "templates/contactcompanyassociationtype.json"
     },
     "lineitem": {
@@ -92,6 +92,36 @@
     },
     "quote": {
       "template": "templates/quote.json"
+    },
+    "quotecompanyassociation": {
+      "template": "templates/quotedealassociation.json"
+    },
+    "quotecompanyassociationtype": {
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "quotecontactassociation": {
+      "template": "templates/quotedealassociation.json"
+    },
+    "quotecontactassociationtype": {
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "quotedealassociation": {
+      "template": "templates/quotedealassociation.json"
+    },
+    "quotedealassociationtype": {
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "quoteline_itemassociation": {
+      "template": "templates/quotedealassociation.json"
+    },
+    "quoteline_itemassociationtype": {
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "quotequote_templateassociation": {
+      "template": "templates/quotedealassociation.json"
+    },
+    "quotequote_templateassociationtype": {
+      "template": "templates/contactcompanyassociationtype.json"
     },
     "ticket": {
       "template": "templates/deal.json"
