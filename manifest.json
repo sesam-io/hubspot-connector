@@ -22,29 +22,13 @@
       "label": "Contact-Company Association Type",
       "template": "templates/contactcompanyassociationtype.json"
     },
-    "deal": {
-      "label": "Deal",
-      "template": "templates/deal.json"
-    },
-    "lineitem": {
-      "label": "Line Item",
-      "template": "templates/lineitem.json"
-    },
     "owner": {
       "label": "Owner",
       "template": "templates/owner.json"
     },
-    "pipelinedeal": {
-      "label": "Pipeline Deal",
-      "template": "templates/pipelinedeal.json"
-    },
-    "pipelineticket": {
-      "label": "Pipeline Ticket",
-      "template": "templates/pipelineticket.json"
-    },
     "product": {
       "label": "Product",
-      "template": "templates/deal.json"
+      "template": "templates/company.json"
     },
     "quote": {
       "label": "Quote",
@@ -52,7 +36,7 @@
     },
     "ticket": {
       "label": "Ticket",
-      "template": "templates/deal.json"
+      "template": "templates/company.json"
     },
     "user": {
       "label": "User",

@@ -8,38 +8,79 @@
     "token_url": "{{@ token_url @}}"
   },
   "operations": {
-    "alternate_delete": {
+    "company_delete": {
       "method": "DELETE",
-      "url": "{{ properties.datatype }}/{{ entity.id }}"
+      "url": "crm/v3/objects/company/{{ entity.id }}"
     },
-    "alternate_insert": {
+    "company_insert": {
       "method": "POST",
-      "url": "{{ properties.datatype }}"
+      "url": "crm/v3/objects/company"
     },
-    "alternate_list": {
+    "company_list": {
+      "id_expression": "{{ id }}",
       "method": "GET",
       "next_page_link": "{{ body.paging.next.link }}",
-      "url": "{{ properties.datatype }}"
+      "params": {
+        "associations": "contacts,companies,deals,tickets,products,quotes",
+        "properties": "jobtitle,firstname,lastname,email,date_of_birth,mobilephone,work_email,hs_analytics_first_timestamp,hs_analytics_last_timestamp,hs_analytics_last_visit_timestamp,hs_analytics_num_page_views,hs_analytics_num_visits,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_source,hs_last_booked_meeting_date,hs_last_logged_call_date,hs_last_open_task_date,hs_last_sales_activity_timestamp,hs_lastmodifieddate,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,about_us,address,address2,annualrevenue,city,closedate,country,createdate,days_to_close,description,domain,engagements_last_meeting_booked_medium,first_contact_createdate,founded_year,hs_analytics_last_touch_converting_campaign,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,hs_createdate,hs_num_child_companies,hs_object_id,hs_parent_company_id,industry,is_public,lifecyclestage,name,num_associated_contacts,numberofemployees,phone,state,timezone,total_money_raised,total_revenue,type,web_technologies,website,zip,hs_analytics_first_touch_converting_campaign,hs_analytics_first_visit_timestamp,first_deal_created_date,hs_num_open_deals,hs_total_deal_value,num_associated_deals,recent_deal_amount,recent_deal_close_date,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,facebook_company_page,facebookfans,googleplus_page,linkedin_company_page,linkedinbio,twitterbio,twitterfollowers,twitterhandle,hs_ideal_customer_profile,hs_is_target_account,hs_num_blockers,hs_num_contacts_with_buying_roles,hs_num_decision_makers",
+        "since": "{{ since }}"
+      },
+      "payload_property": "results",
+      "url": "crm/v3/objects/company"
     },
-    "alternate_lookup": {
+    "company_lookup": {
       "method": "GET",
-      "url": "{{ properties.datatype }}/{{ entity.id }}"
+      "params": {
+        "associations": "contacts,companies,deals,tickets,products,quotes",
+        "properties": "jobtitle,firstname,lastname,email,date_of_birth,mobilephone,work_email,hs_analytics_first_timestamp,hs_analytics_last_timestamp,hs_analytics_last_visit_timestamp,hs_analytics_num_page_views,hs_analytics_num_visits,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_source,hs_last_booked_meeting_date,hs_last_logged_call_date,hs_last_open_task_date,hs_last_sales_activity_timestamp,hs_lastmodifieddate,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,about_us,address,address2,annualrevenue,city,closedate,country,createdate,days_to_close,description,domain,engagements_last_meeting_booked_medium,first_contact_createdate,founded_year,hs_analytics_last_touch_converting_campaign,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,hs_createdate,hs_num_child_companies,hs_object_id,hs_parent_company_id,industry,is_public,lifecyclestage,name,num_associated_contacts,numberofemployees,phone,state,timezone,total_money_raised,total_revenue,type,web_technologies,website,zip,hs_analytics_first_touch_converting_campaign,hs_analytics_first_visit_timestamp,first_deal_created_date,hs_num_open_deals,hs_total_deal_value,num_associated_deals,recent_deal_amount,recent_deal_close_date,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,facebook_company_page,facebookfans,googleplus_page,linkedin_company_page,linkedinbio,twitterbio,twitterfollowers,twitterhandle,hs_ideal_customer_profile,hs_is_target_account,hs_num_blockers,hs_num_contacts_with_buying_roles,hs_num_decision_makers"
+      },
+      "url": "crm/v3/objects/company/{{ entity.id }}"
     },
-    "alternate_update": {
+    "company_update": {
       "method": "PATCH",
-      "url": "{{ properties.datatype }}/{{ entity.id }}"
+      "url": "crm/v3/objects/company/{{ entity.id }}"
     },
-    "alternate_update2": {
-      "method": "PUT",
-      "url": "{{ properties.datatype }}/{{ entity.id }}"
+    "contact_delete": {
+      "method": "DELETE",
+      "url": "crm/v3/objects/contact/{{ entity.id }}"
+    },
+    "contact_insert": {
+      "method": "POST",
+      "url": "crm/v3/objects/contact"
+    },
+    "contact_list": {
+      "id_expression": "{{ id }}",
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "params": {
+        "associations": "contacts,companies,deals,tickets,products,quotes",
+        "properties": "jobtitle,firstname,lastname,email,date_of_birth,mobilephone,work_email,hs_analytics_first_timestamp,hs_analytics_last_timestamp,hs_analytics_last_visit_timestamp,hs_analytics_num_page_views,hs_analytics_num_visits,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_source,hs_last_booked_meeting_date,hs_last_logged_call_date,hs_last_open_task_date,hs_last_sales_activity_timestamp,hs_lastmodifieddate,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,about_us,address,address2,annualrevenue,city,closedate,country,createdate,days_to_close,description,domain,engagements_last_meeting_booked_medium,first_contact_createdate,founded_year,hs_analytics_last_touch_converting_campaign,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,hs_createdate,hs_num_child_companies,hs_object_id,hs_parent_contact_id,industry,is_public,lifecyclestage,name,num_associated_contacts,numberofemployees,phone,state,timezone,total_money_raised,total_revenue,type,web_technologies,website,zip,hs_analytics_first_touch_converting_campaign,hs_analytics_first_visit_timestamp,first_deal_created_date,hs_num_open_deals,hs_total_deal_value,num_associated_deals,recent_deal_amount,recent_deal_close_date,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,facebook_contact_page,facebookfans,googleplus_page,linkedin_contact_page,linkedinbio,twitterbio,twitterfollowers,twitterhandle,hs_ideal_customer_profile,hs_is_target_account,hs_num_blockers,hs_num_contacts_with_buying_roles,hs_num_decision_makers",
+        "since": "{{ since }}"
+      },
+      "payload_property": "results",
+      "url": "crm/v3/objects/contact"
+    },
+    "contact_lookup": {
+      "method": "GET",
+      "params": {
+        "associations": "contacts,companies,deals,tickets,products,quotes",
+        "properties": "jobtitle,firstname,lastname,email,date_of_birth,mobilephone,work_email,hs_analytics_first_timestamp,hs_analytics_last_timestamp,hs_analytics_last_visit_timestamp,hs_analytics_num_page_views,hs_analytics_num_visits,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_source,hs_last_booked_meeting_date,hs_last_logged_call_date,hs_last_open_task_date,hs_last_sales_activity_timestamp,hs_lastmodifieddate,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,about_us,address,address2,annualrevenue,city,closedate,country,createdate,days_to_close,description,domain,engagements_last_meeting_booked_medium,first_contact_createdate,founded_year,hs_analytics_last_touch_converting_campaign,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,hs_createdate,hs_num_child_companies,hs_object_id,hs_parent_contact_id,industry,is_public,lifecyclestage,name,num_associated_contacts,numberofemployees,phone,state,timezone,total_money_raised,total_revenue,type,web_technologies,website,zip,hs_analytics_first_touch_converting_campaign,hs_analytics_first_visit_timestamp,first_deal_created_date,hs_num_open_deals,hs_total_deal_value,num_associated_deals,recent_deal_amount,recent_deal_close_date,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,facebook_contact_page,facebookfans,googleplus_page,linkedin_contact_page,linkedinbio,twitterbio,twitterfollowers,twitterhandle,hs_ideal_customer_profile,hs_is_target_account,hs_num_blockers,hs_num_contacts_with_buying_roles,hs_num_decision_makers"
+      },
+      "url": "crm/v3/objects/contact/{{ entity.id }}"
+    },
+    "contact_update": {
+      "method": "PATCH",
+      "url": "crm/v3/objects/contact/{{ entity.id }}"
     },
     "contactcompanyassociation_delete": {
       "method": "DELETE",
       "url": "crm/v4/objects/contact/{{ entity['id'] }}/associations/company/{{ entity['toObjectId'] }}"
     },
     "contactcompanyassociation_list": {
+      "id_expression": "{{ [category,typeId]|join('-') }}",
       "method": "GET",
       "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
       "url": "crm/v4/objects/contact/{{ entity.id }}/associations/company"
     },
     "contactcompanyassociation_lookup": {
@@ -56,33 +97,222 @@
       "next_page_link": "{{ body.paging.next.link }}",
       "url": "crm/v4/associations/contact/company/labels"
     },
-    "delete": {
+    "deal_delete": {
       "method": "DELETE",
-      "url": "crm/v3/objects/{{ properties.datatype }}/{{ entity.id }}"
+      "url": "crm/v3/objects/deals/{{ entity.id }}"
     },
-    "insert": {
+    "deal_insert": {
       "method": "POST",
-      "url": "crm/v3/objects/{{ properties.datatype }}"
+      "url": "crm/v3/objects/deals"
     },
-    "list": {
+    "deal_list": {
+      "id_expression": "{{ id }}",
       "method": "GET",
       "next_page_link": "{{ body.paging.next.link }}",
       "params": {
+        "associations": "contacts,companies,deals,tickets,products,quotes",
+        "properties": "hs_pipeline,hs_pipeline_stage,hs_ticket_priority,subject,amount,dealname,pipeline,hs_sku,price,hs_analytics_first_timestamp,hs_analytics_last_timestamp,hs_analytics_last_visit_timestamp,hs_analytics_num_page_views,hs_analytics_num_visits,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_source,hs_last_booked_meeting_date,hs_last_logged_call_date,hs_last_open_task_date,hs_last_sales_activity_timestamp,hs_lastmodifieddate,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,about_us,address,address2,annualrevenue,city,closedate,country,createdate,days_to_close,description,domain,engagements_last_meeting_booked_medium,first_contact_createdate,founded_year,hs_analytics_last_touch_converting_campaign,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,hs_createdate,hs_num_child_companies,hs_object_id,hs_parent_contact_id,industry,is_public,lifecyclestage,name,num_associated_contacts,numberofemployees,phone,state,timezone,total_money_raised,total_revenue,type,web_technologies,website,zip,hs_analytics_first_touch_converting_campaign,hs_analytics_first_visit_timestamp,first_deal_created_date,hs_num_open_deals,hs_total_deal_value,num_associated_deals,recent_deal_amount,recent_deal_close_date,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,facebook_contact_page,facebookfans,googleplus_page,linkedin_contact_page,linkedinbio,twitterbio,twitterfollowers,twitterhandle,hs_ideal_customer_profile,hs_is_target_account,hs_num_blockers,hs_num_contacts_with_buying_roles,hs_num_decision_makers",
         "since": "{{ since }}"
       },
-      "url": "{{ properties.datatype }}?properties={{ properties.properties }}&associations={{ properties.associations }}"
+      "payload_property": "results",
+      "url": "crm/v3/objects/deals"
     },
-    "lookup": {
+    "deal_lookup": {
       "method": "GET",
       "params": {
-        "associations": "{{ properties.associations }}",
-        "properties": "{{ properties.properties }}"
+        "associations": "contacts,companies,deals,tickets,products,quotes",
+        "properties": "hs_pipeline,hs_pipeline_stage,hs_ticket_priority,subject,amount,dealname,pipeline,hs_sku,price,hs_analytics_first_timestamp,hs_analytics_last_timestamp,hs_analytics_last_visit_timestamp,hs_analytics_num_page_views,hs_analytics_num_visits,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_source,hs_last_booked_meeting_date,hs_last_logged_call_date,hs_last_open_task_date,hs_last_sales_activity_timestamp,hs_lastmodifieddate,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,about_us,address,address2,annualrevenue,city,closedate,country,createdate,days_to_close,description,domain,engagements_last_meeting_booked_medium,first_contact_createdate,founded_year,hs_analytics_last_touch_converting_campaign,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,hs_createdate,hs_num_child_companies,hs_object_id,hs_parent_contact_id,industry,is_public,lifecyclestage,name,num_associated_contacts,numberofemployees,phone,state,timezone,total_money_raised,total_revenue,type,web_technologies,website,zip,hs_analytics_first_touch_converting_campaign,hs_analytics_first_visit_timestamp,first_deal_created_date,hs_num_open_deals,hs_total_deal_value,num_associated_deals,recent_deal_amount,recent_deal_close_date,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,facebook_contact_page,facebookfans,googleplus_page,linkedin_contact_page,linkedinbio,twitterbio,twitterfollowers,twitterhandle,hs_ideal_customer_profile,hs_is_target_account,hs_num_blockers,hs_num_contacts_with_buying_roles,hs_num_decision_makers"
       },
-      "url": "crm/v3/objects/{{ properties.datatype }}/{{ entity.id }}"
+      "url": "crm/v3/objects/deals/{{ entity.id }}"
     },
-    "update": {
+    "deal_update": {
       "method": "PATCH",
-      "url": "crm/v3/objects/{{ properties.datatype }}/{{ entity.id }}"
+      "url": "crm/v3/objects/deals/{{ entity.id }}"
+    },
+    "lineitem_delete": {
+      "method": "DELETE",
+      "url": "crm/v3/objects/line_items/{{ entity.id }}"
+    },
+    "lineitem_insert": {
+      "method": "POST",
+      "url": "crm/v3/objects/line_items"
+    },
+    "lineitem_list": {
+      "id_expression": "{{ id }}",
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "params": {
+        "associations": "contacts,companies,deals,tickets,products,quotes",
+        "properties": "hs_product_id,hs_recurring_billing_period,price,quantity,hs_analytics_first_timestamp,hs_analytics_last_timestamp,hs_analytics_last_visit_timestamp,hs_analytics_num_page_views,hs_analytics_num_visits,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_source,hs_last_booked_meeting_date,hs_last_logged_call_date,hs_last_open_task_date,hs_last_sales_activity_timestamp,hs_lastmodifieddate,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,about_us,address,address2,annualrevenue,city,closedate,country,createdate,days_to_close,description,domain,engagements_last_meeting_booked_medium,first_contact_createdate,founded_year,hs_analytics_last_touch_converting_campaign,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,hs_createdate,hs_num_child_companies,hs_object_id,hs_parent_contact_id,industry,is_public,lifecyclestage,name,num_associated_contacts,numberofemployees,phone,state,timezone,total_money_raised,total_revenue,type,web_technologies,website,zip,hs_analytics_first_touch_converting_campaign,hs_analytics_first_visit_timestamp,first_deal_created_date,hs_num_open_deals,hs_total_deal_value,num_associated_deals,recent_deal_amount,recent_deal_close_date,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,facebook_contact_page,facebookfans,googleplus_page,linkedin_contact_page,linkedinbio,twitterbio,twitterfollowers,twitterhandle,hs_ideal_customer_profile,hs_is_target_account,hs_num_blockers,hs_num_contacts_with_buying_roles,hs_num_decision_makers",
+        "since": "{{ since }}"
+      },
+      "payload_property": "results",
+      "url": "crm/v3/objects/line_items"
+    },
+    "lineitem_lookup": {
+      "method": "GET",
+      "params": {
+        "associations": "contacts,companies,deals,tickets,products,quotes",
+        "properties": "hs_product_id,hs_recurring_billing_period,price,quantity,hs_analytics_first_timestamp,hs_analytics_last_timestamp,hs_analytics_last_visit_timestamp,hs_analytics_num_page_views,hs_analytics_num_visits,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_source,hs_last_booked_meeting_date,hs_last_logged_call_date,hs_last_open_task_date,hs_last_sales_activity_timestamp,hs_lastmodifieddate,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,about_us,address,address2,annualrevenue,city,closedate,country,createdate,days_to_close,description,domain,engagements_last_meeting_booked_medium,first_contact_createdate,founded_year,hs_analytics_last_touch_converting_campaign,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,hs_createdate,hs_num_child_companies,hs_object_id,hs_parent_contact_id,industry,is_public,lifecyclestage,name,num_associated_contacts,numberofemployees,phone,state,timezone,total_money_raised,total_revenue,type,web_technologies,website,zip,hs_analytics_first_touch_converting_campaign,hs_analytics_first_visit_timestamp,first_deal_created_date,hs_num_open_deals,hs_total_deal_value,num_associated_deals,recent_deal_amount,recent_deal_close_date,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,facebook_contact_page,facebookfans,googleplus_page,linkedin_contact_page,linkedinbio,twitterbio,twitterfollowers,twitterhandle,hs_ideal_customer_profile,hs_is_target_account,hs_num_blockers,hs_num_contacts_with_buying_roles,hs_num_decision_makers"
+      },
+      "url": "crm/v3/objects/line_items/{{ entity.id }}"
+    },
+    "lineitem_update": {
+      "method": "PATCH",
+      "url": "crm/v3/objects/line_items/{{ entity.id }}"
+    },
+    "owner_list": {
+      "id_expression": "{{ id }}",
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v3/owners"
+    },
+    "pipelinedeal_delete": {
+      "method": "DELETE",
+      "url": "crm/v3/pipelines/deals/{{ entity.id }}"
+    },
+    "pipelinedeal_insert": {
+      "method": "POST",
+      "url": "crm/v3/pipelines/deals"
+    },
+    "pipelinedeal_list": {
+      "id_expression": "{{ id }}",
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v3/pipelines/deals"
+    },
+    "pipelinedeal_lookup": {
+      "method": "GET",
+      "params": {
+        "associations": "contacts,companies,deals,tickets,products,quotes",
+        "properties": "jobtitle,firstname,lastname,email,date_of_birth,mobilephone,work_email,hs_analytics_first_timestamp,hs_analytics_last_timestamp,hs_analytics_last_visit_timestamp,hs_analytics_num_page_views,hs_analytics_num_visits,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_source,hs_last_booked_meeting_date,hs_last_logged_call_date,hs_last_open_task_date,hs_last_sales_activity_timestamp,hs_lastmodifieddate,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,about_us,address,address2,annualrevenue,city,closedate,country,createdate,days_to_close,description,domain,engagements_last_meeting_booked_medium,first_contact_createdate,founded_year,hs_analytics_last_touch_converting_campaign,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,hs_createdate,hs_num_child_companies,hs_object_id,hs_parent_company_id,industry,is_public,lifecyclestage,name,num_associated_contacts,numberofemployees,phone,state,timezone,total_money_raised,total_revenue,type,web_technologies,website,zip,hs_analytics_first_touch_converting_campaign,hs_analytics_first_visit_timestamp,first_deal_created_date,hs_num_open_deals,hs_total_deal_value,num_associated_deals,recent_deal_amount,recent_deal_close_date,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,facebook_company_page,facebookfans,googleplus_page,linkedin_company_page,linkedinbio,twitterbio,twitterfollowers,twitterhandle,hs_ideal_customer_profile,hs_is_target_account,hs_num_blockers,hs_num_contacts_with_buying_roles,hs_num_decision_makers"
+      },
+      "url": "crm/v3/pipelines/deals/{{ entity.id }}"
+    },
+    "pipelinedeal_update": {
+      "method": "PATCH",
+      "url": "crm/v3/pipelines/deals/{{ entity.id }}"
+    },
+    "pipelineticket_delete": {
+      "method": "DELETE",
+      "url": "crm/v3/pipelines/tickets/{{ entity.id }}"
+    },
+    "pipelineticket_insert": {
+      "method": "POST",
+      "url": "crm/v3/pipelines/tickets"
+    },
+    "pipelineticket_list": {
+      "id_expression": "{{ id }}",
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v3/pipelines/tickets"
+    },
+    "pipelineticket_lookup": {
+      "method": "GET",
+      "url": "crm/v3/pipelines/tickets/{{ entity.id }}"
+    },
+    "pipelineticket_update": {
+      "method": "PATCH",
+      "url": "crm/v3/pipelines/tickets/{{ entity.id }}"
+    },
+    "product_delete": {
+      "method": "DELETE",
+      "url": "crm/v3/objects/products/{{ entity.id }}"
+    },
+    "product_insert": {
+      "method": "POST",
+      "url": "crm/v3/objects/products"
+    },
+    "product_list": {
+      "id_expression": "{{ id }}",
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "params": {
+        "associations": "contacts,companies,deals,tickets,products,quotes",
+        "properties": "hs_pipeline,hs_pipeline_stage,hs_ticket_priority,subject,amount,productname,pipeline,hs_sku,price,hs_analytics_first_timestamp,hs_analytics_last_timestamp,hs_analytics_last_visit_timestamp,hs_analytics_num_page_views,hs_analytics_num_visits,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_source,hs_last_booked_meeting_date,hs_last_logged_call_date,hs_last_open_task_date,hs_last_sales_activity_timestamp,hs_lastmodifieddate,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,about_us,address,address2,annualrevenue,city,closedate,country,createdate,days_to_close,description,domain,engagements_last_meeting_booked_medium,first_contact_createdate,founded_year,hs_analytics_last_touch_converting_campaign,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,hs_createdate,hs_num_child_companies,hs_object_id,hs_parent_contact_id,industry,is_public,lifecyclestage,name,num_associated_contacts,numberofemployees,phone,state,timezone,total_money_raised,total_revenue,type,web_technologies,website,zip,hs_analytics_first_touch_converting_campaign,hs_analytics_first_visit_timestamp,first_product_created_date,hs_num_open_products,hs_total_product_value,num_associated_products,recent_product_amount,recent_product_close_date,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,facebook_contact_page,facebookfans,googleplus_page,linkedin_contact_page,linkedinbio,twitterbio,twitterfollowers,twitterhandle,hs_iproduct_customer_profile,hs_is_target_account,hs_num_blockers,hs_num_contacts_with_buying_roles,hs_num_decision_makers",
+        "since": "{{ since }}"
+      },
+      "payload_property": "results",
+      "url": "crm/v3/objects/products"
+    },
+    "product_lookup": {
+      "method": "GET",
+      "params": {
+        "associations": "contacts,companies,deals,tickets,products,quotes",
+        "properties": "hs_pipeline,hs_pipeline_stage,hs_ticket_priority,subject,amount,productname,pipeline,hs_sku,price,hs_analytics_first_timestamp,hs_analytics_last_timestamp,hs_analytics_last_visit_timestamp,hs_analytics_num_page_views,hs_analytics_num_visits,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_source,hs_last_booked_meeting_date,hs_last_logged_call_date,hs_last_open_task_date,hs_last_sales_activity_timestamp,hs_lastmodifieddate,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,about_us,address,address2,annualrevenue,city,closedate,country,createdate,days_to_close,description,domain,engagements_last_meeting_booked_medium,first_contact_createdate,founded_year,hs_analytics_last_touch_converting_campaign,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,hs_createdate,hs_num_child_companies,hs_object_id,hs_parent_contact_id,industry,is_public,lifecyclestage,name,num_associated_contacts,numberofemployees,phone,state,timezone,total_money_raised,total_revenue,type,web_technologies,website,zip,hs_analytics_first_touch_converting_campaign,hs_analytics_first_visit_timestamp,first_product_created_date,hs_num_open_products,hs_total_product_value,num_associated_products,recent_product_amount,recent_product_close_date,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,facebook_contact_page,facebookfans,googleplus_page,linkedin_contact_page,linkedinbio,twitterbio,twitterfollowers,twitterhandle,hs_iproduct_customer_profile,hs_is_target_account,hs_num_blockers,hs_num_contacts_with_buying_roles,hs_num_decision_makers"
+      },
+      "url": "crm/v3/objects/products/{{ entity.id }}"
+    },
+    "product_update": {
+      "method": "PATCH",
+      "url": "crm/v3/objects/products/{{ entity.id }}"
+    },
+    "quote_delete": {
+      "method": "DELETE",
+      "url": "crm/v3/objects/quotes{{ entity.id }}"
+    },
+    "quote_insert": {
+      "method": "POST",
+      "url": "crm/v3/objects/quotes"
+    },
+    "quote_list": {
+      "id_expression": "{{ id }}",
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "params": {
+        "associations": "contacts,companies,deals,tickets,products,quotes",
+        "properties": "hs_quote_amount,hs_quote_number,hs_terms,hs_language,hs_domain,hs_slug,hs_status,hs_template_type,hs_sender_email,hs_public_url_key,hs_expiration_date,hs_title,hs_analytics_first_timestamp,hs_analytics_last_timestamp,hs_analytics_last_visit_timestamp,hs_analytics_num_page_views,hs_analytics_num_visits,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_source,hs_last_booked_meeting_date,hs_last_logged_call_date,hs_last_open_task_date,hs_last_sales_activity_timestamp,hs_lastmodifieddate,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,about_us,address,address2,annualrevenue,city,closedate,country,createdate,days_to_close,description,domain,engagements_last_meeting_booked_medium,first_contact_createdate,founded_year,hs_analytics_last_touch_converting_campaign,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,hs_createdate,hs_num_child_companies,hs_object_id,hs_parent_contact_id,industry,is_public,lifecyclestage,name,num_associated_contacts,numberofemployees,phone,state,timezone,total_money_raised,total_revenue,type,web_technologies,website,zip,hs_analytics_first_touch_converting_campaign,hs_analytics_first_visit_timestamp,first_deal_created_date,hs_num_open_deals,hs_total_deal_value,num_associated_deals,recent_deal_amount,recent_deal_close_date,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,facebook_contact_page,facebookfans,googleplus_page,linkedin_contact_page,linkedinbio,twitterbio,twitterfollowers,twitterhandle,hs_ideal_customer_profile,hs_is_target_account,hs_num_blockers,hs_num_contacts_with_buying_roles,hs_num_decision_makers",
+        "since": "{{ since }}"
+      },
+      "payload_property": "results",
+      "url": "crm/v3/objects/quotes"
+    },
+    "quote_lookup": {
+      "method": "GET",
+      "params": {
+        "associations": "contacts,companies,deals,tickets,products,quotes",
+        "properties": "hs_quote_amount,hs_quote_number,hs_terms,hs_language,hs_domain,hs_slug,hs_status,hs_template_type,hs_sender_email,hs_public_url_key,hs_expiration_date,hs_title,hs_analytics_first_timestamp,hs_analytics_last_timestamp,hs_analytics_last_visit_timestamp,hs_analytics_num_page_views,hs_analytics_num_visits,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_source,hs_last_booked_meeting_date,hs_last_logged_call_date,hs_last_open_task_date,hs_last_sales_activity_timestamp,hs_lastmodifieddate,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,about_us,address,address2,annualrevenue,city,closedate,country,createdate,days_to_close,description,domain,engagements_last_meeting_booked_medium,first_contact_createdate,founded_year,hs_analytics_last_touch_converting_campaign,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,hs_createdate,hs_num_child_companies,hs_object_id,hs_parent_contact_id,industry,is_public,lifecyclestage,name,num_associated_contacts,numberofemployees,phone,state,timezone,total_money_raised,total_revenue,type,web_technologies,website,zip,hs_analytics_first_touch_converting_campaign,hs_analytics_first_visit_timestamp,first_deal_created_date,hs_num_open_deals,hs_total_deal_value,num_associated_deals,recent_deal_amount,recent_deal_close_date,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,facebook_contact_page,facebookfans,googleplus_page,linkedin_contact_page,linkedinbio,twitterbio,twitterfollowers,twitterhandle,hs_ideal_customer_profile,hs_is_target_account,hs_num_blockers,hs_num_contacts_with_buying_roles,hs_num_decision_makers"
+      },
+      "url": "crm/v3/objects/quotes/{{ entity.id }}"
+    },
+    "quote_update": {
+      "method": "PATCH",
+      "url": "crm/v3/objects/quotes/{{ entity.id }}"
+    },
+    "ticket_delete": {
+      "method": "DELETE",
+      "url": "crm/v3/objects/tickets/{{ entity.id }}"
+    },
+    "ticket_insert": {
+      "method": "POST",
+      "url": "crm/v3/objects/tickets"
+    },
+    "ticket_list": {
+      "id_expression": "{{ id }}",
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "params": {
+        "associations": "contacts,companies,deals,tickets,products,quotes",
+        "properties": "hs_pipeline,hs_pipeline_stage,hs_ticket_priority,subject,amount,ticketname,pipeline,hs_sku,price,hs_analytics_first_timestamp,hs_analytics_last_timestamp,hs_analytics_last_visit_timestamp,hs_analytics_num_page_views,hs_analytics_num_visits,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_source,hs_last_booked_meeting_date,hs_last_logged_call_date,hs_last_open_task_date,hs_last_sales_activity_timestamp,hs_lastmodifieddate,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,about_us,address,address2,annualrevenue,city,closedate,country,createdate,days_to_close,description,domain,engagements_last_meeting_booked_medium,first_contact_createdate,founded_year,hs_analytics_last_touch_converting_campaign,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,hs_createdate,hs_num_child_companies,hs_object_id,hs_parent_contact_id,industry,is_public,lifecyclestage,name,num_associated_contacts,numberofemployees,phone,state,timezone,total_money_raised,total_revenue,type,web_technologies,website,zip,hs_analytics_first_touch_converting_campaign,hs_analytics_first_visit_timestamp,first_ticket_created_date,hs_num_open_tickets,hs_total_ticket_value,num_associated_tickets,recent_ticket_amount,recent_ticket_close_date,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,facebook_contact_page,facebookfans,googleplus_page,linkedin_contact_page,linkedinbio,twitterbio,twitterfollowers,twitterhandle,hs_iticket_customer_profile,hs_is_target_account,hs_num_blockers,hs_num_contacts_with_buying_roles,hs_num_decision_makers",
+        "since": "{{ since }}"
+      },
+      "payload_property": "results",
+      "url": "crm/v3/objects/tickets"
+    },
+    "ticket_lookup": {
+      "method": "GET",
+      "params": {
+        "associations": "contacts,companies,deals,tickets,products,quotes",
+        "properties": "hs_pipeline,hs_pipeline_stage,hs_ticket_priority,subject,amount,ticketname,pipeline,hs_sku,price,hs_analytics_first_timestamp,hs_analytics_last_timestamp,hs_analytics_last_visit_timestamp,hs_analytics_num_page_views,hs_analytics_num_visits,engagements_last_meeting_booked,engagements_last_meeting_booked_campaign,engagements_last_meeting_booked_source,hs_last_booked_meeting_date,hs_last_logged_call_date,hs_last_open_task_date,hs_last_sales_activity_timestamp,hs_lastmodifieddate,notes_last_contacted,notes_last_updated,notes_next_activity_date,num_contacted_notes,about_us,address,address2,annualrevenue,city,closedate,country,createdate,days_to_close,description,domain,engagements_last_meeting_booked_medium,first_contact_createdate,founded_year,hs_analytics_last_touch_converting_campaign,hs_analytics_source,hs_analytics_source_data_1,hs_analytics_source_data_2,hs_createdate,hs_num_child_companies,hs_object_id,hs_parent_contact_id,industry,is_public,lifecyclestage,name,num_associated_contacts,numberofemployees,phone,state,timezone,total_money_raised,total_revenue,type,web_technologies,website,zip,hs_analytics_first_touch_converting_campaign,hs_analytics_first_visit_timestamp,first_ticket_created_date,hs_num_open_tickets,hs_total_ticket_value,num_associated_tickets,recent_ticket_amount,recent_ticket_close_date,hs_lead_status,hubspot_owner_assigneddate,hubspot_owner_id,hubspot_team_id,facebook_contact_page,facebookfans,googleplus_page,linkedin_contact_page,linkedinbio,twitterbio,twitterfollowers,twitterhandle,hs_iticket_customer_profile,hs_is_target_account,hs_num_blockers,hs_num_contacts_with_buying_roles,hs_num_decision_makers"
+      },
+      "url": "crm/v3/objects/tickets/{{ entity.id }}"
+    },
+    "ticket_update": {
+      "method": "PATCH",
+      "url": "crm/v3/objects/tickets/{{ entity.id }}"
     },
     "user_delete": {
       "method": "DELETE",
@@ -105,7 +335,7 @@
     },
     "user_update": {
       "method": "PUT",
-      "url": "settings/v3/users/{{ entity.id }}"
+      "url": "crm/v3/objects/line_items/{{ entity.id }}"
     }
   },
   "type": "system:rest",
