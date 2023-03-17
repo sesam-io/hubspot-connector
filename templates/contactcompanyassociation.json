@@ -1,5 +1,218 @@
 [
   {
+    "_id": "{{@ system @}}-{{@ datatype @}}-collect",
+    "namespaced_identifiers": false,
+    "source": {
+      "dataset": "{{@ system @}}-{{@ datatype @}}-children",
+      "type": "dataset"
+    },
+    "transform": [
+      {
+        "type": "emit_children"
+      },
+      {
+        "rules": {
+          "default": [
+            [
+              "copy",
+              "*"
+            ],
+            [
+              "comment",
+              "TODO replace with template once the template supports composite keys "
+            ],
+            [
+              "add",
+              "_origin",
+              [
+                "first",
+                [
+                  "hops",
+                  {
+                    "datasets": [
+                      "{{@ system @}}-{{@ datatype @}}-share st"
+                    ],
+                    "return": "st.$origin",
+                    "track-dependencies": false,
+                    "where": [
+                      [
+                        "eq",
+                        [
+                          "tuples",
+                          "_S.id",
+                          "_S.toObjectId"
+                        ],
+                        [
+                          "list",
+                          "st.$generated_id"
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ],
+            [
+              "if",
+              [
+                "is-not-null",
+                "_T._origin"
+              ],
+              [
+                "add",
+                "$origin",
+                "_T._origin"
+              ]
+            ]
+          ]
+        },
+        "type": "dtl"
+      }
+    ],
+    "type": "pipe"
+  },
+  {
+    "_id": "{{@ system @}}-{{@ datatype @}}-share",
+    "namespaced_identifiers": false,
+    "sink": {
+      "dataset": "{{@ system @}}-{{@ datatype @}}-share",
+      "deletion_tracking": false,
+      "set-initial-offset": "if-source-populated",
+      "set_initial_offset": "onload",
+      "track_children": false,
+      "type": "dataset"
+    },
+    "source": {
+      "dataset": "{{@ system @}}-{{@ datatype @}}-transform",
+      "type": "dataset"
+    },
+    "transform": [
+      {
+        "rules": {
+          "default": [
+            [
+              "copy",
+              "*"
+            ],
+            [
+              "comment",
+              "TODO temp fix to add 279 until we can tell the share template how to reshape the looked up entity to strip away the association with null label"
+            ],
+            [
+              "add",
+              "associationTypes",
+              [
+                "apply",
+                "fixupAssociationTypes",
+                [
+                  "combine",
+                  "HUBSPOT_DEFINED-279",
+                  "_S.sesam_simpleAssociationTypes"
+                ]
+              ]
+            ],
+            [
+              "comment",
+              "remove this generated property that does not exist in the target system"
+            ],
+            [
+              "remove",
+              "sesam_simpleAssociationTypes"
+            ]
+          ],
+          "fixupAssociationTypes": [
+            [
+              "comment",
+              "reconstructing the structure that we collapsed into on string in the collect to make it simpler for the model mapping"
+            ],
+            [
+              "merge",
+              [
+                "dict",
+                "category",
+                [
+                  "first",
+                  [
+                    "split",
+                    "-",
+                    "_S."
+                  ]
+                ],
+                "typeId",
+                [
+                  "integer",
+                  [
+                    "last",
+                    [
+                      "split",
+                      "-",
+                      "_S."
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        },
+        "type": "dtl"
+      },
+      {
+        "description": "TODO replace with rest-share once the template fix has been merged, insert_payload_rule will then be moved up",
+        "properties": {
+          "insert_payload_rule": [
+            [
+              "add",
+              "$payload",
+              [
+                "map",
+                [
+                  "dict",
+                  "associationCategory",
+                  "_.category",
+                  "associationTypeId",
+                  "_.typeId"
+                ],
+                "_S.associationTypes"
+              ]
+            ]
+          ],
+          "is_natural_key": true,
+          "operation_delete": "{{@ datatype @}}_delete",
+          "operation_insert": "{{@ datatype @}}_upsert",
+          "operation_lookup": "{{@ datatype @}}_lookup",
+          "operation_update": "{{@ datatype @}}_upsert",
+          "primary_key": [
+            "id",
+            "toObjectId"
+          ],
+          "rest_system": "{{@ system @}}",
+          "share_dataset": "{{@ system @}}-{{@ datatype @}}-share",
+          "update_payload_rule": [
+            [
+              "add",
+              "$payload",
+              [
+                "map",
+                [
+                  "dict",
+                  "associationCategory",
+                  "_.category",
+                  "associationTypeId",
+                  "_.typeId"
+                ],
+                "_S.associationTypes"
+              ]
+            ]
+          ]
+        },
+        "side_effects": false,
+        "template": "[{\n            \"type\": \"dtl\",\n            \"rules\": {\n              \"default\": [\n                [\"if\",\n                  [\"and\",\n                    [\"eq\", \"_S.$replaced\", true],\n                    [\"eq\", \"_S._deleted\", true]\n                  ],\n                  [\"merge\",\n                    [\"apply\", \"discard-replaced\", \"_S.\"]\n                  ],\n                  [\"if\",\n                    [\"all\",\n                      [\"is-not-null\", \"_.\"],\n                      [\"map\",\n                        [\"path\", \"_.\", \"_S.\"],\n                        [\"literal\", {{ primary_key | tojson }} ]\n                      ]\n                    ],\n                    [\"if\",\n                      [\"eq\", \"_S._deleted\", true],\n                      [\n                        [\"comment\", \"Entity is deleted and it does have a system specific id.\"],\n                        [\"merge\",\n                          [\"apply\", \"delete\", \"_S.\"]\n                        ]\n                      ],\n                      [\n                        [\"comment\", \"Entity is not deleted and it does have a system specific id.\"],\n                        [\"merge\",\n                          [\"apply\", \"lookup\", \"_S.\"]\n                        ]\n                      ]\n                    ],\n                    [\"if\",\n                      [\"eq\", \"_S._deleted\", true],\n                      [\"merge\",\n                        [\"apply\", \"discard-delete-non-existent\", \"_S.\"]\n                      ],\n                      [\n                        [\"comment\", \"At this point there is no primary key, so we should do an insert unless there are sink entity ids in $ids with $generated_id in them.\"],\n                        [\"if\",\n                          [\"is-not-empty\",\n                            [\"filter\",\n                              [\"is-not-null\", \"_.\"],\n                              [\"hops\", {\n                                \"datasets\": [\"{{ share_dataset }} st\"],\n                                \"where\": [\n                                  [\"eq\", \"_S.$ids\",\n                                    [\"ni\", \"st._id\"]\n                                  ]\n                                ],\n                                \"return\": \"st.$generated_id\",\n                                \"track-dependencies\": false\n                              }]\n                            ]\n                          ],\n                          [\"merge\",\n                            [\"apply\", \"discard-already-inserted\", \"_S.\"]\n                          ],\n                          [\n                            [\"comment\", \"Entity is not deleted, it does not have a system specific id and it does not exist in sink dataset.\"],\n                            [\"merge\",\n                              [\"apply\", \"insert\", \"_S.\"]\n                            ]\n                          ]\n                        ]\n                      ]\n                    ]\n                  ]\n                ],\n                [\"add\", \"$source\", \"_S.\"],\n                [\"copy\", [\"literal\", {{ primary_key | tojson }} ]],\n                [\"copy\", \"$origin\"],\n                [\"copy\", \"$replaced\"]\n              ],\n              \"delete\": [\n                [\"add\", \"$operation\", \"delete\"]\n              ],\n              \"discard-already-inserted\": [\n                [\"add\", \"$operation\", \"discard-already-inserted\"]\n              ],\n              \"discard-delete-non-existent\": [\n                [\"add\", \"$operation\", \"discard-delete-non-existent\"]\n              ],\n              \"discard-replaced\": [\n                [\"add\", \"$operation\", \"discard-replaced\"]\n              ],\n              \"insert\": [\n                [\"add\", \"$operation\", \"insert\"],\n                [\"add\", \"{{ payload_property if payload_property is defined else 'payload' }}\",\n                  [\"apply\", \"payload\", \"_S.\"]\n                ]\n              ],\n              \"lookup\": [\n                [\"add\", \"$operation\", \"lookup\"]\n              ],\n              \"payload\": [\n                [\"merge\",\n                  [\"dict\",\n                    [\"filter\",\n                      [\"not\",\n                        [\"or\",\n                          [\"matches\", \"_*\",\n                            [\"first\", \"_.\"]\n                          ],\n                          [\"matches\", \"$*\",\n                            [\"first\", \"_.\"]\n                          ]\n                        ]\n                      ],\n                      [\"items\", \"_S.\"]\n                    ]\n                  ]\n                ]\n              ]\n            }\n          }, {\n            \"type\": \"rest\",\n            \"system\": \"{{ rest_system }}\",\n            \"allowed_status_codes\": \"100-599\",\n            \"operation\": \"{{ operation_lookup if operation_lookup is defined else 'lookup' }}\",\n        {% if operation_lookup_properties is defined %}\n            \"properties\": {{ operation_lookup_properties | tojson }},\n        {% endif %}\n            \"replace_entity\": false,\n            \"response_property\": \"response_body\",\n            \"response_status_property\": \"response_status\",\n            \"side_effects\": false,\n            \"trigger_on\": {\n              \"key\": \"$operation\",\n              \"value\": \"lookup\"\n            }\n          }, {\n            \"type\": \"dtl\",\n            \"rules\": {\n              \"default\": [\n                [\"if\",\n                  [\"neq\", \"_S.$operation\", \"lookup\"],\n                  [\n                    [\"if\",\n                      [\"eq\", \"_S.$operation\", \"insert\"],\n                      [\"if\",\n                        [\"is-null\", \"_S.$origin\"],\n                        [\"fail!\", \"Entity to be inserted does not have $origin property\"]\n                      ]\n                    ],\n                    [\"copy\", \"*\"]\n                  ],\n                  [\n                    [\"if\",\n                      [\"neq\", \"_S.response_status\", 200],\n                      [\"copy\", \"*\"],\n                      [\n                        [\"add\", \"$comparison\",\n                          [\"apply\", \"based-on-comparison\", \"_S.\"]\n                        ],\n                        [\"case-eq\",\n                          [\"path\", \"$result\", \"_T.$comparison\"], \"modified-in-system\",\n                          [\"merge\",\n                            [\"apply\", \"discard-modified-in-system\", \"_S.\"]\n                          ], \"entity-not-changed\",\n                          [\"merge\",\n                            [\"apply\", \"discard-entity-not-changed\", \"_S.\"]\n                          ],\n                          {% if is_natural_key is defined and is_natural_key %}\n                          [\"merge\",\n                            [\"apply\", \"insert\", \"_S.\"]\n                          ]\n                          {% else %}\n                          [\"merge\",\n                            [\"apply\", \"update\", \"_S.\"]\n                          ]\n                         {% endif %}\n                        ],\n                        [\"copy\", \"$source\"],\n                        [\"copy\", \"$origin\"],\n                        [\"copy\", \"$replaced\"],\n                        [\"add\", \"$trace_lookup\", [\"apply\", \"trace\", \"_S.\"]]\n                      ]\n                    ]\n                  ]\n                ]\n              ],\n              \"trace\": [\n                [\"copy\", \"*\", [\"list\", \"$trace_*\", \"$source\"]]\n              ],\n              \"based-on-comparison\": [\n                [\"comment\", \"If looked up entity is different from $based_on then noop. If looked up entity is same as _S then noop - otherwise perform update\"],\n                [\"merge\",\n                  [\"apply\", \"based-on-source\", \"_S.\"]\n                ],\n                [\"merge\",\n                  [\"apply\", \"based-on-lookup\", \"_S.\"]\n                ],\n                [\"merge\",\n                  [\"apply\", \"based-on-update\", \"_S.\"]\n                ],\n                [\"if\",\n                  [\"neq\", \"_T.$based_on_lookup\", \"_T.$based_on_source\"],\n                  [\"add\", \"$result\", \"modified-in-system\"],\n                  [\"if\",\n                    [\"neq\", \"_T.$based_on_update\", \"_T.$based_on_source\"],\n                    [\"add\", \"$result\", \"needs-update\"],\n                    [\"add\", \"$result\", \"entity-not-changed\"]\n                  ]\n                ]\n              ],\n              \"based-on-extract\": [\n                [\"if\",\n                  [\"is-dict\", \"_S.a\"],\n                  [\"merge\",\n                    [\"dict\",\n                      [\"map\",\n                        [\"list\", \"_.\",\n                         [\"sorted\", [\"if\",\n                            [\"is-dict\",\n                              [\"path\", \"_.\", \"_S.b\"]\n                            ],\n                            [\"apply\", \"based-on-extract\",\n                              [\"dict\", \"a\",\n                                [\"path\", \"_.\", \"_S.a\"], \"b\",\n                                [\"path\", \"_.\", \"_S.b\"]\n                              ]\n                            ],\n                            [\"path\", \"_.\", \"_S.b\"]\n                          ]]\n                        ],\n                        [\"keys\", \"_S.a\"]\n                      ]\n                    ]\n                  ]\n                ],\n                [\"remove\", [\"literal\", {{ primary_key | tojson }} ]]\n              ],\n              \"based-on-source\": [\n                [\"add\", \"$based_on_source\",\n                  [\"apply\", \"based-on-extract\",\n                    [\"dict\", \"a\", [\"apply\", \"payload\", \"_S.$source\"], \"b\",\n                     \"_S.$source.$based_on\"\n                    ]\n                  ]\n                ]\n              ],\n              \"based-on-lookup\": [\n                [\"add\", \"$based_on_lookup\",\n                  [\"apply\", \"based-on-extract\",\n                    [\"dict\", \"a\", [\"apply\", \"payload\", \"_S.$source\"], \"b\",\n                      [\"first\", \"_S.response_body\"]\n                    ]\n                  ]\n                ]\n              ],\n              \"based-on-update\": [\n                [\"add\", \"$based_on_update\",\n                 [\"apply\", \"based-on-extract\",\n                  [\"dict\", \"a\", [\"apply\", \"payload\", \"_S.$source\"], \"b\",\n                   [\"apply\", \"payload\", \"_S.$source\"]\n                  ]\n                 ]\n                ]\n              ],\n              \"discard-entity-not-changed\": [\n                [\"add\", \"$operation\", \"discard-entity-not-changed\"]\n              ],\n              \"discard-modified-in-system\": [\n                [\"add\", \"$operation\", \"discard-modified-in-system\"]\n              ],\n              \"payload\": [\n                [\"merge\",\n                  [\"dict\",\n                    [\"filter\",\n                      [\"not\",\n                        [\"or\",\n                          [\"matches\", \"_*\",\n                            [\"first\", \"_.\"]\n                          ],\n                          [\"matches\", \"$*\",\n                            [\"first\", \"_.\"]\n                          ]\n                        ]\n                      ],\n                      [\"items\", \"_S.\"]\n                    ]\n                  ]\n                ]\n              ],\n              {% if update_payload_rule is defined %}\n              \"custom_update_payload\": {{ update_payload_rule | tojson }},\n              {% endif %}\n              \"update\": [\n                  [\"merge\",\n                   [\"apply\", \"payload\", \"_S.\"]\n                  ],\n                  [\"add\", \"$operation\", \"update\"],\n                  [\"add\", \"_payload\",\n                   {% if update_payload_rule is defined %}\n                   [\"apply\", \"custom_update_payload\", \"_S.$source\"]\n                   {% else %}\n                   \"_S.$source\"\n                   {% endif %}\n                  ],\n                  [\"if\", [\"is-not-null\", \"_T._payload.$payload\"],\n                   [\"add\", \"_payload\", \"_T._payload.$payload\"]],\n                  [\"add\", \"{{ payload_property if payload_property is defined else 'payload' }}\",\n                   [\"apply\", \"payload\", \"_T._payload\"]\n                  ]\n              ],\n              {% if insert_payload_rule is defined %}\n              \"custom_insert_payload\": {{ insert_payload_rule | tojson }},\n              {% endif %}\n              \"insert\": [\n                  [\"merge\",\n                   [\"apply\", \"payload\", \"_S.\"]\n                  ],\n                  [\"add\", \"$operation\", \"insert\"],\n                  [\"add\", \"_payload\",\n                   {% if insert_payload_rule is defined %}\n                   [\"apply\", \"custom_insert_payload\", \"_S.$source\"]\n                   {% else %}\n                   \"_S.$source\"\n                   {% endif %}\n                  ],\n                  [\"if\", [\"is-not-null\", \"_T._payload.$payload\"],\n                   [\"add\", \"_payload\", \"_T._payload.$payload\"]],\n                  [\"add\", \"{{ payload_property if payload_property is defined else 'payload' }}\",\n                   [\"apply\", \"payload\", \"_T._payload\"]\n                  ]\n              ]\n            }\n          }, {\n            \"type\": \"rest\",\n            \"system\": \"{{ rest_system }}\",\n            \"allowed_status_codes\": \"100-599\",\n            \"operation\": \"{{ operation_update if operation_update is defined else 'update' }}\",\n        {% if operation_update_properties is defined %}\n            \"properties\": {{ operation_update_properties | tojson }},\n        {% endif %}\n            \"replace_entity\": false,\n            \"response_property\": \"response_body\",\n            \"response_status_property\": \"response_status\",\n            \"side_effects\": true,\n            \"trigger_on\": {\n              \"key\": \"$operation\",\n              \"value\": \"update\"\n            }\n          }, {\n            \"type\": \"rest\",\n            \"system\": \"{{ rest_system }}\",\n            \"allowed_status_codes\": \"100-599\",\n            \"operation\": \"{{ operation_insert if operation_insert is defined else 'insert' }}\",\n        {% if operation_insert_properties is defined %}\n            \"properties\": {{ operation_insert_properties | tojson }},\n        {% endif %}\n            \"replace_entity\": false,\n            \"response_property\": \"response_body\",\n            \"response_status_property\": \"response_status\",\n            \"side_effects\": true,\n            \"trigger_on\": {\n              \"key\": \"$operation\",\n              \"value\": \"insert\"\n            }\n          }, {\n            \"type\": \"rest\",\n            \"system\": \"{{ rest_system }}\",\n            \"allowed_status_codes\": \"100-599\",\n            \"operation\": \"{{ operation_delete if operation_delete is defined else 'delete' }}\",\n        {% if operation_delete_properties is defined %}\n            \"properties\": {{ operation_delete_properties | tojson }},\n        {% endif %}\n            \"replace_entity\": false,\n            \"response_property\": \"response_body\",\n            \"response_status_property\": \"response_status\",\n            \"side_effects\": true,\n            \"trigger_on\": {\n              \"key\": \"$operation\",\n              \"value\": \"delete\"\n            }\n          }, {\n            \"type\": \"dtl\",\n            \"rules\": {\n              \"default\": [\n                [\"copy\", \"$source\"],\n                [\"copy\", \"$origin\"],\n                [\"copy\", \"$replaced\"],\n                [\"copy\", \"$trace_*\"],\n                [\"add\", \"$last_operation\", \"_S.$operation\"],\n                [\"add\", [\"concat\", \"$trace_\", \"_S.$operation\"], [\"apply\", \"trace\", \"_S.\"]],\n                [\"comment\", \"Check lookup operation\"],\n                [\"if\",\n                 [\"and\",\n                  [\"eq\", \"_S.$operation\", \"lookup\"],\n                  [\"not\", [\"in\", \"_S.response_status\", [\"list\", 200]]]],\n                 [\"add\", \"$error\", \"error-lookup\"]\n                ],\n                [\"comment\", \"Check insert operation\"],\n                [\"if\",\n                  [\"eq\", \"_S.$operation\", \"insert\"],\n                  [\"if\",\n                    [\"not\", [\"in\", \"_S.response_status\", [\"list\", 200, 201]]],\n                    [\"add\", \"$error\", \"error-insert\"],\n                    [\n                      {% if is_natural_key is defined and is_natural_key %}\n                        [\"add\", \"$generated_id\",\n                          [\"map\", [\"path\", \"_.\", \"_S.\"], [\"literal\", {{ primary_key | tojson }} ]]\n                        ],\n                      {% else %}\n                        [\"add\", \"$generated_id\",\n                        {% if primary_key_insert is defined %}\n                          [\"map\", [\"path\", \"_.\", \"_S.response_body\"], [\"literal\", {{ primary_key_insert | tojson }} ]]\n                        {% else %}\n                          [\"map\", [\"path\", \"_.\", \"_S.response_body\"], [\"literal\", {{ primary_key | tojson }} ]]\n                        {% endif %}\n                        ],\n                      {% endif %}\n                      [\"if\",\n                        [\"is-null\", \"_T.$generated_id\"],\n                        [\"fail!\", \"Generated primary key not found\"]\n                      ]\n                    ]\n                  ]\n                ],\n                [\"comment\", \"Check update operation\"],\n                [\"if\",\n                  [\"and\",\n                    [\"eq\", \"_S.$operation\", \"update\"],\n                    [\"not\", [\"in\", \"_S.response_status\", [\"list\", 200, 204]]]],\n                  [\"add\", \"$error\", \"error-update\"]\n                ],\n                [\"comment\", \"Check delete operation\"],\n                [\"if\",\n                  [\"and\",\n                    [\"eq\", \"_S.$operation\", \"delete\"],\n                    [\"not\", [\"in\", \"_S.response_status\", [\"list\", 200, 204]]]],\n                  [\"add\", \"$error\", \"error-delete\"]\n                ],\n                [\"add\", \"_previous\",\n                  [\"apply\", \"previous\",\n                    [\"first\",\n                     [\"hops\", {\n                         \"datasets\": [\"{{ share_dataset }} st\"],\n                         \"where\": [\n                             [\"eq\", \"_S._id\", \"st._id\"]\n                         ],\n                         \"track-dependencies\": false\n                     }]\n                    ]\n                  ]\n                ],\n                [\"if\",\n                  [\"and\",\n                    [\"is-null\", \"_T.$generated_id\"],\n                    [\"is-not-null\", \"_T._previous.$generated_id\"]\n                  ],\n                  [\"add\", \"$generated_id\", \"_T._previous.$generated_id\"]\n                ],\n                [\"comment\", \"If entity is $replaced and it has a $generated_id then we must not delete it.\"],\n                [\"if\",\n                  [\"and\",\n                    [\"is-not-null\", \"_T.$generated_id\"],\n                    [\"eq\", \"_S.$operation\", \"discard-replaced\"]\n                  ],\n                  [\"add\", \"_deleted\", false]\n                ],\n                [\"if\",\n                  [\"eq\", \"_S.$replaced\", true],\n                  [\"add-if\", \"$origin\", \"_T._previous.$origin\"]\n                ],\n                [\"add-if\", \"$previous_success\", \"_T._previous.$success\"],\n                [\"if\",\n                  [\"is-not-null\", \"_T.$error\"],\n                  [\"add\", \"$success\", false],\n                  [\"if\", [\"matches\", \"discard-\", \"_S.$operation\"],\n                    [\"add-if\", \"$success\", \"_T.$previous_success\"],\n                    [\"add\", \"$success\", true]]\n                ]\n              ],\n              \"previous\": [\n                [\"copy\", \"$generated_id\"],\n                [\"copy\", \"$origin\"],\n                [\"copy\", \"$success\"]\n              ],\n              \"trace\": [\n                [\"copy\", \"*\", [\"list\", \"$trace_*\", \"$source\"]]\n              ]\n            }\n          }]\nsesam:markjson",
+        "type": "template"
+      }
+    ],
+    "type": "pipe"
+  },
+  {
     "_id": "{{@ system @}}-{{@ datatype @}}-children",
     "namespaced_identifiers": false,
     "source": {
@@ -10,6 +223,10 @@
       {
         "rules": {
           "default": [
+            [
+              "comment",
+              "optimization, no need to look up the entity if we know it has no associations"
+            ],
             [
               "if",
               [
@@ -31,30 +248,61 @@
       {
         "operation": "{{@ datatype @}}_list",
         "replace_entity": false,
+        "side_effects": false,
         "system": "{{@ system @}}",
         "type": "rest"
       },
       {
         "rules": {
-          "default": [
-            [
-              "create-child",
-              [
-                "apply",
-                "rows",
-                "_S.response.results"
-              ]
-            ]
-          ],
-          "rows": [
+          "association": [
             [
               "copy",
               "*"
             ],
             [
+              "comment",
+              "collapse the associationstypes into a simpler <TYPE>-<ID> structure and remove the built-in one without a label to make it easier for the model mapping, reconstructed again in share"
+            ],
+            [
+              "comment",
+              "starts with sesam_ so that we know it was not part of the source entity"
+            ],
+            [
+              "add",
+              "sesam_simpleAssociationTypes",
+              [
+                "map",
+                [
+                  "concat",
+                  "_.category",
+                  "-",
+                  [
+                    "string",
+                    "_.typeId"
+                  ]
+                ],
+                [
+                  "filter",
+                  [
+                    "is-not-empty",
+                    "_.label"
+                  ],
+                  "_S.associationTypes"
+                ]
+              ]
+            ],
+            [
+              "comment",
+              "need to add the id from the parent to make the entity self contained, it's not included in the response"
+            ],
+            [
               "add",
               "id",
               "_P._S.id"
+            ],
+            [
+              "comment",
+              "creating this id should be safe as the parent id is always part of the id"
             ],
             [
               "add",
@@ -65,951 +313,27 @@
                 "-",
                 [
                   "string",
-                  "_R._S.response.results.toObjectId"
+                  "_T.toObjectId"
                 ]
+              ]
+            ]
+          ],
+          "default": [
+            [
+              "comment",
+              "can't use payload_property because we want to use create-child to track deleted associations"
+            ],
+            [
+              "create-child",
+              [
+                "apply",
+                "association",
+                "_S.response.results"
               ]
             ]
           ]
         },
         "type": "dtl"
-      }
-    ],
-    "type": "pipe"
-  },
-  {
-    "_id": "{{@ system @}}-{{@ datatype @}}-collect",
-    "namespaced_identifiers": false,
-    "source": {
-      "dataset": "{{@ system @}}-{{@ datatype @}}-children",
-      "type": "dataset"
-    },
-    "transform": [
-      {
-        "type": "emit_children"
-      }
-    ],
-    "type": "pipe"
-  },
-  {
-    "_id": "{{@ system @}}-{{@ datatype @}}-share",
-    "namespaced_identifiers": false,
-    "pump": {
-      "schedule_interval": "~f914.4",
-      "type": "datasync"
-    },
-    "sink": {
-      "dataset": "{{@ system @}}-{{@ datatype @}}-share",
-      "deletion_tracking": false,
-      "set-initial-offset": "if-source-populated",
-      "set_initial_offset": "onload",
-      "track_children": false,
-      "type": "dataset"
-    },
-    "source": {
-      "dataset": "{{@ system @}}-{{@ datatype @}}-transform",
-      "type": "dataset"
-    },
-    "transform": [
-      {
-        "transforms": [
-          {
-            "rules": {
-              "default": [
-                [
-                  "if",
-                  [
-                    "and",
-                    [
-                      "eq",
-                      "_S.$replaced",
-                      true
-                    ],
-                    [
-                      "eq",
-                      "_S._deleted",
-                      true
-                    ]
-                  ],
-                  [
-                    "merge",
-                    [
-                      "apply",
-                      "discard-replaced",
-                      "_S."
-                    ]
-                  ],
-                  [
-                    "if",
-                    [
-                      "eq",
-                      "_S._deleted",
-                      true
-                    ],
-                    [
-                      [
-                        "comment",
-                        "Entity is deleted and it does have a system specific id."
-                      ],
-                      [
-                        "merge",
-                        [
-                          "apply",
-                          "delete",
-                          "_S."
-                        ]
-                      ]
-                    ],
-                    [
-                      [
-                        "comment",
-                        "Entity is not deleted and it does have a system specific id."
-                      ],
-                      [
-                        "merge",
-                        [
-                          "apply",
-                          "lookup",
-                          "_S."
-                        ]
-                      ]
-                    ]
-                  ]
-                ],
-                [
-                  "add",
-                  "$source",
-                  "_S."
-                ],
-                [
-                  "copy",
-                  "toObjectId"
-                ],
-                [
-                  "copy",
-                  "$origin"
-                ],
-                [
-                  "copy",
-                  "$replaced"
-                ],
-                [
-                  "copy",
-                  "id"
-                ]
-              ],
-              "delete": [
-                [
-                  "add",
-                  "$operation",
-                  "delete"
-                ]
-              ],
-              "discard-already-inserted": [
-                [
-                  "add",
-                  "$operation",
-                  "discard-already-inserted"
-                ]
-              ],
-              "discard-delete-non-existent": [
-                [
-                  "add",
-                  "$operation",
-                  "discard-delete-non-existent"
-                ]
-              ],
-              "discard-replaced": [
-                [
-                  "add",
-                  "$operation",
-                  "discard-replaced"
-                ]
-              ],
-              "insert": [
-                [
-                  "add",
-                  "$operation",
-                  "insert"
-                ],
-                [
-                  "add",
-                  "payload",
-                  [
-                    "apply",
-                    "payload",
-                    "_S."
-                  ]
-                ]
-              ],
-              "lookup": [
-                [
-                  "add",
-                  "$operation",
-                  "lookup"
-                ]
-              ],
-              "payload": [
-                [
-                  "merge",
-                  [
-                    "dict",
-                    [
-                      "filter",
-                      [
-                        "not",
-                        [
-                          "or",
-                          [
-                            "matches",
-                            "_*",
-                            [
-                              "first",
-                              "_."
-                            ]
-                          ],
-                          [
-                            "matches",
-                            "$*",
-                            [
-                              "first",
-                              "_."
-                            ]
-                          ]
-                        ]
-                      ],
-                      [
-                        "items",
-                        "_S."
-                      ]
-                    ]
-                  ]
-                ]
-              ]
-            },
-            "type": "dtl"
-          },
-          {
-            "allowed_status_codes": "100-599",
-            "operation": "{{@ datatype @}}_lookup",
-            "payload_property": "results",
-            "replace_entity": false,
-            "response_property": "response_body",
-            "response_status_property": "response_status",
-            "side_effects": false,
-            "system": "{{@ system @}}",
-            "trigger_on": {
-              "key": "$operation",
-              "value": "lookup"
-            },
-            "type": "rest"
-          },
-          {
-            "rules": {
-              "based-on-comparison": [
-                [
-                  "comment",
-                  "If looked up entity is different from $based_on then noop. If looked up entity is same as _S then noop - otherwise perform update"
-                ],
-                [
-                  "add",
-                  "$based_on_source",
-                  "_S.$source.$based_on"
-                ],
-                [
-                  "merge",
-                  [
-                    "apply",
-                    "based-on-lookup",
-                    "_S."
-                  ]
-                ],
-                [
-                  "merge",
-                  [
-                    "apply",
-                    "based-on-update",
-                    "_S."
-                  ]
-                ],
-                [
-                  "if",
-                  [
-                    "neq",
-                    "_T.$based_on_lookup",
-                    "_T.$based_on_source"
-                  ],
-                  [
-                    "add",
-                    "$result",
-                    "modified-in-system"
-                  ],
-                  [
-                    "if",
-                    [
-                      "neq",
-                      "_T.$based_on_update",
-                      "_T.$based_on_source"
-                    ],
-                    [
-                      "add",
-                      "$result",
-                      "needs-update"
-                    ],
-                    [
-                      "add",
-                      "$result",
-                      "entity-not-changed"
-                    ]
-                  ]
-                ]
-              ],
-              "based-on-extract": [
-                [
-                  "if",
-                  [
-                    "is-dict",
-                    "_S.a"
-                  ],
-                  [
-                    "merge",
-                    [
-                      "dict",
-                      [
-                        "map",
-                        [
-                          "list",
-                          "_.",
-                          [
-                            "if",
-                            [
-                              "eq",
-                              "_.",
-                              "id"
-                            ],
-                            [
-                              "path",
-                              "_.",
-                              "_S.a"
-                            ],
-                            [
-                              "if",
-                              [
-                                "is-dict",
-                                [
-                                  "path",
-                                  "_.",
-                                  "_S.a"
-                                ]
-                              ],
-                              [
-                                "apply",
-                                "based-on-extract",
-                                [
-                                  "dict",
-                                  "a",
-                                  [
-                                    "path",
-                                    "_.",
-                                    "_S.a"
-                                  ],
-                                  "b",
-                                  [
-                                    "path",
-                                    "_.",
-                                    "_S.b"
-                                  ]
-                                ]
-                              ],
-                              [
-                                "path",
-                                "_.",
-                                "_S.b"
-                              ]
-                            ]
-                          ]
-                        ],
-                        [
-                          "keys",
-                          "_S.a"
-                        ]
-                      ]
-                    ]
-                  ]
-                ]
-              ],
-              "based-on-lookup": [
-                [
-                  "add",
-                  "$based_on_lookup",
-                  [
-                    "apply",
-                    "based-on-extract",
-                    [
-                      "dict",
-                      "a",
-                      "_S.$source.$based_on",
-                      "b",
-                      [
-                        "first",
-                        "_S.response_body"
-                      ]
-                    ]
-                  ]
-                ]
-              ],
-              "based-on-update": [
-                [
-                  "add",
-                  "$based_on_update",
-                  [
-                    "apply",
-                    "based-on-extract",
-                    [
-                      "dict",
-                      "a",
-                      "_S.$source.$based_on",
-                      "b",
-                      [
-                        "first",
-                        "_S.$source"
-                      ]
-                    ]
-                  ]
-                ]
-              ],
-              "default": [
-                [
-                  "if",
-                  [
-                    "neq",
-                    "_S.$operation",
-                    "lookup"
-                  ],
-                  [
-                    "copy",
-                    "*"
-                  ],
-                  [
-                    "if",
-                    [
-                      "is-empty",
-                      "_S.response_body"
-                    ],
-                    [
-                      "if",
-                      [
-                        "is-null",
-                        "_S.$origin"
-                      ],
-                      [
-                        "fail!",
-                        "Entity to be inserted does not have $origin property"
-                      ],
-                      [
-                        "merge",
-                        [
-                          "apply",
-                          "insert",
-                          "_S."
-                        ]
-                      ]
-                    ],
-                    [
-                      "if",
-                      [
-                        "neq",
-                        "_S.response_status",
-                        200
-                      ],
-                      [
-                        "copy",
-                        "*"
-                      ],
-                      [
-                        [
-                          "add",
-                          "$comparison",
-                          [
-                            "apply",
-                            "based-on-comparison",
-                            "_S."
-                          ]
-                        ],
-                        [
-                          "case-eq",
-                          [
-                            "path",
-                            "$result",
-                            "_T.$comparison"
-                          ],
-                          "modified-in-system",
-                          [
-                            "merge",
-                            [
-                              "apply",
-                              "discard-modified-in-system",
-                              "_S."
-                            ]
-                          ],
-                          "entity-not-changed",
-                          [
-                            "merge",
-                            [
-                              "apply",
-                              "discard-entity-not-changed",
-                              "_S."
-                            ]
-                          ],
-                          [
-                            "merge",
-                            [
-                              "apply",
-                              "update",
-                              "_S."
-                            ]
-                          ]
-                        ],
-                        [
-                          "copy",
-                          "$source"
-                        ],
-                        [
-                          "copy",
-                          "$origin"
-                        ],
-                        [
-                          "copy",
-                          "$replaced"
-                        ],
-                        [
-                          "add",
-                          "$trace_lookup",
-                          "_S."
-                        ]
-                      ]
-                    ]
-                  ]
-                ]
-              ],
-              "discard-entity-not-changed": [
-                [
-                  "add",
-                  "$operation",
-                  "discard-entity-not-changed"
-                ]
-              ],
-              "discard-modified-in-system": [
-                [
-                  "add",
-                  "$operation",
-                  "discard-modified-in-system"
-                ]
-              ],
-              "insert": [
-                [
-                  "add",
-                  "$operation",
-                  "insert"
-                ],
-                [
-                  "add",
-                  "toObjectId",
-                  "_S.$source.toObjectId"
-                ],
-                [
-                  "add",
-                  "id",
-                  "_S.$source.id"
-                ],
-                [
-                  "add",
-                  "payload",
-                  [
-                    "apply",
-                    "payload",
-                    "_S.$source.associationTypes"
-                  ]
-                ]
-              ],
-              "payload": [
-                [
-                  "merge-union",
-                  [
-                    "dict",
-                    "associationCategory",
-                    "_S.category",
-                    "associationTypeId",
-                    "_S.typeId"
-                  ]
-                ]
-              ],
-              "update": [
-                [
-                  "comment",
-                  "May need to shape payload somewhat?"
-                ],
-                [
-                  "add",
-                  "$operation",
-                  "update"
-                ],
-                [
-                  "add",
-                  "toObjectId",
-                  "_S.$source.toObjectId"
-                ],
-                [
-                  "add",
-                  "id",
-                  "_S.$source.id"
-                ],
-                [
-                  "add",
-                  "payload",
-                  [
-                    "apply",
-                    "payload",
-                    "_S.$source.associationTypes"
-                  ]
-                ]
-              ]
-            },
-            "type": "dtl"
-          },
-          {
-            "allowed_status_codes": "100-599",
-            "operation": "{{@ datatype @}}_update",
-            "replace_entity": false,
-            "response_property": "response_body",
-            "response_status_property": "response_status",
-            "side_effects": true,
-            "system": "{{@ system @}}",
-            "trace": true,
-            "trigger_on": {
-              "key": "$operation",
-              "value": "update"
-            },
-            "type": "rest"
-          },
-          {
-            "allowed_status_codes": "100-599",
-            "operation": "{{@ datatype @}}_insert",
-            "replace_entity": false,
-            "response_property": "response_body",
-            "response_status_property": "response_status",
-            "side_effects": true,
-            "system": "{{@ system @}}",
-            "trace": true,
-            "trigger_on": {
-              "key": "$operation",
-              "value": "insert"
-            },
-            "type": "rest"
-          },
-          {
-            "allowed_status_codes": "100-599",
-            "operation": "{{@ datatype @}}_delete",
-            "replace_entity": false,
-            "response_property": "response_body",
-            "response_status_property": "response_status",
-            "side_effects": true,
-            "system": "{{@ system @}}",
-            "trigger_on": {
-              "key": "$operation",
-              "value": "delete"
-            },
-            "type": "rest"
-          },
-          {
-            "rules": {
-              "default": [
-                [
-                  "copy",
-                  "$source"
-                ],
-                [
-                  "copy",
-                  "$origin"
-                ],
-                [
-                  "copy",
-                  "$replaced"
-                ],
-                [
-                  "add",
-                  "$last_operation",
-                  "_S.$operation"
-                ],
-                [
-                  "if",
-                  [
-                    "in",
-                    "_S.$operation",
-                    [
-                      "list",
-                      "lookup",
-                      "insert",
-                      "update",
-                      "delete"
-                    ]
-                  ],
-                  [
-                    "add",
-                    [
-                      "concat",
-                      "$trace_",
-                      "_S.$operation"
-                    ],
-                    "_S."
-                  ]
-                ],
-                [
-                  "comment",
-                  "Check lookup operation"
-                ],
-                [
-                  "if",
-                  [
-                    "and",
-                    [
-                      "eq",
-                      "_S.$operation",
-                      "lookup"
-                    ],
-                    [
-                      "not",
-                      [
-                        "in",
-                        "_S.response_status",
-                        [
-                          "list",
-                          200
-                        ]
-                      ]
-                    ]
-                  ],
-                  [
-                    "add",
-                    "$error",
-                    "error-lookup"
-                  ]
-                ],
-                [
-                  "comment",
-                  "Check insert operation"
-                ],
-                [
-                  "if",
-                  [
-                    "eq",
-                    "_S.$operation",
-                    "insert"
-                  ],
-                  [
-                    "if",
-                    [
-                      "not",
-                      [
-                        "in",
-                        "_S.response_status",
-                        [
-                          "list",
-                          200,
-                          201
-                        ]
-                      ]
-                    ],
-                    [
-                      "add",
-                      "$error",
-                      "error-insert"
-                    ],
-                    [
-                      [
-                        "add",
-                        "$generated_id",
-                        [
-                          "first",
-                          "_S.response_body.toObjectId"
-                        ]
-                      ],
-                      [
-                        "if",
-                        [
-                          "is-null",
-                          "_T.$generated_id"
-                        ],
-                        [
-                          "fail!",
-                          "Generated primary key not found"
-                        ]
-                      ]
-                    ]
-                  ]
-                ],
-                [
-                  "comment",
-                  "Check update operation"
-                ],
-                [
-                  "if",
-                  [
-                    "and",
-                    [
-                      "eq",
-                      "_S.$operation",
-                      "update"
-                    ],
-                    [
-                      "not",
-                      [
-                        "in",
-                        "_S.response_status",
-                        [
-                          "list",
-                          200,
-                          204
-                        ]
-                      ]
-                    ]
-                  ],
-                  [
-                    "add",
-                    "$error",
-                    "error-update"
-                  ]
-                ],
-                [
-                  "comment",
-                  "Check delete operation"
-                ],
-                [
-                  "if",
-                  [
-                    "and",
-                    [
-                      "eq",
-                      "_S.$operation",
-                      "delete"
-                    ],
-                    [
-                      "not",
-                      [
-                        "in",
-                        "_S.response_status",
-                        [
-                          "list",
-                          200,
-                          204
-                        ]
-                      ]
-                    ]
-                  ],
-                  [
-                    "add",
-                    "$error",
-                    "error-delete"
-                  ]
-                ],
-                [
-                  "add",
-                  "_previous",
-                  [
-                    "apply",
-                    "previous",
-                    [
-                      "first",
-                      [
-                        "hops",
-                        {
-                          "datasets": [
-                            "{{@ system @}}-{{@ datatype @}}-share st"
-                          ],
-                          "track-dependencies": false,
-                          "where": [
-                            [
-                              "eq",
-                              "_S._id",
-                              "st._id"
-                            ]
-                          ]
-                        }
-                      ]
-                    ]
-                  ]
-                ],
-                [
-                  "if",
-                  [
-                    "and",
-                    [
-                      "is-null",
-                      "_T.$generated_id"
-                    ],
-                    [
-                      "is-not-null",
-                      "_T._previous.$generated_id"
-                    ]
-                  ],
-                  [
-                    "add",
-                    "$generated_id",
-                    "_T._previous.$generated_id"
-                  ]
-                ],
-                [
-                  "comment",
-                  "If entity is $replaced and it has a $generated_id then we must not delete it."
-                ],
-                [
-                  "if",
-                  [
-                    "and",
-                    [
-                      "is-not-null",
-                      "_T.$generated_id"
-                    ],
-                    [
-                      "eq",
-                      "_S.$operation",
-                      "discard-replaced"
-                    ]
-                  ],
-                  [
-                    "add",
-                    "_deleted",
-                    false
-                  ]
-                ],
-                [
-                  "if",
-                  [
-                    "eq",
-                    "_S.$replaced",
-                    true
-                  ],
-                  [
-                    "add-if",
-                    "$origin",
-                    "_T._previous.$origin"
-                  ]
-                ]
-              ],
-              "previous": [
-                [
-                  "copy",
-                  "$generated_id"
-                ],
-                [
-                  "copy",
-                  "$origin"
-                ]
-              ]
-            },
-            "type": "dtl"
-          }
-        ],
-        "type": "chained"
       }
     ],
     "type": "pipe"
