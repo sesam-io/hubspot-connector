@@ -7,152 +7,192 @@
   "auth": "oauth2",
   "datatypes": {
     "company": {
-      "template": "templates/company.json",
-      "label": "Company"
+      "label": "Company",
+      "template": "templates/company.json"
     },
     "companycompanyassociation": {
-      "template": "templates/companycontactassociation.json",
-      "label": "Company-Company Association"
+      "label": "Company-Company Association",
+      "template": "templates/companycontactassociation.json"
     },
     "companycompanyassociationtype": {
-      "template": "templates/contactcompanyassociationtype.json",
-      "label": "Company-Company Association Type"
-    },
-    "companycontactassociation": {
-      "template": "templates/companycontactassociation.json",
-      "label": "Company-Contact Association"
-    },
-    "companycontactassociationtype": {
-      "template": "templates/contactcompanyassociationtype.json",
-      "label": "Company-Contact Association Type"
-    },
-    "companydealassociation": {
-      "template": "templates/companycontactassociation.json",
-      "label": "Company-Deal Association"
-    },
-    "companydealassociationtype": {
-      "template": "templates/contactcompanyassociationtype.json",
-      "label": "Company-Deal Association Type"
-    },
-    "companyticketassociation": {
-      "template": "templates/companycontactassociation.json",
-      "label": "Company-Ticket Association"
-    },
-    "companyticketassociationtype": {
-      "template": "templates/contactcompanyassociationtype.json",
-      "label": "Company-Ticket Association Type"
+      "label": "Company-Company Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
     },
     "contact": {
-      "template": "templates/company.json",
-      "label": "Contact"
+      "label": "Contact",
+      "template": "templates/company.json"
     },
     "contactcompanyassociation": {
-      "template": "templates/contactcompanyassociation.json",
-      "label": "Contact-Company Association"
+      "label": "Contact-Company Association",
+      "template": "templates/contactcompanyassociation.json"
     },
     "contactcompanyassociationtype": {
-      "template": "templates/contactcompanyassociationtype.json",
-      "label": "Contact-Company Association Type"
+      "label": "Contact-Company Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
     },
     "contactdealassociation": {
-      "template": "templates/contactcompanyassociation.json",
-      "label": "Contact-Deal Association"
+      "label": "Contact-Deal Association",
+      "template": "templates/contactcompanyassociation.json"
     },
     "contactdealassociationtype": {
-      "template": "templates/contactcompanyassociationtype.json",
-      "label": "Contact-Deal Association Type"
+      "label": "Contact-Deal Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
     },
     "contactticketassociation": {
-      "template": "templates/contactcompanyassociation.json",
-      "label": "Contact-Ticket Association"
+      "label": "Contact-Ticket Association",
+      "template": "templates/contactcompanyassociation.json"
     },
     "contactticketassociationtype": {
-      "template": "templates/contactcompanyassociationtype.json",
-      "label": "Contact-Ticket Association Type"
+      "label": "Contact-Ticket Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
     },
     "deal": {
-      "template": "templates/deal.json",
-      "label": "Deal"
+      "label": "Deal",
+      "template": "templates/deal.json"
+    },
+    "dealcompanyassociation": {
+      "label": "Deal-Company Association",
+      "template": "templates/dealticketassociation.json"
+    },
+    "dealcompanyassociationtype": {
+      "label": "Deal-Company Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "dealcontactassociation": {
+      "label": "Deal-Contact Association",
+      "template": "templates/dealticketassociation.json"
+    },
+    "dealcontactassociationtype": {
+      "label": "Deal-Contact Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
     },
     "dealline_itemassociation": {
-      "template": "templates/dealticketassociation.json",
-      "label": "Deal-Line Item Association"
+      "label": "Deal-Line Item Association",
+      "template": "templates/dealticketassociation.json"
     },
     "dealline_itemassociationtype": {
-      "template": "templates/contactcompanyassociationtype.json",
-      "label": "Deal-Line Item Association Type"
+      "label": "Deal-Line Item Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
     },
     "dealticketassociation": {
-      "template": "templates/dealticketassociation.json",
-      "label": "Deal-Ticket Association"
+      "label": "Deal-Ticket Association",
+      "template": "templates/dealticketassociation.json"
     },
     "dealticketassociationtype": {
-      "template": "templates/contactcompanyassociationtype.json",
-      "label": "Deal-Ticket Association Type"
+      "label": "Deal-Ticket Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
     },
     "line_itemdealassociation": {
-      "template": "templates/line_itemdealassociation.json",
-      "label": "Line Item-Deal Association"
+      "label": "Line Item-Deal Association",
+      "template": "templates/line_itemdealassociation.json"
     },
     "line_itemdealassociationtype": {
-      "template": "templates/contactcompanyassociationtype.json",
-      "label": "Line Item-Deal Association"
+      "label": "Line Item-Deal Association",
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "line_itemquoteassociation": {
+      "label": "Line Item-Quote Association",
+      "template": "templates/line_itemdealassociation.json"
+    },
+    "line_itemquoteassociationtype": {
+      "label": "Line Item-Quote Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
     },
     "lineitem": {
-      "template": "templates/lineitem.json",
-      "label": "Line Item"
+      "label": "Line Item",
+      "template": "templates/lineitem.json"
     },
     "owner": {
-      "template": "templates/owner.json",
-      "label": "Owner"
+      "label": "Owner",
+      "template": "templates/owner.json"
     },
     "pipelinedeal": {
-      "template": "templates/pipelinedeal.json",
-      "label": "Pipeline Deal"
+      "label": "Pipeline Deal",
+      "template": "templates/pipelinedeal.json"
     },
     "pipelineticket": {
-      "template": "templates/pipelineticket.json",
-      "label": "Pipeline Ticket"
+      "label": "Pipeline Ticket",
+      "template": "templates/pipelineticket.json"
     },
     "product": {
-      "template": "templates/deal.json",
-      "label": "Product"
+      "label": "Product",
+      "template": "templates/deal.json"
     },
     "quote": {
-      "template": "templates/quote.json",
-      "label": "Quote"
+      "label": "Quote",
+      "template": "templates/quote.json"
+    },
+    "quotecompanyassociation": {
+      "label": "Quote-Company Association",
+      "template": "templates/quotedealassociation.json"
+    },
+    "quotecompanyassociationtype": {
+      "label": "Quote-Company Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "quotecontactassociation": {
+      "label": "Quote-Contact Association",
+      "template": "templates/quotedealassociation.json"
+    },
+    "quotecontactassociationtype": {
+      "label": "Quote-Contact Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "quotedealassociation": {
+      "label": "Quote-Deal Association",
+      "template": "templates/quotedealassociation.json"
+    },
+    "quotedealassociationtype": {
+      "label": "Quote-Deal Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "quoteline_itemassociation": {
+      "label": "Quote-Line Item Association",
+      "template": "templates/quotedealassociation.json"
+    },
+    "quoteline_itemassociationtype": {
+      "label": "Quote-Line Item Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "quotequote_templateassociation": {
+      "label": "Quote-Quote Template Association",
+      "template": "templates/quotedealassociation.json"
+    },
+    "quotequote_templateassociationtype": {
+      "label": "Quote-Quote Template Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
     },
     "ticket": {
-      "template": "templates/deal.json",
-      "label": "Ticket"
+      "label": "Ticket",
+      "template": "templates/deal.json"
     },
     "ticketcompanyassociation": {
-      "template": "templates/ticketcompanyassociation.json",
-      "label": "Ticket-Company Association"
+      "label": "Ticket-Company Association",
+      "template": "templates/ticketcompanyassociation.json"
     },
     "ticketcompanyassociationtype": {
-      "template": "templates/contactcompanyassociationtype.json",
-      "label": "Ticket-Company Association Type"
+      "label": "Ticket-Company Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
     },
     "ticketcontactassociation": {
-      "template": "templates/ticketcompanyassociation.json",
-      "label": "Ticket-Contact Association"
+      "label": "Ticket-Contact Association",
+      "template": "templates/ticketcompanyassociation.json"
     },
     "ticketcontactassociationtype": {
-      "template": "templates/contactcompanyassociationtype.json",
-      "label": "Ticket-Contact Association Type"
+      "label": "Ticket-Contact Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
     },
     "ticketdealassociation": {
-      "template": "templates/ticketcompanyassociation.json",
-      "label": "Ticket-Deal Association"
+      "label": "Ticket-Deal Association",
+      "template": "templates/ticketcompanyassociation.json"
     },
     "ticketdealassociationtype": {
-      "template": "templates/contactcompanyassociationtype.json",
-      "label": "Ticket-Deal Association Type"
+      "label": "Ticket-Deal Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
     },
     "user": {
-      "template": "templates/user.json",
-      "label": "User"
+      "label": "User",
+      "template": "templates/user.json"
     }
   },
   "oauth2": {

@@ -2,7 +2,7 @@
   "_id": "{{@ system @}}-{{@ datatype @}}-collect",
   "namespaced_identifiers": false,
   "source": {
-    "id_expression": "{{ typeId }}",
+    "id_expression": "{{ [category,typeId]|join('-') }}",
     "operation": "{{@ datatype @}}_list",
     "payload_property": "results",
     "system": "{{@ system @}}",
