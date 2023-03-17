@@ -83,6 +83,29 @@
     "update": {
       "method": "PATCH",
       "url": "crm/v3/objects/{{ properties.datatype }}/{{ entity.id }}"
+    },
+    "user_delete": {
+      "method": "DELETE",
+      "url": "settings/v3/users/{{ entity.id }}"
+    },
+    "user_insert": {
+      "method": "POST",
+      "url": "settings/v3/users"
+    },
+    "user_list": {
+      "id_expression": "{{ id }}",
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "settings/v3/users"
+    },
+    "user_lookup": {
+      "method": "GET",
+      "url": "settings/v3/users/{{ entity.id }}"
+    },
+    "user_update": {
+      "method": "PUT",
+      "url": "settings/v3/users/{{ entity.id }}"
     }
   },
   "type": "system:rest",

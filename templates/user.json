@@ -13,22 +13,10 @@
     },
     "transform": {
       "properties": {
-        "operation_delete": "alternate_delete",
-        "operation_delete_properties": {
-          "datatype": "settings/v3/{{@ datatype @}}s"
-        },
-        "operation_insert": "alternate_insert",
-        "operation_insert_properties": {
-          "datatype": "settings/v3/{{@ datatype @}}s"
-        },
-        "operation_lookup": "alternate_lookup",
-        "operation_lookup_properties": {
-          "datatype": "settings/v3/{{@ datatype @}}s"
-        },
-        "operation_update": "alternate_update2",
-        "operation_update_properties": {
-          "datatype": "settings/v3/{{@ datatype @}}s"
-        },
+        "operation_delete": "{{@ datatype @}}_delete",
+        "operation_insert": "{{@ datatype @}}_insert",
+        "operation_lookup": "{{@ datatype @}}_lookup",
+        "operation_update": "{{@ datatype @}}_update",
         "primary_key": "id",
         "rest_system": "{{@ system @}}",
         "share_dataset": "{{@ system @}}-{{@ datatype @}}-share"
@@ -45,12 +33,7 @@
     ],
     "namespaced_identifiers": false,
     "source": {
-      "id_expression": "{{ id }}",
-      "operation": "alternate_list",
-      "payload_property": "results",
-      "properties": {
-        "datatype": "settings/v3/{{@ datatype @}}s"
-      },
+      "operation": "{{@ datatype @}}_list",
       "system": "{{@ system @}}",
       "type": "rest"
     },
