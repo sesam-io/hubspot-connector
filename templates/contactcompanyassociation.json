@@ -96,6 +96,19 @@
             ],
             [
               "comment",
+              "TODO temp fix while the $based_on generation is fixed so that it omits the sesam_ properties"
+            ],
+            [
+              "add",
+              "$based_on",
+              [
+                "apply",
+                "fixupBasedOn",
+                "_S.$based_on"
+              ]
+            ],
+            [
+              "comment",
               "TODO temp fix to add 279 until we can tell the share template how to reshape the looked up entity to strip away the association with null label"
             ],
             [
@@ -151,6 +164,13 @@
                   ]
                 ]
               ]
+            ]
+          ],
+          "fixupBasedOn": [
+            [
+              "copy",
+              "*",
+              "sesam_*"
             ]
           ]
         },
