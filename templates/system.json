@@ -63,10 +63,6 @@
       "method": "DELETE",
       "url": "crm/v4/objects/contact/{{ entity.id }}/associations/company/{{ entity['toObjectId'] }}"
     },
-    "contactcompanyassociation_insert": {
-      "method": "PUT",
-      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/company/{{ entity['toObjectId'] }}"
-    },
     "contactcompanyassociation_list": {
       "method": "GET",
       "next_page_link": "{{ body.paging.next.link }}",
@@ -74,9 +70,10 @@
     },
     "contactcompanyassociation_lookup": {
       "method": "GET",
+      "payload_property": "results",
       "url": "crm/v4/objects/contact/{{ entity.id }}/associations/company"
     },
-    "contactcompanyassociation_update": {
+    "contactcompanyassociation_upsert": {
       "method": "PUT",
       "url": "crm/v4/objects/contact/{{ entity.id }}/associations/company/{{ entity['toObjectId'] }}"
     },
