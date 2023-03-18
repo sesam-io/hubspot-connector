@@ -13,10 +13,10 @@
     },
     "transform": {
       "properties": {
-        "operation_delete": "{{@ datatype @}}_delete",
-        "operation_insert": "{{@ datatype @}}_insert",
-        "operation_lookup": "{{@ datatype @}}_lookup",
-        "operation_update": "{{@ datatype @}}_update",
+        "operation_delete": "{{@ datatype @}}-delete",
+        "operation_insert": "{{@ datatype @}}-insert",
+        "operation_lookup": "{{@ datatype @}}-lookup",
+        "operation_update": "{{@ datatype @}}-update",
         "primary_key": "id",
         "rest_system": "{{@ system @}}",
         "share_dataset": "{{@ system @}}-{{@ datatype @}}-share"
@@ -104,7 +104,7 @@
     "_id": "{{@ system @}}-{{@ datatype @}}-all",
     "namespaced_identifiers": false,
     "source": {
-      "operation": "{{@ datatype @}}_list",
+      "operation": "{{@ datatype @}}-list",
       "system": "{{@ system @}}",
       "type": "rest"
     },
@@ -120,7 +120,7 @@
     "transform": [
       {
         "allowed_status_codes": "200,404",
-        "operation": "{{@ datatype @}}_lookup",
+        "operation": "{{@ datatype @}}-lookup",
         "replace_entity": false,
         "response_status_property": "status",
         "system": "{{@ system @}}",

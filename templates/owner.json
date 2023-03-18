@@ -2,7 +2,7 @@
   "_id": "{{@ system @}}-{{@ datatype @}}-collect",
   "namespaced_identifiers": false,
   "source": {
-    "operation": "{{@ datatype @}}_list",
+    "operation": "{{@ datatype @}}-list",
     "system": "{{@ system @}}",
     "type": "rest"
   },

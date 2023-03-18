@@ -8,15 +8,15 @@
     "token_url": "{{@ token_url @}}"
   },
   "operations": {
-    "company_delete": {
+    "company-delete": {
       "method": "DELETE",
       "url": "crm/v3/objects/company/{{ entity.id }}"
     },
-    "company_insert": {
+    "company-insert": {
       "method": "POST",
       "url": "crm/v3/objects/company"
     },
-    "company_list": {
+    "company-list": {
       "id_expression": "{{ id }}",
       "method": "GET",
       "next_page_link": "{{ body.paging.next.link }}",
@@ -28,7 +28,7 @@
       "payload_property": "results",
       "url": "crm/v3/objects/company"
     },
-    "company_lookup": {
+    "company-lookup": {
       "method": "GET",
       "params": {
         "associations": "contacts,companies,deals,tickets,products,quotes",
@@ -36,19 +36,19 @@
       },
       "url": "crm/v3/objects/company/{{ entity.id }}"
     },
-    "company_update": {
+    "company-update": {
       "method": "PATCH",
       "url": "crm/v3/objects/company/{{ entity.id }}"
     },
-    "contact_delete": {
+    "contact-delete": {
       "method": "DELETE",
       "url": "crm/v3/objects/contact/{{ entity.id }}"
     },
-    "contact_insert": {
+    "contact-insert": {
       "method": "POST",
       "url": "crm/v3/objects/contact"
     },
-    "contact_list": {
+    "contact-list": {
       "id_expression": "{{ id }}",
       "method": "GET",
       "next_page_link": "{{ body.paging.next.link }}",
@@ -60,7 +60,7 @@
       "payload_property": "results",
       "url": "crm/v3/objects/contact"
     },
-    "contact_lookup": {
+    "contact-lookup": {
       "method": "GET",
       "params": {
         "associations": "contacts,companies,deals,tickets,products,quotes",
@@ -68,44 +68,44 @@
       },
       "url": "crm/v3/objects/contact/{{ entity.id }}"
     },
-    "contact_update": {
+    "contact-update": {
       "method": "PATCH",
       "url": "crm/v3/objects/contact/{{ entity.id }}"
     },
-    "contactcompanyassociation_delete": {
+    "contactcompanyassociation-delete": {
       "method": "DELETE",
       "url": "crm/v4/objects/contact/{{ entity['id'] }}/associations/company/{{ entity['toObjectId'] }}"
     },
-    "contactcompanyassociation_list": {
+    "contactcompanyassociation-list": {
       "id_expression": "{{ [category,typeId]|join('-') }}",
       "method": "GET",
       "next_page_link": "{{ body.paging.next.link }}",
       "payload_property": "results",
       "url": "crm/v4/objects/contact/{{ entity.id }}/associations/company"
     },
-    "contactcompanyassociation_lookup": {
+    "contactcompanyassociation-lookup": {
       "method": "GET",
       "payload_property": "results",
       "url": "crm/v4/objects/contact/{{ entity['id'] }}/associations/company"
     },
-    "contactcompanyassociation_upsert": {
+    "contactcompanyassociation-upsert": {
       "method": "PUT",
       "url": "crm/v4/objects/contact/{{ entity['id'] }}/associations/company/{{ entity['toObjectId'] }}"
     },
-    "contactcompanyassociationtype_list": {
+    "contactcompanyassociationtype-list": {
       "method": "GET",
       "next_page_link": "{{ body.paging.next.link }}",
       "url": "crm/v4/associations/contact/company/labels"
     },
-    "deal_delete": {
+    "deal-delete": {
       "method": "DELETE",
       "url": "crm/v3/objects/deals/{{ entity.id }}"
     },
-    "deal_insert": {
+    "deal-insert": {
       "method": "POST",
       "url": "crm/v3/objects/deals"
     },
-    "deal_list": {
+    "deal-list": {
       "id_expression": "{{ id }}",
       "method": "GET",
       "next_page_link": "{{ body.paging.next.link }}",
@@ -117,7 +117,7 @@
       "payload_property": "results",
       "url": "crm/v3/objects/deals"
     },
-    "deal_lookup": {
+    "deal-lookup": {
       "method": "GET",
       "params": {
         "associations": "contacts,companies,deals,tickets,products,quotes",
@@ -125,19 +125,19 @@
       },
       "url": "crm/v3/objects/deals/{{ entity.id }}"
     },
-    "deal_update": {
+    "deal-update": {
       "method": "PATCH",
       "url": "crm/v3/objects/deals/{{ entity.id }}"
     },
-    "lineitem_delete": {
+    "lineitem-delete": {
       "method": "DELETE",
       "url": "crm/v3/objects/line_items/{{ entity.id }}"
     },
-    "lineitem_insert": {
+    "lineitem-insert": {
       "method": "POST",
       "url": "crm/v3/objects/line_items"
     },
-    "lineitem_list": {
+    "lineitem-list": {
       "id_expression": "{{ id }}",
       "method": "GET",
       "next_page_link": "{{ body.paging.next.link }}",
@@ -149,7 +149,7 @@
       "payload_property": "results",
       "url": "crm/v3/objects/line_items"
     },
-    "lineitem_lookup": {
+    "lineitem-lookup": {
       "method": "GET",
       "params": {
         "associations": "contacts,companies,deals,tickets,products,quotes",
@@ -157,33 +157,33 @@
       },
       "url": "crm/v3/objects/line_items/{{ entity.id }}"
     },
-    "lineitem_update": {
+    "lineitem-update": {
       "method": "PATCH",
       "url": "crm/v3/objects/line_items/{{ entity.id }}"
     },
-    "owner_list": {
+    "owner-list": {
       "id_expression": "{{ id }}",
       "method": "GET",
       "next_page_link": "{{ body.paging.next.link }}",
       "payload_property": "results",
       "url": "crm/v3/owners"
     },
-    "pipelinedeal_delete": {
+    "pipelinedeal-delete": {
       "method": "DELETE",
       "url": "crm/v3/pipelines/deals/{{ entity.id }}"
     },
-    "pipelinedeal_insert": {
+    "pipelinedeal-insert": {
       "method": "POST",
       "url": "crm/v3/pipelines/deals"
     },
-    "pipelinedeal_list": {
+    "pipelinedeal-list": {
       "id_expression": "{{ id }}",
       "method": "GET",
       "next_page_link": "{{ body.paging.next.link }}",
       "payload_property": "results",
       "url": "crm/v3/pipelines/deals"
     },
-    "pipelinedeal_lookup": {
+    "pipelinedeal-lookup": {
       "method": "GET",
       "params": {
         "associations": "contacts,companies,deals,tickets,products,quotes",
@@ -191,42 +191,42 @@
       },
       "url": "crm/v3/pipelines/deals/{{ entity.id }}"
     },
-    "pipelinedeal_update": {
+    "pipelinedeal-update": {
       "method": "PATCH",
       "url": "crm/v3/pipelines/deals/{{ entity.id }}"
     },
-    "pipelineticket_delete": {
+    "pipelineticket-delete": {
       "method": "DELETE",
       "url": "crm/v3/pipelines/tickets/{{ entity.id }}"
     },
-    "pipelineticket_insert": {
+    "pipelineticket-insert": {
       "method": "POST",
       "url": "crm/v3/pipelines/tickets"
     },
-    "pipelineticket_list": {
+    "pipelineticket-list": {
       "id_expression": "{{ id }}",
       "method": "GET",
       "next_page_link": "{{ body.paging.next.link }}",
       "payload_property": "results",
       "url": "crm/v3/pipelines/tickets"
     },
-    "pipelineticket_lookup": {
+    "pipelineticket-lookup": {
       "method": "GET",
       "url": "crm/v3/pipelines/tickets/{{ entity.id }}"
     },
-    "pipelineticket_update": {
+    "pipelineticket-update": {
       "method": "PATCH",
       "url": "crm/v3/pipelines/tickets/{{ entity.id }}"
     },
-    "product_delete": {
+    "product-delete": {
       "method": "DELETE",
       "url": "crm/v3/objects/products/{{ entity.id }}"
     },
-    "product_insert": {
+    "product-insert": {
       "method": "POST",
       "url": "crm/v3/objects/products"
     },
-    "product_list": {
+    "product-list": {
       "id_expression": "{{ id }}",
       "method": "GET",
       "next_page_link": "{{ body.paging.next.link }}",
@@ -238,7 +238,7 @@
       "payload_property": "results",
       "url": "crm/v3/objects/products"
     },
-    "product_lookup": {
+    "product-lookup": {
       "method": "GET",
       "params": {
         "associations": "contacts,companies,deals,tickets,products,quotes",
@@ -246,19 +246,19 @@
       },
       "url": "crm/v3/objects/products/{{ entity.id }}"
     },
-    "product_update": {
+    "product-update": {
       "method": "PATCH",
       "url": "crm/v3/objects/products/{{ entity.id }}"
     },
-    "quote_delete": {
+    "quote-delete": {
       "method": "DELETE",
       "url": "crm/v3/objects/quotes{{ entity.id }}"
     },
-    "quote_insert": {
+    "quote-insert": {
       "method": "POST",
       "url": "crm/v3/objects/quotes"
     },
-    "quote_list": {
+    "quote-list": {
       "id_expression": "{{ id }}",
       "method": "GET",
       "next_page_link": "{{ body.paging.next.link }}",
@@ -270,7 +270,7 @@
       "payload_property": "results",
       "url": "crm/v3/objects/quotes"
     },
-    "quote_lookup": {
+    "quote-lookup": {
       "method": "GET",
       "params": {
         "associations": "contacts,companies,deals,tickets,products,quotes",
@@ -278,19 +278,19 @@
       },
       "url": "crm/v3/objects/quotes/{{ entity.id }}"
     },
-    "quote_update": {
+    "quote-update": {
       "method": "PATCH",
       "url": "crm/v3/objects/quotes/{{ entity.id }}"
     },
-    "ticket_delete": {
+    "ticket-delete": {
       "method": "DELETE",
       "url": "crm/v3/objects/tickets/{{ entity.id }}"
     },
-    "ticket_insert": {
+    "ticket-insert": {
       "method": "POST",
       "url": "crm/v3/objects/tickets"
     },
-    "ticket_list": {
+    "ticket-list": {
       "id_expression": "{{ id }}",
       "method": "GET",
       "next_page_link": "{{ body.paging.next.link }}",
@@ -302,7 +302,7 @@
       "payload_property": "results",
       "url": "crm/v3/objects/tickets"
     },
-    "ticket_lookup": {
+    "ticket-lookup": {
       "method": "GET",
       "params": {
         "associations": "contacts,companies,deals,tickets,products,quotes",
@@ -310,30 +310,30 @@
       },
       "url": "crm/v3/objects/tickets/{{ entity.id }}"
     },
-    "ticket_update": {
+    "ticket-update": {
       "method": "PATCH",
       "url": "crm/v3/objects/tickets/{{ entity.id }}"
     },
-    "user_delete": {
+    "user-delete": {
       "method": "DELETE",
       "url": "settings/v3/users/{{ entity.id }}"
     },
-    "user_insert": {
+    "user-insert": {
       "method": "POST",
       "url": "settings/v3/users"
     },
-    "user_list": {
+    "user-list": {
       "id_expression": "{{ id }}",
       "method": "GET",
       "next_page_link": "{{ body.paging.next.link }}",
       "payload_property": "results",
       "url": "settings/v3/users"
     },
-    "user_lookup": {
+    "user-lookup": {
       "method": "GET",
       "url": "settings/v3/users/{{ entity.id }}"
     },
-    "user_update": {
+    "user-update": {
       "method": "PUT",
       "url": "crm/v3/objects/line_items/{{ entity.id }}"
     }

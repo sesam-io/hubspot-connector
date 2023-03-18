@@ -197,10 +197,10 @@
             ]
           ],
           "is_natural_key": true,
-          "operation_delete": "{{@ datatype @}}_delete",
-          "operation_insert": "{{@ datatype @}}_upsert",
-          "operation_lookup": "{{@ datatype @}}_lookup",
-          "operation_update": "{{@ datatype @}}_upsert",
+          "operation_delete": "{{@ datatype @}}-delete",
+          "operation_insert": "{{@ datatype @}}-upsert",
+          "operation_lookup": "{{@ datatype @}}-lookup",
+          "operation_update": "{{@ datatype @}}-upsert",
           "primary_key": [
             "id",
             "toObjectId"
@@ -266,7 +266,7 @@
         "type": "dtl"
       },
       {
-        "operation": "{{@ datatype @}}_list",
+        "operation": "{{@ datatype @}}-list",
         "replace_entity": false,
         "side_effects": false,
         "system": "{{@ system @}}",
