@@ -8,39 +8,48 @@
   "datatypes": {
     "company": {
       "label": "Company",
-      "template": "templates/company.json"
+      "template": "templates/company.json",
+      "description": "Represents organizations, storing information such as industry, location, and related contacts or deals."
     },
     "contact": {
       "label": "Contact",
-      "template": "templates/company.json"
+      "template": "templates/company.json",
+      "description": "Captures individual people's personal information, communication history, and interactions with your company."
     },
     "contactcompanyassociation": {
       "label": "Contact-Company Association",
-      "template": "templates/contactcompanyassociation.json"
+      "template": "templates/contactcompanyassociation.json",
+      "description": "Defines the relationship between contacts and companies, linking individual people to their associated organizations."
     },
     "contactcompanyassociationtype": {
       "label": "Contact-Company Association Type",
-      "template": "templates/contactcompanyassociationtype.json"
+      "template": "templates/contactcompanyassociationtype.json",
+      "description": "Categorizes the type of relationship between contacts and companies."
     },
     "owner": {
       "label": "Owner",
-      "template": "templates/owner.json"
+      "template": "templates/owner.json",
+      "description": "Represents team members responsible for managing and nurturing contacts, companies, deals, or tickets in the CRM."
     },
     "product": {
       "label": "Product",
-      "template": "templates/company.json"
+      "template": "templates/company.json",
+      "description": "Contains information about goods or services offered by the business, such as pricing, descriptions, and stock levels."
     },
     "quote": {
       "label": "Quote",
-      "template": "templates/quote.json"
+      "template": "templates/quote.json",
+      "description": "Represents a formal sales proposal provided to a potential customer, outlining the products, services, and associated costs."
     },
     "ticket": {
       "label": "Ticket",
-      "template": "templates/company.json"
+      "template": "templates/company.json",
+      "description": "Used to manage customer support issues, documenting the problem, tracking its resolution progress, and maintaining communication with the customer."
     },
     "user": {
       "label": "User",
-      "template": "templates/user.json"
+      "template": "templates/user.json",
+      "description": "Represents individual CRM system users, including their account information, roles and permissions."
     }
   },
   "oauth2": {
