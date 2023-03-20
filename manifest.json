@@ -19,7 +19,8 @@
     "contactcompanyassociation": {
       "label": "Contact-Company Association",
       "template": "templates/contactcompanyassociation.json",
-      "description": "Defines the relationship between contacts and companies, linking individual people to their associated organizations."
+      "description": "Defines the relationship between contacts and companies, linking individual people to their associated organizations.",
+      "parent": "contact"
     },
     "contactcompanyassociationtype": {
       "label": "Contact-Company Association Type",

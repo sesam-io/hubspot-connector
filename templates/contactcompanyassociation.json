@@ -236,7 +236,7 @@
     "_id": "{{@ system @}}-{{@ datatype @}}-children",
     "namespaced_identifiers": false,
     "source": {
-      "dataset": "{{@ system @}}-contact-collect",
+      "dataset": "{{@ system @}}-{{@ parent @}}-collect",
       "type": "dataset"
     },
     "transform": [
