@@ -77,7 +77,6 @@
       "url": "crm/v4/objects/contact/{{ entity['id'] }}/associations/company/{{ entity['toObjectId'] }}"
     },
     "contactcompanyassociation-list": {
-      "id_expression": "{{ [category,typeId]|join('-') }}",
       "method": "GET",
       "next_page_link": "{{ body.paging.next.link }}",
       "payload_property": "results",
@@ -93,8 +92,10 @@
       "url": "crm/v4/objects/contact/{{ entity['id'] }}/associations/company/{{ entity['toObjectId'] }}"
     },
     "contactcompanyassociationtype-list": {
+      "id_expression": "{{ [category,typeId]|join('-') }}",
       "method": "GET",
       "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
       "url": "crm/v4/associations/contact/company/labels"
     },
     "deal-delete": {

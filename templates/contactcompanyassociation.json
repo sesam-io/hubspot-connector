@@ -348,7 +348,7 @@
               [
                 "apply",
                 "association",
-                "_S.response.results"
+                "_S.response"
               ]
             ]
           ]
