@@ -1,6 +1,9 @@
 [
   {
     "_id": "{{@ system @}}-{{@ datatype @}}-collect",
+    "exclude_completeness": [
+      "{{@ system @}}-{{@ datatype @}}-share"
+    ],
     "namespaced_identifiers": false,
     "source": {
       "operation": "{{@ datatype @}}-list",
