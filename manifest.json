@@ -23,9 +23,25 @@
       "label": "Contact-Company Association Type",
       "template": "templates/contactcompanyassociationtype.json"
     },
+    "deal": {
+      "label": "Deal",
+      "template": "templates/company.json"
+    },
+    "lineitem": {
+      "label": "Line Item",
+      "template": "templates/company.json"
+    },
     "owner": {
       "label": "Owner",
       "template": "templates/owner.json"
+    },
+    "pipelinedeal": {
+      "label": "Pipeline Deal",
+      "template": "templates/company.json"
+    },
+    "pipelineticket": {
+      "label": "Pipeline Ticket",
+      "template": "templates/company.json"
     },
     "product": {
       "label": "Product",
