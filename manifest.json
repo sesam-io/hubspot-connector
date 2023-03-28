@@ -37,11 +37,11 @@
     },
     "pipelinedeal": {
       "label": "Pipeline Deal",
-      "template": "templates/company.json"
+      "template": "templates/pipelinedeal.json"
     },
     "pipelineticket": {
       "label": "Pipeline Ticket",
-      "template": "templates/company.json"
+      "template": "templates/pipelinedeal.json"
     },
     "product": {
       "label": "Product",
