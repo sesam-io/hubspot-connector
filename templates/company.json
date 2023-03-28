@@ -100,15 +100,12 @@
               "add",
               "_id",
               [
-                "coalesce",
+                "string",
                 [
-                  "list",
+                  "coalesce",
                   [
-                    "string",
-                    "_S.objectId"
-                  ],
-                  [
-                    "string",
+                    "list",
+                    "_S.objectId",
                     "_S.fromObjectId"
                   ]
                 ]
