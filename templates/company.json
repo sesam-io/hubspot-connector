@@ -102,12 +102,15 @@
               [
                 "coalesce",
                 [
-                  "string",
-                  "_S.objectId"
-                ],
-                [
-                  "string",
-                  "_S.fromObjectId"
+                  "list",
+                  [
+                    "string",
+                    "_S.objectId"
+                  ],
+                  [
+                    "string",
+                    "_S.fromObjectId"
+                  ]
                 ]
               ]
             ],
@@ -116,8 +119,11 @@
               "id",
               [
                 "coalesce",
-                "_S.objectId",
-                "_S.fromObjectId"
+                [
+                  "list",
+                  "_S.objectId",
+                  "_S.fromObjectId"
+                ]
               ]
             ],
             [
