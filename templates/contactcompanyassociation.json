@@ -131,7 +131,6 @@
       "{{@ system @}}-{{@ datatype @}}-share"
     ],
     "namespaced_identifiers": false,
-    "exclude_completeness": ["{{@ system @}}-{{@ datatype @}}-share"], 
     "source": {
       "dataset": "{{@ system @}}-{{@ datatype @}}-children",
       "type": "dataset"
