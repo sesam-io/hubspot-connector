@@ -128,7 +128,6 @@
         "type": "dtl"
       },
       {
-        "description": "TODO replace with rest-share once the template fix has been merged",
         "properties": {
           "operation_delete": "{{@ datatype @}}-delete",
           "operation_insert": "{{@ datatype @}}-insert",
