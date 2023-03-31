@@ -223,10 +223,6 @@
               "*"
             ],
             [
-              "comment",
-              "TODO temp fix while the $based_on generation is fixed so that it omits the sesam_ properties"
-            ],
-            [
               "add",
               "$based_on",
               [
@@ -308,8 +304,20 @@
           "fixupBasedOn": [
             [
               "copy",
-              "*",
-              "sesam_*"
+              "*"
+            ],
+            [
+              "comment",
+              "need to add the associationTypes here as they will only exsist in Sesam Talk."
+            ],
+            [
+              "add",
+              "associationTypes",
+              [
+                "apply",
+                "fixupAssociationTypes",
+                "_S.sesam_simpleAssociationTypes"
+              ]
             ]
           ]
         },
