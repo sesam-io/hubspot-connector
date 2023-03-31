@@ -71,6 +71,23 @@
               "$origin",
               "_T._origin"
             ]
+          ],
+          [
+            "comment",
+            "add the sesam_simpleId for mapping"
+          ],
+          [
+            "add",
+            "sesam_simpleId",
+            [
+              "concat",
+              "_S.category",
+              "-",
+              [
+                "string",
+                "_S.typeId"
+              ]
+            ]
           ]
         ]
       },
@@ -102,6 +119,18 @@
             ],
             [
               "comment",
+              "below apply is to recreate the original properties needed for doing share operations"
+            ],
+            [
+              "merge",
+              [
+                "apply",
+                "fixupAssociationTypes",
+                "_S.sesam_simpleId"
+              ]
+            ],
+            [
+              "comment",
               "reshaping payload as the collect and share is not symmetric"
             ],
             [
@@ -121,6 +150,35 @@
                 "_S.category",
                 "name",
                 "_S.label"
+              ]
+            ]
+          ],
+          "fixupAssociationTypes": [
+            [
+              "merge",
+              [
+                "dict",
+                "category",
+                [
+                  "first",
+                  [
+                    "split",
+                    "-",
+                    "_S."
+                  ]
+                ],
+                "typeId",
+                [
+                  "integer",
+                  [
+                    "last",
+                    [
+                      "split",
+                      "-",
+                      "_S."
+                    ]
+                  ]
+                ]
               ]
             ]
           ]
