@@ -130,6 +130,10 @@
               ]
             ],
             [
+              "remove",
+              "sesam_simpleId"
+            ],
+            [
               "comment",
               "reshaping payload as the collect and share is not symmetric"
             ],
