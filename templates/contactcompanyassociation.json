@@ -324,7 +324,6 @@
         "type": "dtl"
       },
       {
-        "description": "TODO replace with rest-share once the template fix has been merged",
         "properties": {
           "is_natural_key": true,
           "operation_delete": "{{@ datatype @}}-delete",
@@ -353,6 +352,33 @@
               [
                 "copy",
                 "*"
+              ],
+              [
+                "comment",
+                "overwrite associationTypes with a version that gets rid of null label entries. The coalesce operation is a datatype-neutral way of passing through whatever exists in the dictionary."
+              ],
+              [
+                "add",
+                "associationTypes",
+                [
+                  "map-dict",
+                  [
+                    "coalesce",
+                    "_."
+                  ],
+                  [
+                    "coalesce",
+                    "_."
+                  ],
+                  [
+                    "filter",
+                    [
+                      "is-not-empty",
+                      "_.label"
+                    ],
+                    "_S.associationTypes"
+                  ]
+                ]
               ]
             ]
           },
