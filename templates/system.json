@@ -94,6 +94,63 @@
       "method": "PUT",
       "url": "crm/v4/objects/contact/{{ entity['id'] }}/associations/company/{{ entity['toObjectId'] }}"
     },
+    "dealcompanyassociation-delete": {
+      "method": "DELETE",
+      "url": "crm/v4/objects/contact/{{ entity['id'] }}/associations/company/{{ entity['toObjectId'] }}"
+    },
+    "dealcompanyassociation-list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/company"
+    },
+    "dealcompanyassociation-lookup": {
+      "method": "GET",
+      "payload_property": "results",
+      "url": "crm/v4/objects/contact/{{ entity['id'] }}/associations/company"
+    },
+    "dealcompanyassociation-upsert": {
+      "method": "PUT",
+      "url": "crm/v4/objects/contact/{{ entity['id'] }}/associations/company/{{ entity['toObjectId'] }}"
+    },
+    "dealcontactassociation-delete": {
+      "method": "DELETE",
+      "url": "crm/v4/objects/contact/{{ entity['id'] }}/associations/company/{{ entity['toObjectId'] }}"
+    },
+    "dealcontactassociation-list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/company"
+    },
+    "dealcontactassociation-lookup": {
+      "method": "GET",
+      "payload_property": "results",
+      "url": "crm/v4/objects/contact/{{ entity['id'] }}/associations/company"
+    },
+    "dealcontactassociation-upsert": {
+      "method": "PUT",
+      "url": "crm/v4/objects/contact/{{ entity['id'] }}/associations/company/{{ entity['toObjectId'] }}"
+    },
+    "lineitemdealassociation-delete": {
+      "method": "DELETE",
+      "url": "crm/v4/objects/contact/{{ entity['id'] }}/associations/company/{{ entity['toObjectId'] }}"
+    },
+    "lineitemdealassociation-list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v4/objects/contact/{{ entity.id }}/associations/company"
+    },
+    "lineitemdealassociation-lookup": {
+      "method": "GET",
+      "payload_property": "results",
+      "url": "crm/v4/objects/contact/{{ entity['id'] }}/associations/company"
+    },
+    "lineitemdealassociation-upsert": {
+      "method": "PUT",
+      "url": "crm/v4/objects/contact/{{ entity['id'] }}/associations/company/{{ entity['toObjectId'] }}"
+    },
     "contactcompanyassociationtype-delete": {
       "method": "DELETE",
       "url": "crm/v4/associations/contact/company/labels/{{ entity['typeId'] }}"
@@ -168,6 +225,32 @@
       "url": "crm/v4/associations/deal/contact/labels"
     },
     "dealcontactassociationtype-update": {
+      "description": "the typeId identifier is part of the data",
+      "method": "PUT",
+      "url": "crm/v4/associations/deal/contact/labels"
+    },
+    "lineitemdealassociationtype-delete": {
+      "method": "DELETE",
+      "url": "crm/v4/associations/deal/contact/labels/{{ entity['typeId'] }}"
+    },
+    "lineitemdealassociationtype-insert": {
+      "method": "POST",
+      "payload_property": "results",
+      "url": "crm/v4/associations/deal/contact/labels"
+    },
+    "lineitemdealassociationtype-list": {
+      "id_expression": "{{ [category,typeId]|join('-') }}",
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v4/associations/deal/contact/labels"
+    },
+    "lineitemdealassociationtype-lookup": {
+      "method": "GET",
+      "payload_property": "results",
+      "url": "crm/v4/associations/deal/contact/labels"
+    },
+    "lineitemdealassociationtype-update": {
       "description": "the typeId identifier is part of the data",
       "method": "PUT",
       "url": "crm/v4/associations/deal/contact/labels"

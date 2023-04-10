@@ -23,12 +23,17 @@
       "template": "templates/contactcompanyassociation.json"
     },
     "dealcompanyassociation": {
-      "label": "Contact-Company Association",
+      "label": "Deal-Company  Association",
       "parent": "contact",
       "template": "templates/contactcompanyassociation.json"
     },
     "dealcontactassociation": {
-      "label": "Contact-Company Association",
+      "label": "Deal-Contact Association",
+      "parent": "contact",
+      "template": "templates/contactcompanyassociation.json"
+    },
+    "lineitemdealassociation": {
+      "label": "LineItem-Deal Association",
       "parent": "contact",
       "template": "templates/contactcompanyassociation.json"
     },
@@ -42,6 +47,10 @@
     },
     "dealcontactassociationtype": {
       "label": "Deal-Contact Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "lineitemdealassociationtype": {
+      "label": "LineItem-Deal Association Type",
       "template": "templates/contactcompanyassociationtype.json"
     },
     "deal": {
