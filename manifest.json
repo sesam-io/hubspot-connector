@@ -30,6 +30,10 @@
       "label": "Deal-Company Association Type",
       "template": "templates/contactcompanyassociationtype.json"
     },
+    "dealcontactassociationtype": {
+      "label": "Deal-Contact Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
+    },
     "deal": {
       "label": "Deal",
       "template": "templates/company.json"
