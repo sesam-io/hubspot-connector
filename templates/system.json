@@ -134,22 +134,22 @@
     },
     "lineitemdealassociation-delete": {
       "method": "DELETE",
-      "url": "crm/v4/objects/lineitemd/{{ entity['id'] }}/associations/deal/{{ entity['toObjectId'] }}"
+      "url": "crm/v4/objects/line_items/{{ entity['id'] }}/associations/deal/{{ entity['toObjectId'] }}"
     },
     "lineitemdealassociation-list": {
       "method": "GET",
       "next_page_link": "{{ body.paging.next.link }}",
       "payload_property": "results",
-      "url": "crm/v4/objects/lineitemd/{{ entity.id }}/associations/deal"
+      "url": "crm/v4/objects/line_items/{{ entity.id }}/associations/deal"
     },
     "lineitemdealassociation-lookup": {
       "method": "GET",
       "payload_property": "results",
-      "url": "crm/v4/objects/lineitemd/{{ entity['id'] }}/associations/deal"
+      "url": "crm/v4/objects/line_items/{{ entity['id'] }}/associations/deal"
     },
     "lineitemdealassociation-upsert": {
       "method": "PUT",
-      "url": "crm/v4/objects/lineitemd/{{ entity['id'] }}/associations/deal/{{ entity['toObjectId'] }}"
+      "url": "crm/v4/objects/line_items/{{ entity['id'] }}/associations/deal/{{ entity['toObjectId'] }}"
     },
     "contactcompanyassociationtype-delete": {
       "method": "DELETE",
@@ -231,29 +231,29 @@
     },
     "lineitemdealassociationtype-delete": {
       "method": "DELETE",
-      "url": "crm/v4/associations/line_item/deal/labels/{{ entity['typeId'] }}"
+      "url": "crm/v4/associations/line_items/deal/labels/{{ entity['typeId'] }}"
     },
     "lineitemdealassociationtype-insert": {
       "method": "POST",
       "payload_property": "results",
-      "url": "crm/v4/associations/line_item/deal/labels"
+      "url": "crm/v4/associations/line_items/deal/labels"
     },
     "lineitemdealassociationtype-list": {
       "id_expression": "{{ [category,typeId]|join('-') }}",
       "method": "GET",
       "next_page_link": "{{ body.paging.next.link }}",
       "payload_property": "results",
-      "url": "crm/v4/associations/line_item/deal/labels"
+      "url": "crm/v4/associations/line_items/deal/labels"
     },
     "lineitemdealassociationtype-lookup": {
       "method": "GET",
       "payload_property": "results",
-      "url": "crm/v4/associations/line_item/deal/labels"
+      "url": "crm/v4/associations/line_items/deal/labels"
     },
     "lineitemdealassociationtype-update": {
       "description": "the typeId identifier is part of the data",
       "method": "PUT",
-      "url": "crm/v4/associations/line_item/deal/labels"
+      "url": "crm/v4/associations/line_items/deal/labels"
     },
     "deal-delete": {
       "method": "DELETE",
