@@ -120,6 +120,32 @@
       "method": "PUT",
       "url": "crm/v4/associations/contact/company/labels"
     },
+    "dealcompanyassociationtype-delete": {
+      "method": "DELETE",
+      "url": "crm/v4/associations/deal/company/labels/{{ entity['typeId'] }}"
+    },
+    "dealcompanyassociationtype-insert": {
+      "method": "POST",
+      "payload_property": "results",
+      "url": "crm/v4/associations/deal/company/labels"
+    },
+    "dealcompanyassociationtype-list": {
+      "id_expression": "{{ [category,typeId]|join('-') }}",
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v4/associations/deal/company/labels"
+    },
+    "dealcompanyassociationtype-lookup": {
+      "method": "GET",
+      "payload_property": "results",
+      "url": "crm/v4/associations/deal/company/labels"
+    },
+    "dealcompanyassociationtype-update": {
+      "description": "the typeId identifier is part of the data",
+      "method": "PUT",
+      "url": "crm/v4/associations/deal/company/labels"
+    },
     "deal-delete": {
       "method": "DELETE",
       "url": "crm/v3/objects/deals/{{ entity.id }}"
