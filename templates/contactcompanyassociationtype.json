@@ -132,7 +132,7 @@
                 "associationCategory",
                 "_S.category",
                 "name",
-                "_S.label"
+                ["uuid"]
               ]
             ]
           ],
