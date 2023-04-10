@@ -231,29 +231,29 @@
     },
     "lineitemdealassociationtype-delete": {
       "method": "DELETE",
-      "url": "crm/v4/associations/lineitem/deal/labels/{{ entity['typeId'] }}"
+      "url": "crm/v4/associations/line_item/deal/labels/{{ entity['typeId'] }}"
     },
     "lineitemdealassociationtype-insert": {
       "method": "POST",
       "payload_property": "results",
-      "url": "crm/v4/associations/lineitem/deal/labels"
+      "url": "crm/v4/associations/line_item/deal/labels"
     },
     "lineitemdealassociationtype-list": {
       "id_expression": "{{ [category,typeId]|join('-') }}",
       "method": "GET",
       "next_page_link": "{{ body.paging.next.link }}",
       "payload_property": "results",
-      "url": "crm/v4/associations/lineitem/deal/labels"
+      "url": "crm/v4/associations/line_item/deal/labels"
     },
     "lineitemdealassociationtype-lookup": {
       "method": "GET",
       "payload_property": "results",
-      "url": "crm/v4/associations/lineitem/deal/labels"
+      "url": "crm/v4/associations/line_item/deal/labels"
     },
     "lineitemdealassociationtype-update": {
       "description": "the typeId identifier is part of the data",
       "method": "PUT",
-      "url": "crm/v4/associations/lineitem/deal/labels"
+      "url": "crm/v4/associations/line_item/deal/labels"
     },
     "deal-delete": {
       "method": "DELETE",
