@@ -44,6 +44,50 @@
       "method": "PATCH",
       "url": "crm/v3/objects/company/{{ entity.id }}"
     },
+    "companycompanyassociation-delete": {
+      "method": "DELETE",
+      "url": "crm/v4/objects/company/{{ entity.id }}/associations/company/{{ entity['toObjectId'] }}"
+    },
+    "companycompanyassociation-list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v4/objects/company/{{ entity.id }}/associations/company"
+    },
+    "companycompanyassociation-lookup": {
+      "method": "GET",
+      "url": "crm/v4/objects/company/{{ entity.id }}/associations/company"
+    },
+    "companycompanyassociation-upsert": {
+      "method": "PUT",
+      "url": "crm/v4/objects/company/{{ entity.id }}/associations/company/{{ entity['toObjectId'] }}"
+    },
+    "companycompanyassociationtype-delete": {
+      "method": "DELETE",
+      "url": "crm/v4/associations/company/company/labels/{{ entity['typeId'] }}"
+    },
+    "companycompanyassociationtype-insert": {
+      "method": "POST",
+      "payload_property": "results",
+      "url": "crm/v4/associations/company/company/labels"
+    },
+    "companycompanyassociationtype-list": {
+      "id_expression": "{{ [category,typeId]|join('-') }}",
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v4/associations/company/company/labels"
+    },
+    "companycompanyassociationtype-lookup": {
+      "method": "GET",
+      "payload_property": "results",
+      "url": "crm/v4/associations/company/company/labels"
+    },
+    "companycompanyassociationtype-update": {
+      "description": "the typeId identifier is part of the data",
+      "method": "PUT",
+      "url": "crm/v4/associations/company/company/labels"
+    },
     "contact-delete": {
       "method": "DELETE",
       "url": "crm/v3/objects/contact/{{ entity.id }}"
@@ -94,63 +138,6 @@
       "method": "PUT",
       "url": "crm/v4/objects/contact/{{ entity['id'] }}/associations/company/{{ entity['toObjectId'] }}"
     },
-    "dealcompanyassociation-delete": {
-      "method": "DELETE",
-      "url": "crm/v4/objects/deal/{{ entity['id'] }}/associations/company/{{ entity['toObjectId'] }}"
-    },
-    "dealcompanyassociation-list": {
-      "method": "GET",
-      "next_page_link": "{{ body.paging.next.link }}",
-      "payload_property": "results",
-      "url": "crm/v4/objects/deal/{{ entity.id }}/associations/company"
-    },
-    "dealcompanyassociation-lookup": {
-      "method": "GET",
-      "payload_property": "results",
-      "url": "crm/v4/objects/deal/{{ entity['id'] }}/associations/company"
-    },
-    "dealcompanyassociation-upsert": {
-      "method": "PUT",
-      "url": "crm/v4/objects/deal/{{ entity['id'] }}/associations/company/{{ entity['toObjectId'] }}"
-    },
-    "dealcontactassociation-delete": {
-      "method": "DELETE",
-      "url": "crm/v4/objects/deal/{{ entity['id'] }}/associations/contact/{{ entity['toObjectId'] }}"
-    },
-    "dealcontactassociation-list": {
-      "method": "GET",
-      "next_page_link": "{{ body.paging.next.link }}",
-      "payload_property": "results",
-      "url": "crm/v4/objects/deal/{{ entity.id }}/associations/contact"
-    },
-    "dealcontactassociation-lookup": {
-      "method": "GET",
-      "payload_property": "results",
-      "url": "crm/v4/objects/deal/{{ entity['id'] }}/associations/contact"
-    },
-    "dealcontactassociation-upsert": {
-      "method": "PUT",
-      "url": "crm/v4/objects/deal/{{ entity['id'] }}/associations/contact/{{ entity['toObjectId'] }}"
-    },
-    "lineitemdealassociation-delete": {
-      "method": "DELETE",
-      "url": "crm/v4/objects/line_items/{{ entity['id'] }}/associations/deal/{{ entity['toObjectId'] }}"
-    },
-    "lineitemdealassociation-list": {
-      "method": "GET",
-      "next_page_link": "{{ body.paging.next.link }}",
-      "payload_property": "results",
-      "url": "crm/v4/objects/line_items/{{ entity.id }}/associations/deal"
-    },
-    "lineitemdealassociation-lookup": {
-      "method": "GET",
-      "payload_property": "results",
-      "url": "crm/v4/objects/line_items/{{ entity['id'] }}/associations/deal"
-    },
-    "lineitemdealassociation-upsert": {
-      "method": "PUT",
-      "url": "crm/v4/objects/line_items/{{ entity['id'] }}/associations/deal/{{ entity['toObjectId'] }}"
-    },
     "contactcompanyassociationtype-delete": {
       "method": "DELETE",
       "url": "crm/v4/associations/contact/company/labels/{{ entity['typeId'] }}"
@@ -176,84 +163,6 @@
       "description": "the typeId identifier is part of the data",
       "method": "PUT",
       "url": "crm/v4/associations/contact/company/labels"
-    },
-    "dealcompanyassociationtype-delete": {
-      "method": "DELETE",
-      "url": "crm/v4/associations/deal/company/labels/{{ entity['typeId'] }}"
-    },
-    "dealcompanyassociationtype-insert": {
-      "method": "POST",
-      "payload_property": "results",
-      "url": "crm/v4/associations/deal/company/labels"
-    },
-    "dealcompanyassociationtype-list": {
-      "id_expression": "{{ [category,typeId]|join('-') }}",
-      "method": "GET",
-      "next_page_link": "{{ body.paging.next.link }}",
-      "payload_property": "results",
-      "url": "crm/v4/associations/deal/company/labels"
-    },
-    "dealcompanyassociationtype-lookup": {
-      "method": "GET",
-      "payload_property": "results",
-      "url": "crm/v4/associations/deal/company/labels"
-    },
-    "dealcompanyassociationtype-update": {
-      "description": "the typeId identifier is part of the data",
-      "method": "PUT",
-      "url": "crm/v4/associations/deal/company/labels"
-    },
-    "dealcontactassociationtype-delete": {
-      "method": "DELETE",
-      "url": "crm/v4/associations/deal/contact/labels/{{ entity['typeId'] }}"
-    },
-    "dealcontactassociationtype-insert": {
-      "method": "POST",
-      "payload_property": "results",
-      "url": "crm/v4/associations/deal/contact/labels"
-    },
-    "dealcontactassociationtype-list": {
-      "id_expression": "{{ [category,typeId]|join('-') }}",
-      "method": "GET",
-      "next_page_link": "{{ body.paging.next.link }}",
-      "payload_property": "results",
-      "url": "crm/v4/associations/deal/contact/labels"
-    },
-    "dealcontactassociationtype-lookup": {
-      "method": "GET",
-      "payload_property": "results",
-      "url": "crm/v4/associations/deal/contact/labels"
-    },
-    "dealcontactassociationtype-update": {
-      "description": "the typeId identifier is part of the data",
-      "method": "PUT",
-      "url": "crm/v4/associations/deal/contact/labels"
-    },
-    "lineitemdealassociationtype-delete": {
-      "method": "DELETE",
-      "url": "crm/v4/associations/line_items/deal/labels/{{ entity['typeId'] }}"
-    },
-    "lineitemdealassociationtype-insert": {
-      "method": "POST",
-      "payload_property": "results",
-      "url": "crm/v4/associations/line_items/deal/labels"
-    },
-    "lineitemdealassociationtype-list": {
-      "id_expression": "{{ [category,typeId]|join('-') }}",
-      "method": "GET",
-      "next_page_link": "{{ body.paging.next.link }}",
-      "payload_property": "results",
-      "url": "crm/v4/associations/line_items/deal/labels"
-    },
-    "lineitemdealassociationtype-lookup": {
-      "method": "GET",
-      "payload_property": "results",
-      "url": "crm/v4/associations/line_items/deal/labels"
-    },
-    "lineitemdealassociationtype-update": {
-      "description": "the typeId identifier is part of the data",
-      "method": "PUT",
-      "url": "crm/v4/associations/line_items/deal/labels"
     },
     "deal-delete": {
       "method": "DELETE",
@@ -286,6 +195,94 @@
       "method": "PATCH",
       "url": "crm/v3/objects/deals/{{ entity.id }}"
     },
+    "dealcompanyassociation-delete": {
+      "method": "DELETE",
+      "url": "crm/v4/objects/deal/{{ entity.id }}/associations/company/{{ entity['toObjectId'] }}"
+    },
+    "dealcompanyassociation-list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v4/objects/deal/{{ entity.id }}/associations/company"
+    },
+    "dealcompanyassociation-lookup": {
+      "method": "GET",
+      "url": "crm/v4/objects/deal/{{ entity.id }}/associations/company"
+    },
+    "dealcompanyassociation-upsert": {
+      "method": "PUT",
+      "url": "crm/v4/objects/deal/{{ entity.id }}/associations/company/{{ entity['toObjectId'] }}"
+    },
+    "dealcompanyassociationtype-delete": {
+      "method": "DELETE",
+      "url": "crm/v4/associations/deal/company/labels/{{ entity['typeId'] }}"
+    },
+    "dealcompanyassociationtype-insert": {
+      "method": "POST",
+      "payload_property": "results",
+      "url": "crm/v4/associations/deal/company/labels"
+    },
+    "dealcompanyassociationtype-list": {
+      "id_expression": "{{ [category,typeId]|join('-') }}",
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v4/associations/deal/company/labels"
+    },
+    "dealcompanyassociationtype-lookup": {
+      "method": "GET",
+      "payload_property": "results",
+      "url": "crm/v4/associations/deal/company/labels"
+    },
+    "dealcompanyassociationtype-update": {
+      "description": "the typeId identifier is part of the data",
+      "method": "PUT",
+      "url": "crm/v4/associations/deal/company/labels"
+    },
+    "dealcontactassociation-delete": {
+      "method": "DELETE",
+      "url": "crm/v4/objects/deal/{{ entity.id }}/associations/contact/{{ entity['toObjectId'] }}"
+    },
+    "dealcontactassociation-list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v4/objects/deal/{{ entity.id }}/associations/contact"
+    },
+    "dealcontactassociation-lookup": {
+      "method": "GET",
+      "url": "crm/v4/objects/deal/{{ entity.id }}/associations/contact"
+    },
+    "dealcontactassociation-upsert": {
+      "method": "PUT",
+      "url": "crm/v4/objects/deal/{{ entity.id }}/associations/contact/{{ entity['toObjectId'] }}"
+    },
+    "dealcontactassociationtype-delete": {
+      "method": "DELETE",
+      "url": "crm/v4/associations/deal/contact/labels/{{ entity['typeId'] }}"
+    },
+    "dealcontactassociationtype-insert": {
+      "method": "POST",
+      "payload_property": "results",
+      "url": "crm/v4/associations/deal/contact/labels"
+    },
+    "dealcontactassociationtype-list": {
+      "id_expression": "{{ [category,typeId]|join('-') }}",
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v4/associations/deal/contact/labels"
+    },
+    "dealcontactassociationtype-lookup": {
+      "method": "GET",
+      "payload_property": "results",
+      "url": "crm/v4/associations/deal/contact/labels"
+    },
+    "dealcontactassociationtype-update": {
+      "description": "the typeId identifier is part of the data",
+      "method": "PUT",
+      "url": "crm/v4/associations/deal/contact/labels"
+    },
     "lineitem-delete": {
       "method": "DELETE",
       "url": "crm/v3/objects/line_items/{{ entity.id }}"
@@ -316,6 +313,94 @@
     "lineitem-update": {
       "method": "PATCH",
       "url": "crm/v3/objects/line_items/{{ entity.id }}"
+    },
+    "lineitemdealassociation-delete": {
+      "method": "DELETE",
+      "url": "crm/v4/objects/line_item/{{ entity.id }}/associations/deal/{{ entity['toObjectId'] }}"
+    },
+    "lineitemdealassociation-list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v4/objects/line_item/{{ entity.id }}/associations/deal"
+    },
+    "lineitemdealassociation-lookup": {
+      "method": "GET",
+      "url": "crm/v4/objects/line_item/{{ entity.id }}/associations/deal"
+    },
+    "lineitemdealassociation-upsert": {
+      "method": "PUT",
+      "url": "crm/v4/objects/line_item/{{ entity.id }}/associations/deal/{{ entity['toObjectId'] }}"
+    },
+    "lineitemdealassociationtype-delete": {
+      "method": "DELETE",
+      "url": "crm/v4/associations/line_item/deal/labels/{{ entity['typeId'] }}"
+    },
+    "lineitemdealassociationtype-insert": {
+      "method": "POST",
+      "payload_property": "results",
+      "url": "crm/v4/associations/line_item/deal/labels"
+    },
+    "lineitemdealassociationtype-list": {
+      "id_expression": "{{ [category,typeId]|join('-') }}",
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v4/associations/line_item/deal/labels"
+    },
+    "lineitemdealassociationtype-lookup": {
+      "method": "GET",
+      "payload_property": "results",
+      "url": "crm/v4/associations/line_item/deal/labels"
+    },
+    "lineitemdealassociationtype-update": {
+      "description": "the typeId identifier is part of the data",
+      "method": "PUT",
+      "url": "crm/v4/associations/line_item/deal/labels"
+    },
+    "lineitemquoteassociation-delete": {
+      "method": "DELETE",
+      "url": "crm/v4/objects/line_item/{{ entity.id }}/associations/quote/{{ entity['toObjectId'] }}"
+    },
+    "lineitemquoteassociation-list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v4/objects/line_item/{{ entity.id }}/associations/quote"
+    },
+    "lineitemquoteassociation-lookup": {
+      "method": "GET",
+      "url": "crm/v4/objects/line_item/{{ entity.id }}/associations/quote"
+    },
+    "lineitemquoteassociation-upsert": {
+      "method": "PUT",
+      "url": "crm/v4/objects/line_item/{{ entity.id }}/associations/quote/{{ entity['toObjectId'] }}"
+    },
+    "lineitemquoteassociationtype-delete": {
+      "method": "DELETE",
+      "url": "crm/v4/associations/line_item/quote/labels/{{ entity['typeId'] }}"
+    },
+    "lineitemquoteassociationtype-insert": {
+      "method": "POST",
+      "payload_property": "results",
+      "url": "crm/v4/associations/line_item/quote/labels"
+    },
+    "lineitemquoteassociationtype-list": {
+      "id_expression": "{{ [category,typeId]|join('-') }}",
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v4/associations/line_item/quote/labels"
+    },
+    "lineitemquoteassociationtype-lookup": {
+      "method": "GET",
+      "payload_property": "results",
+      "url": "crm/v4/associations/line_item/quote/labels"
+    },
+    "lineitemquoteassociationtype-update": {
+      "description": "the typeId identifier is part of the data",
+      "method": "PUT",
+      "url": "crm/v4/associations/line_item/quote/labels"
     },
     "owner-list": {
       "id_expression": "{{ id }}",
@@ -432,6 +517,182 @@
       "method": "PATCH",
       "url": "crm/v3/objects/quotes/{{ entity.id }}"
     },
+    "quotecompanyassociation-delete": {
+      "method": "DELETE",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/company/{{ entity['toObjectId'] }}"
+    },
+    "quotecompanyassociation-list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/company"
+    },
+    "quotecompanyassociation-lookup": {
+      "method": "GET",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/company"
+    },
+    "quotecompanyassociation-upsert": {
+      "method": "PUT",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/company/{{ entity['toObjectId'] }}"
+    },
+    "quotecompanyassociationtype-delete": {
+      "method": "DELETE",
+      "url": "crm/v4/associations/quote/company/labels/{{ entity['typeId'] }}"
+    },
+    "quotecompanyassociationtype-insert": {
+      "method": "POST",
+      "payload_property": "results",
+      "url": "crm/v4/associations/quote/company/labels"
+    },
+    "quotecompanyassociationtype-list": {
+      "id_expression": "{{ [category,typeId]|join('-') }}",
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v4/associations/quote/company/labels"
+    },
+    "quotecompanyassociationtype-lookup": {
+      "method": "GET",
+      "payload_property": "results",
+      "url": "crm/v4/associations/quote/company/labels"
+    },
+    "quotecompanyassociationtype-update": {
+      "description": "the typeId identifier is part of the data",
+      "method": "PUT",
+      "url": "crm/v4/associations/quote/company/labels"
+    },
+    "quotecontactassociation-delete": {
+      "method": "DELETE",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/contact/{{ entity['toObjectId'] }}"
+    },
+    "quotecontactassociation-list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/contact"
+    },
+    "quotecontactassociation-lookup": {
+      "method": "GET",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/contact"
+    },
+    "quotecontactassociation-upsert": {
+      "method": "PUT",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/contact/{{ entity['toObjectId'] }}"
+    },
+    "quotecontactassociationtype-delete": {
+      "method": "DELETE",
+      "url": "crm/v4/associations/quote/contact/labels/{{ entity['typeId'] }}"
+    },
+    "quotecontactassociationtype-insert": {
+      "method": "POST",
+      "payload_property": "results",
+      "url": "crm/v4/associations/quote/contact/labels"
+    },
+    "quotecontactassociationtype-list": {
+      "id_expression": "{{ [category,typeId]|join('-') }}",
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v4/associations/quote/contact/labels"
+    },
+    "quotecontactassociationtype-lookup": {
+      "method": "GET",
+      "payload_property": "results",
+      "url": "crm/v4/associations/quote/contact/labels"
+    },
+    "quotecontactassociationtype-update": {
+      "description": "the typeId identifier is part of the data",
+      "method": "PUT",
+      "url": "crm/v4/associations/quote/contact/labels"
+    },
+    "quotedealassociation-delete": {
+      "method": "DELETE",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/deal/{{ entity['toObjectId'] }}"
+    },
+    "quotedealassociation-list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/deal"
+    },
+    "quotedealassociation-lookup": {
+      "method": "GET",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/deal"
+    },
+    "quotedealassociation-upsert": {
+      "method": "PUT",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/deal/{{ entity['toObjectId'] }}"
+    },
+    "quotedealassociationtype-delete": {
+      "method": "DELETE",
+      "url": "crm/v4/associations/quote/deal/labels/{{ entity['typeId'] }}"
+    },
+    "quotedealassociationtype-insert": {
+      "method": "POST",
+      "payload_property": "results",
+      "url": "crm/v4/associations/quote/deal/labels"
+    },
+    "quotedealassociationtype-list": {
+      "id_expression": "{{ [category,typeId]|join('-') }}",
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v4/associations/quote/deal/labels"
+    },
+    "quotedealassociationtype-lookup": {
+      "method": "GET",
+      "payload_property": "results",
+      "url": "crm/v4/associations/quote/deal/labels"
+    },
+    "quotedealassociationtype-update": {
+      "description": "the typeId identifier is part of the data",
+      "method": "PUT",
+      "url": "crm/v4/associations/quote/deal/labels"
+    },
+    "quotequotetemplateassociation-delete": {
+      "method": "DELETE",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/quote_template/{{ entity['toObjectId'] }}"
+    },
+    "quotequotetemplateassociation-list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/quote_template"
+    },
+    "quotequotetemplateassociation-lookup": {
+      "method": "GET",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/quote_template"
+    },
+    "quotequotetemplateassociation-upsert": {
+      "method": "PUT",
+      "url": "crm/v4/objects/quote/{{ entity.id }}/associations/quote_template/{{ entity['toObjectId'] }}"
+    },
+    "quotequotetemplateassociationtype-delete": {
+      "method": "DELETE",
+      "url": "crm/v4/associations/quote/quote_template/labels/{{ entity['typeId'] }}"
+    },
+    "quotequotetemplateassociationtype-insert": {
+      "method": "POST",
+      "payload_property": "results",
+      "url": "crm/v4/associations/quote/quote_template/labels"
+    },
+    "quotequotetemplateassociationtype-list": {
+      "id_expression": "{{ [category,typeId]|join('-') }}",
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v4/associations/quote/quote_template/labels"
+    },
+    "quotequotetemplateassociationtype-lookup": {
+      "method": "GET",
+      "payload_property": "results",
+      "url": "crm/v4/associations/quote/quote_template/labels"
+    },
+    "quotequotetemplateassociationtype-update": {
+      "description": "the typeId identifier is part of the data",
+      "method": "PUT",
+      "url": "crm/v4/associations/quote/quote_template/labels"
+    },
     "ticket-delete": {
       "method": "DELETE",
       "url": "crm/v3/objects/tickets/{{ entity.id }}"
@@ -462,6 +723,138 @@
     "ticket-update": {
       "method": "PATCH",
       "url": "crm/v3/objects/tickets/{{ entity.id }}"
+    },
+    "ticketcompanyassociation-delete": {
+      "method": "DELETE",
+      "url": "crm/v4/objects/ticket/{{ entity.id }}/associations/company/{{ entity['toObjectId'] }}"
+    },
+    "ticketcompanyassociation-list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v4/objects/ticket/{{ entity.id }}/associations/company"
+    },
+    "ticketcompanyassociation-lookup": {
+      "method": "GET",
+      "url": "crm/v4/objects/ticket/{{ entity.id }}/associations/company"
+    },
+    "ticketcompanyassociation-upsert": {
+      "method": "PUT",
+      "url": "crm/v4/objects/ticket/{{ entity.id }}/associations/company/{{ entity['toObjectId'] }}"
+    },
+    "ticketcompanyassociationtype-delete": {
+      "method": "DELETE",
+      "url": "crm/v4/associations/ticket/company/labels/{{ entity['typeId'] }}"
+    },
+    "ticketcompanyassociationtype-insert": {
+      "method": "POST",
+      "payload_property": "results",
+      "url": "crm/v4/associations/ticket/company/labels"
+    },
+    "ticketcompanyassociationtype-list": {
+      "id_expression": "{{ [category,typeId]|join('-') }}",
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v4/associations/ticket/company/labels"
+    },
+    "ticketcompanyassociationtype-lookup": {
+      "method": "GET",
+      "payload_property": "results",
+      "url": "crm/v4/associations/ticket/company/labels"
+    },
+    "ticketcompanyassociationtype-update": {
+      "description": "the typeId identifier is part of the data",
+      "method": "PUT",
+      "url": "crm/v4/associations/ticket/company/labels"
+    },
+    "ticketcontactassociation-delete": {
+      "method": "DELETE",
+      "url": "crm/v4/objects/ticket/{{ entity.id }}/associations/contact/{{ entity['toObjectId'] }}"
+    },
+    "ticketcontactassociation-list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v4/objects/ticket/{{ entity.id }}/associations/contact"
+    },
+    "ticketcontactassociation-lookup": {
+      "method": "GET",
+      "url": "crm/v4/objects/ticket/{{ entity.id }}/associations/contact"
+    },
+    "ticketcontactassociation-upsert": {
+      "method": "PUT",
+      "url": "crm/v4/objects/ticket/{{ entity.id }}/associations/contact/{{ entity['toObjectId'] }}"
+    },
+    "ticketcontactassociationtype-delete": {
+      "method": "DELETE",
+      "url": "crm/v4/associations/ticket/contact/labels/{{ entity['typeId'] }}"
+    },
+    "ticketcontactassociationtype-insert": {
+      "method": "POST",
+      "payload_property": "results",
+      "url": "crm/v4/associations/ticket/contact/labels"
+    },
+    "ticketcontactassociationtype-list": {
+      "id_expression": "{{ [category,typeId]|join('-') }}",
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v4/associations/ticket/contact/labels"
+    },
+    "ticketcontactassociationtype-lookup": {
+      "method": "GET",
+      "payload_property": "results",
+      "url": "crm/v4/associations/ticket/contact/labels"
+    },
+    "ticketcontactassociationtype-update": {
+      "description": "the typeId identifier is part of the data",
+      "method": "PUT",
+      "url": "crm/v4/associations/ticket/contact/labels"
+    },
+    "ticketdealassociation-delete": {
+      "method": "DELETE",
+      "url": "crm/v4/objects/ticket/{{ entity.id }}/associations/deal/{{ entity['toObjectId'] }}"
+    },
+    "ticketdealassociation-list": {
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v4/objects/ticket/{{ entity.id }}/associations/deal"
+    },
+    "ticketdealassociation-lookup": {
+      "method": "GET",
+      "url": "crm/v4/objects/ticket/{{ entity.id }}/associations/deal"
+    },
+    "ticketdealassociation-upsert": {
+      "method": "PUT",
+      "url": "crm/v4/objects/ticket/{{ entity.id }}/associations/deal/{{ entity['toObjectId'] }}"
+    },
+    "ticketdealassociationtype-delete": {
+      "method": "DELETE",
+      "url": "crm/v4/associations/ticket/deal/labels/{{ entity['typeId'] }}"
+    },
+    "ticketdealassociationtype-insert": {
+      "method": "POST",
+      "payload_property": "results",
+      "url": "crm/v4/associations/ticket/deal/labels"
+    },
+    "ticketdealassociationtype-list": {
+      "id_expression": "{{ [category,typeId]|join('-') }}",
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v4/associations/ticket/deal/labels"
+    },
+    "ticketdealassociationtype-lookup": {
+      "method": "GET",
+      "payload_property": "results",
+      "url": "crm/v4/associations/ticket/deal/labels"
+    },
+    "ticketdealassociationtype-update": {
+      "description": "the typeId identifier is part of the data",
+      "method": "PUT",
+      "url": "crm/v4/associations/ticket/deal/labels"
     },
     "user-delete": {
       "method": "DELETE",

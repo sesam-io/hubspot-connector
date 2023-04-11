@@ -13,6 +13,15 @@
       "label": "Company",
       "template": "templates/company.json"
     },
+    "companycompanyassociation": {
+      "label": "Company-Company Association",
+      "parent": "company",
+      "template": "templates/contactcompanyassociation.json"
+    },
+    "companycompanyassociationtype": {
+      "label": "Company-Company Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
+    },
     "contact": {
       "label": "Contact",
       "template": "templates/company.json"
@@ -57,9 +66,45 @@
       "label": "Deal",
       "template": "templates/company.json"
     },
+    "dealcompanyassociation": {
+      "label": "Deal-Company Association",
+      "parent": "deal",
+      "template": "templates/contactcompanyassociation.json"
+    },
+    "dealcompanyassociationtype": {
+      "label": "Deal-Company Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "dealcontactassociation": {
+      "label": "Deal-Contact Association",
+      "parent": "deal",
+      "template": "templates/contactcompanyassociation.json"
+    },
+    "dealcontactassociationtype": {
+      "label": "Deal-Contact Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
+    },
     "lineitem": {
       "label": "Line Item",
       "template": "templates/company.json"
+    },
+    "lineitemdealassociation": {
+      "label": "Line Item-Deal Association",
+      "parent": "lineitem",
+      "template": "templates/contactcompanyassociation.json"
+    },
+    "lineitemdealassociationtype": {
+      "label": "Line Item-Deal Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "lineitemquoteassociation": {
+      "label": "Line Item-Quote Association",
+      "parent": "lineitem",
+      "template": "templates/contactcompanyassociation.json"
+    },
+    "lineitemquoteassociationtype": {
+      "label": "Line Item-Quote Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
     },
     "owner": {
       "label": "Owner",
@@ -81,9 +126,72 @@
       "label": "Quote",
       "template": "templates/quote.json"
     },
+    "quotecompanyassociation": {
+      "label": "Quote-Company Association",
+      "parent": "quote",
+      "template": "templates/contactcompanyassociation.json"
+    },
+    "quotecompanyassociationtype": {
+      "label": "Quote-Company Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "quotecontactassociation": {
+      "label": "Quote-Contact Association",
+      "parent": "quote",
+      "template": "templates/contactcompanyassociation.json"
+    },
+    "quotecontactassociationtype": {
+      "label": "Quote-Contact Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "quotedealassociation": {
+      "label": "Quote-Deal Association",
+      "parent": "quote",
+      "template": "templates/contactcompanyassociation.json"
+    },
+    "quotedealassociationtype": {
+      "label": "Quote-Deal Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "quotequotetemplateassociation": {
+      "label": "Quote-Quote Template Association",
+      "parent": "quote",
+      "template": "templates/contactcompanyassociation.json"
+    },
+    "quotequotetemplateassociationtype": {
+      "label": "Quote-Quote Template Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
+    },
     "ticket": {
       "label": "Ticket",
       "template": "templates/company.json"
+    },
+    "ticketcompanyassociation": {
+      "label": "Ticket-Company Association",
+      "parent": "ticket",
+      "template": "templates/contactcompanyassociation.json"
+    },
+    "ticketcompanyassociationtype": {
+      "label": "Ticket-Company Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "ticketcontactassociation": {
+      "label": "Ticket-Contact Association",
+      "parent": "ticket",
+      "template": "templates/contactcompanyassociation.json"
+    },
+    "ticketcontactassociationtype": {
+      "label": "Ticket-Contact Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "ticketdealassociation": {
+      "label": "Ticket-Deal Association",
+      "parent": "ticket",
+      "template": "templates/contactcompanyassociation.json"
+    },
+    "ticketdealassociationtype": {
+      "label": "Ticket-Deal Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
     },
     "user": {
       "label": "User",
