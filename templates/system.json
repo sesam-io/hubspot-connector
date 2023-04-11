@@ -8,6 +8,11 @@
     "token_url": "{{@ token_url @}}"
   },
   "operations": {
+    "account-list": {
+      "id_expression": "{{ portalId }}",
+      "method": "GET",
+      "url": "account-info/v3/details"
+    },
     "company-delete": {
       "method": "DELETE",
       "url": "crm/v3/objects/company/{{ entity.id }}"

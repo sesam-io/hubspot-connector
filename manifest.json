@@ -6,6 +6,13 @@
   },
   "auth": "oauth2",
   "datatypes": {
+    "account": {
+      "template": "templates/account.json"
+    },
+    "company": {
+      "label": "Company",
+      "template": "templates/company.json"
+    },
     "companycompanyassociation": {
       "label": "Company-Company Association",
       "parent": "company",
@@ -14,10 +21,6 @@
     "companycompanyassociationtype": {
       "label": "Company-Company Association Type",
       "template": "templates/contactcompanyassociationtype.json"
-    },
-    "company": {
-      "label": "Company",
-      "template": "templates/company.json"
     },
     "contact": {
       "label": "Contact",
