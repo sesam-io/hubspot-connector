@@ -264,7 +264,7 @@
                   "associationTypeId",
                   "_.typeId"
                 ],
-                "_S.associationTypes"
+                "_T.associationTypes"
               ]
             ]
           ],

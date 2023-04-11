@@ -71,23 +71,6 @@
               "$origin",
               "_T._origin"
             ]
-          ],
-          [
-            "comment",
-            "add the sesam_simpleId for mapping"
-          ],
-          [
-            "add",
-            "sesam_simpleId",
-            [
-              "concat",
-              "_S.category",
-              "-",
-              [
-                "string",
-                "_S.typeId"
-              ]
-            ]
           ]
         ]
       },
@@ -126,12 +109,8 @@
               [
                 "apply",
                 "fixupAssociationTypes",
-                "_S.sesam_simpleId"
+                "_S.$id"
               ]
-            ],
-            [
-              "remove",
-              "sesam_simpleId"
             ],
             [
               "comment",
@@ -153,7 +132,7 @@
                 "associationCategory",
                 "_S.category",
                 "name",
-                "_S.label"
+                ["uuid"]
               ]
             ]
           ],
