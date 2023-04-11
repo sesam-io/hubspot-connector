@@ -31,8 +31,35 @@
       "parent": "contact",
       "template": "templates/contactcompanyassociation.json"
     },
+    "dealcompanyassociation": {
+      "label": "Deal-Company  Association",
+      "parent": "deal",
+      "template": "templates/contactcompanyassociation.json"
+    },
+    "dealcontactassociation": {
+      "label": "Deal-Contact Association",
+      "parent": "deal",
+      "template": "templates/contactcompanyassociation.json"
+    },
+    "lineitemdealassociation": {
+      "label": "Line Item-Deal Association",
+      "parent": "lineitem",
+      "template": "templates/contactcompanyassociation.json"
+    },
     "contactcompanyassociationtype": {
       "label": "Contact-Company Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "dealcompanyassociationtype": {
+      "label": "Deal-Company Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "dealcontactassociationtype": {
+      "label": "Deal-Contact Association Type",
+      "template": "templates/contactcompanyassociationtype.json"
+    },
+    "lineitemdealassociationtype": {
+      "label": "Line Item-Deal Association Type",
       "template": "templates/contactcompanyassociationtype.json"
     },
     "deal": {

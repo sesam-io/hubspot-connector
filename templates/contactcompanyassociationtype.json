@@ -102,6 +102,18 @@
             ],
             [
               "comment",
+              "below apply is to recreate the original properties needed for doing share operations"
+            ],
+            [
+              "merge",
+              [
+                "apply",
+                "fixupAssociationTypes",
+                "_S.$id"
+              ]
+            ],
+            [
+              "comment",
               "reshaping payload as the collect and share is not symmetric"
             ],
             [
@@ -120,7 +132,36 @@
                 "associationCategory",
                 "_S.category",
                 "name",
-                "_S.label"
+                ["uuid"]
+              ]
+            ]
+          ],
+          "fixupAssociationTypes": [
+            [
+              "merge",
+              [
+                "dict",
+                "category",
+                [
+                  "first",
+                  [
+                    "split",
+                    "-",
+                    "_S."
+                  ]
+                ],
+                "typeId",
+                [
+                  "integer",
+                  [
+                    "last",
+                    [
+                      "split",
+                      "-",
+                      "_S."
+                    ]
+                  ]
+                ]
               ]
             ]
           ]
@@ -128,7 +169,6 @@
         "type": "dtl"
       },
       {
-        "description": "TODO replace with rest-share once the template fix has been merged",
         "properties": {
           "operation_delete": "{{@ datatype @}}-delete",
           "operation_insert": "{{@ datatype @}}-insert",
