@@ -233,6 +233,11 @@
             ],
             [
               "add",
+              "$based_on_properties",
+              ["combine", "associationTypes", ["filter", ["neq", "_.", "sesam_simpleAssociationTypes"], "_S.$based_on_properties"]
+            ],
+            [
+              "add",
               "associationTypes",
               [
                 "apply",
