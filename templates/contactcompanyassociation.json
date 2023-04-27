@@ -202,6 +202,7 @@
   },
   {
     "_id": "{{@ system @}}-{{@ datatype @}}-share",
+    "batch_size": 1,
     "namespaced_identifiers": false,
     "sink": {
       "dataset": "{{@ system @}}-{{@ datatype @}}-share",
