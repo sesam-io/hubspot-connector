@@ -322,7 +322,12 @@
           "fixupBasedOn": [
             [
               "copy",
-              "*"
+              "*",
+              [
+                "list",
+                "sesam_simpleAssociationTypes",
+                "id"
+              ]
             ],
             [
               "comment",
@@ -332,9 +337,12 @@
               "add",
               "associationTypes",
               [
-                "apply",
-                "fixupAssociationTypes",
-                "_S.sesam_simpleAssociationTypes"
+                "first",
+                [
+                  "apply",
+                  "fixupAssociationTypes",
+                  "_S.sesam_simpleAssociationTypes"
+                ]
               ]
             ]
           ]
@@ -343,6 +351,7 @@
       },
       {
         "properties": {
+          "enable_deletes": true,
           "is_natural_key": true,
           "operation_delete": "{{@ datatype @}}-delete",
           "operation_insert": "{{@ datatype @}}-upsert",
@@ -402,7 +411,6 @@
           },
           "share_dataset": "{{@ system @}}-{{@ datatype @}}-share"
         },
-        "side_effects": false,
         "template": "transform-share-rest",
         "type": "template"
       }
