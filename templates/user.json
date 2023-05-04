@@ -34,7 +34,6 @@
     },
     "transform": {
       "properties": {
-        "enable_deletes": true,
         "operation_delete": "{{@ datatype @}}-delete",
         "operation_insert": "{{@ datatype @}}-insert",
         "operation_lookup": "{{@ datatype @}}-lookup",
