@@ -1,32 +1,5 @@
 [
   {
-    "_id": "{{@ system @}}-{{@ datatype @}}-share",
-    "batch_size": 1,
-    "namespaced_identifiers": false,
-    "sink": {
-      "deletion_tracking": false,
-      "set_initial_offset": "onload"
-    },
-    "source": {
-      "dataset": "{{@ system @}}-{{@ datatype @}}-transform",
-      "type": "dataset"
-    },
-    "transform": {
-      "properties": {
-        "operation_delete": "{{@ datatype @}}-delete",
-        "operation_insert": "{{@ datatype @}}-insert",
-        "operation_lookup": "{{@ datatype @}}-lookup",
-        "operation_update": "{{@ datatype @}}-update",
-        "primary_key": "id",
-        "rest_system": "{{@ system @}}",
-        "share_dataset": "{{@ system @}}-{{@ datatype @}}-share"
-      },
-      "template": "transform-share-rest",
-      "type": "template"
-    },
-    "type": "pipe"
-  },
-  {
     "_id": "{{@ system @}}-{{@ datatype @}}-collect",
     "exclude_completeness": [
       "{{@ system @}}-{{@ datatype @}}-share"
@@ -67,6 +40,34 @@
         "type": "dtl"
       }
     ],
+    "type": "pipe"
+  },
+  {
+    "_id": "{{@ system @}}-{{@ datatype @}}-share",
+    "batch_size": 1,
+    "namespaced_identifiers": false,
+    "sink": {
+      "deletion_tracking": false,
+      "set_initial_offset": "onload"
+    },
+    "source": {
+      "dataset": "{{@ system @}}-{{@ datatype @}}-transform",
+      "type": "dataset"
+    },
+    "transform": {
+      "properties": {
+        "enable_deletes": true,
+        "operation_delete": "{{@ datatype @}}-delete",
+        "operation_insert": "{{@ datatype @}}-insert",
+        "operation_lookup": "{{@ datatype @}}-lookup",
+        "operation_update": "{{@ datatype @}}-update",
+        "primary_key": "id",
+        "rest_system": "{{@ system @}}",
+        "share_dataset": "{{@ system @}}-{{@ datatype @}}-share"
+      },
+      "template": "transform-share-rest",
+      "type": "template"
+    },
     "type": "pipe"
   }
 ]
