@@ -1,6 +1,19 @@
 # hubspot-connector
 An example of a new Sesam component - a connector - to the Hubspot CRM system.
 
+# Associations
+
+The cronological sequence of hacks we have had to do on associations.
+ 1. Create expected payload for $based_on_comparison with key "associationTypes".
+ 2. Reconstructing the original structure from "sesam_simpleAssociationTypes", which has been created to simplify model mapping and removing it.
+ 3. Reshape the payload since its asymmetric for insert/update vs. collect/lookup.
+ 4. On lookup, find the one relation we are about to update, since all relations between datatypes are returned.
+ 5. Overwriting the returned "associationTypes" that gets rid of null label values, which is a default label added by HubSpot that has no meaning for us to care about.
+ 
+ 
+Sequence description on inserts and updates:
+- You can only have one label assigned to an association at any given time, unless its an insert, where the label primary is added automatically by HubSpot. So, if you do an insert where you insert a USER_DEFINED label that association will end up with two labels. One being the USER_DEFINED label sent from Sesam and the other the Primay label automatically added by HubSpot. After, if the same entity gets and update where you change the USER_DEFINED label, then only that label will be assigned to that association. As such, the primary label is removed. 
+
 # Webhooks
 
 To test webhook events you need to set the `hubspot_webhook_dataset` environment variable to point to a dataset with all the events you want to test. 
