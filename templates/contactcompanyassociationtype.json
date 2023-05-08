@@ -212,7 +212,6 @@
           },
           "share_dataset": "{{@ system @}}-{{@ datatype @}}-share"
         },
-        "side_effects": false,
         "template": "transform-share-rest",
         "type": "template"
       }
