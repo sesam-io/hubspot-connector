@@ -208,6 +208,7 @@
       "crm.objects.owners.read",
       "crm.schemas.quotes.read",
       "crm.objects.quotes.write",
+      "crm.objects.quotes.read",
       "crm.objects.companies.read",
       "crm.objects.contacts.write",
       "settings.users.write",
