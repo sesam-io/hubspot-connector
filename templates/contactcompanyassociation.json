@@ -351,7 +351,6 @@
       },
       {
         "properties": {
-          "enable_deletes": true,
           "is_natural_key": true,
           "operation_delete": "{{@ datatype @}}-delete",
           "operation_insert": "{{@ datatype @}}-upsert",
