@@ -274,15 +274,18 @@
               "add",
               "$payload",
               [
-                "map",
+                "list",
                 [
-                  "dict",
-                  "associationCategory",
-                  "_.category",
-                  "associationTypeId",
-                  "_.typeId"
-                ],
-                "_T.associationTypes"
+                  "map",
+                  [
+                    "dict",
+                    "associationCategory",
+                    "_.category",
+                    "associationTypeId",
+                    "_.typeId"
+                  ],
+                  "_T.associationTypes"
+                ]
               ]
             ]
           ],
