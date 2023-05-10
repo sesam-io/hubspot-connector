@@ -126,11 +126,11 @@
               "$payload",
               [
                 "dict",
-                "associationTypeId",
+                "typeId",
                 "_S.typeId",
                 "label",
                 "_S.label",
-                "associationCategory",
+                "category",
                 "_S.category",
                 "name",
                 [
