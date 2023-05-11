@@ -127,14 +127,16 @@
               [
                 "dict",
                 "associationTypeId",
-                "_S.typeId",
+                "_T.typeId",
                 "label",
                 "_S.label",
                 "associationCategory",
-                "_S.category",
+                "_T.category",
                 "name",
-                [
-                  "uuid"
+                ["string",
+                  [
+                    "uuid"
+                  ]
                 ]
               ]
             ]
