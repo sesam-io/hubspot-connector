@@ -150,6 +150,9 @@
       "dataset": "{{@ system @}}-{{@ datatype @}}-event",
       "type": "dataset"
     },
+    "sink": {
+      "set_initial_offset": "onload"
+    },
     "transform": [
       {
         "allowed_status_codes": "200,404",
