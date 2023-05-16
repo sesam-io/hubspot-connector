@@ -51,7 +51,7 @@
     "dealcontactassociation": {
       "label": "Deal-Contact Association",
       "parent": "deal",
-      "template": "templates/contactcompanyassociation.json"
+      "template": "templates/dealcontactassociation.json"
     },
     "dealcontactassociationtype": {
       "label": "Deal-Contact Association Type",
