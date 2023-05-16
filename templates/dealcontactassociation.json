@@ -1,0 +1,412 @@
+[
+  {
+    "_id": "{{@ system @}}-{{@ datatype @}}-children",
+    "namespaced_identifiers": false,
+    "source": {
+      "dataset": "{{@ system @}}-{{@ parent @}}-collect",
+      "type": "dataset"
+    },
+    "transform": [
+      {
+        "rules": {
+          "default": [
+            [
+              "comment",
+              "optimization, no need to look up the entity if we know it has no associations"
+            ],
+            [
+              "if",
+              [
+                "is-empty",
+                "_S.associations"
+              ],
+              [
+                "filter"
+              ]
+            ],
+            [
+              "copy",
+              "id"
+            ]
+          ]
+        },
+        "type": "dtl"
+      },
+      {
+        "operation": "{{@ datatype @}}-list",
+        "replace_entity": false,
+        "side_effects": false,
+        "system": "{{@ system @}}",
+        "type": "rest"
+      },
+      {
+        "rules": {
+          "association": [
+            [
+              "copy",
+              "*"
+            ],
+            [
+              "comment",
+              "collapse the associationstypes into a simpler <TYPE>-<ID> structure"
+            ],
+            [
+              "comment",
+              "starts with sesam_ so that we know it was not part of the source entity"
+            ],
+            [
+              "add",
+              "sesam_simpleAssociationTypes",
+              [
+                "map",
+                [
+                  "concat",
+                  "_.category",
+                  "-",
+                  [
+                    "string",
+                    "_.typeId"
+                  ]
+                ],
+                "_S.associationTypes"
+              ]
+            ],
+            [
+              "comment",
+              "need to add the id from the parent to make the entity self contained, it's not included in the response"
+            ],
+            [
+              "add",
+              "id",
+              "_P._S.id"
+            ],
+            [
+              "comment",
+              "creating this id should be safe as the parent id is always part of the id"
+            ],
+            [
+              "add",
+              "_id",
+              [
+                "concat",
+                "_T.id",
+                "-",
+                [
+                  "string",
+                  "_T.toObjectId"
+                ]
+              ]
+            ]
+          ],
+          "default": [
+            [
+              "comment",
+              "can't use payload_property because we want to use create-child to track deleted associations"
+            ],
+            [
+              "create-child",
+              [
+                "apply",
+                "association",
+                "_S.response"
+              ]
+            ]
+          ]
+        },
+        "type": "dtl"
+      }
+    ],
+    "type": "pipe"
+  },
+  {
+    "_id": "{{@ system @}}-{{@ datatype @}}-collect",
+    "exclude_completeness": [
+      "{{@ system @}}-{{@ datatype @}}-share"
+    ],
+    "namespaced_identifiers": false,
+    "source": {
+      "dataset": "{{@ system @}}-{{@ datatype @}}-children",
+      "type": "dataset"
+    },
+    "transform": [
+      {
+        "type": "emit_children"
+      },
+      {
+        "rules": {
+          "default": [
+            [
+              "copy",
+              "*"
+            ],
+            [
+              "comment",
+              "TODO replace with template once the template supports composite keys "
+            ],
+            [
+              "add",
+              "_origin",
+              [
+                "first",
+                [
+                  "hops",
+                  {
+                    "datasets": [
+                      "{{@ system @}}-{{@ datatype @}}-share st"
+                    ],
+                    "return": "st.$origin",
+                    "track-dependencies": false,
+                    "where": [
+                      [
+                        "eq",
+                        [
+                          "tuples",
+                          "_S.id",
+                          "_S.toObjectId"
+                        ],
+                        [
+                          "list",
+                          "st.$generated_id"
+                        ]
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ],
+            [
+              "if",
+              [
+                "is-not-null",
+                "_T._origin"
+              ],
+              [
+                "add",
+                "$origin",
+                "_T._origin"
+              ]
+            ]
+          ]
+        },
+        "type": "dtl"
+      }
+    ],
+    "type": "pipe"
+  },
+  {
+    "_id": "{{@ system @}}-{{@ datatype @}}-share",
+    "batch_size": 1,
+    "namespaced_identifiers": false,
+    "sink": {
+      "dataset": "{{@ system @}}-{{@ datatype @}}-share",
+      "deletion_tracking": false,
+      "set-initial-offset": "if-source-populated",
+      "set_initial_offset": "onload",
+      "type": "dataset"
+    },
+    "source": {
+      "dataset": "{{@ system @}}-{{@ datatype @}}-transform",
+      "type": "dataset"
+    },
+    "transform": [
+      {
+        "rules": {
+          "default": [
+            [
+              "copy",
+              "*"
+            ],
+            [
+              "add",
+              "$based_on",
+              [
+                "apply",
+                "fixupBasedOn",
+                "_S.$based_on"
+              ]
+            ],
+            [
+              "add",
+              "$based_on_properties",
+              [
+                "combine",
+                "associationTypes",
+                [
+                  "filter",
+                  [
+                    "neq",
+                    "_.",
+                    "sesam_simpleAssociationTypes"
+                  ],
+                  "_S.$based_on_properties"
+                ]
+              ]
+            ],
+            [
+              "add",
+              "associationTypes",
+              [
+                "apply",
+                "fixupAssociationTypes",
+                "_S.sesam_simpleAssociationTypes"
+              ]
+            ],
+            [
+              "comment",
+              "remove this generated property that does not exist in the target system"
+            ],
+            [
+              "remove",
+              "sesam_simpleAssociationTypes"
+            ],
+            [
+              "comment",
+              "this is the shape of the payload for insert and update, but not the shape of the collect and lookup version"
+            ],
+            [
+              "add",
+              "$payload",
+              [
+                "list",
+                [
+                  "map",
+                  [
+                    "dict",
+                    "associationCategory",
+                    "_.category",
+                    "associationTypeId",
+                    "_.typeId"
+                  ],
+                  "_T.associationTypes"
+                ]
+              ]
+            ]
+          ],
+          "fixupAssociationTypes": [
+            [
+              "comment",
+              "reconstructing the structure that we collapsed into on string in the collect to make it simpler for the model mapping"
+            ],
+            [
+              "merge",
+              [
+                "dict",
+                "category",
+                [
+                  "first",
+                  [
+                    "split",
+                    "-",
+                    "_S."
+                  ]
+                ],
+                "typeId",
+                [
+                  "integer",
+                  [
+                    "last",
+                    [
+                      "split",
+                      "-",
+                      "_S."
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ],
+          "fixupBasedOn": [
+            [
+              "copy",
+              "*",
+              [
+                "list",
+                "sesam_simpleAssociationTypes",
+                "id"
+              ]
+            ],
+            [
+              "comment",
+              "need to add the associationTypes here as they will only exsist in Sesam Talk."
+            ],
+            [
+              "add",
+              "associationTypes",
+              [
+                "apply",
+                "fixupAssociationTypes",
+                "_S.sesam_simpleAssociationTypes"
+              ]
+            ]
+          ]
+        },
+        "type": "dtl"
+      },
+      {
+        "properties": {
+          "is_natural_key": true,
+          "operation_delete": "{{@ datatype @}}-delete",
+          "operation_insert": "{{@ datatype @}}-upsert",
+          "operation_lookup": "{{@ datatype @}}-lookup",
+          "operation_update": "{{@ datatype @}}-upsert",
+          "primary_key": [
+            "id",
+            "toObjectId"
+          ],
+          "rest_system": "{{@ system @}}",
+          "rules": {
+            "lookup_rewrite": [
+              [
+                "comment",
+                "lookup returns all outgoing relations from this objects, we need to find the one we are about to update"
+              ],
+              [
+                "filter",
+                [
+                  "eq",
+                  "_R._S.toObjectId",
+                  "_S.toObjectId"
+                ]
+              ],
+              [
+                "copy",
+                "*"
+              ],
+              [
+                "comment",
+                "overwrite associationTypes with a version that gets rid of null label entries. The coalesce operation is a datatype-neutral way of passing through whatever exists in the dictionary."
+              ],
+              [
+                "add",
+                "associationTypes",
+                [
+                  "map-dict",
+                  [
+                    "coalesce",
+                    "_."
+                  ],
+                  [
+                    "coalesce",
+                    "_."
+                  ],
+                  [
+                    "filter",
+                    [
+                      "is-not-empty",
+                      "_.label"
+                    ],
+                    "_S.associationTypes"
+                  ]
+                ]
+              ]
+            ]
+          },
+          "share_dataset": "{{@ system @}}-{{@ datatype @}}-share"
+        },
+        "template": "transform-share-rest",
+        "type": "template"
+      }
+    ],
+    "type": "pipe"
+  }
+]
