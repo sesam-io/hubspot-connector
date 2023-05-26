@@ -64,7 +64,7 @@
     "lineitemdealassociation": {
       "label": "Line Item-Deal Association",
       "parent": "lineitem",
-      "template": "templates/contactcompanyassociation.json"
+      "template": "templates/dealcontactassociation.json"
     },
     "lineitemdealassociationtype": {
       "label": "Line Item-Deal Association Type",
