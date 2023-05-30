@@ -73,7 +73,7 @@
     "lineitemquoteassociation": {
       "label": "Line Item-Quote Association",
       "parent": "lineitem",
-      "template": "templates/contactcompanyassociation.json"
+      "template": "templates/dealcontactassociation.json"
     },
     "lineitemquoteassociationtype": {
       "label": "Line Item-Quote Association Type",
