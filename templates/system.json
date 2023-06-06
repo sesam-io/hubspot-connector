@@ -649,6 +649,13 @@
       "method": "PUT",
       "url": "crm/v4/associations/quote/deal/labels"
     },
+    "quotequotetemplate-list": {
+      "id_expression": "{{ id }}",
+      "method": "GET",
+      "next_page_link": "{{ body.paging.next.link }}",
+      "payload_property": "results",
+      "url": "crm/v3/objects/quote_template"
+    },
     "quotequotetemplateassociation-delete": {
       "method": "DELETE",
       "url": "crm/v4/objects/quote/{{ entity.id }}/associations/quote_template/{{ entity['toObjectId'] }}"

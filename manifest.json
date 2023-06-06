@@ -126,6 +126,10 @@
       "label": "Quote-Deal Association Type",
       "template": "templates/contactcompanyassociationtype.json"
     },
+    "quotequotetemplate": {
+      "label": "Owner",
+      "template": "templates/owner.json"
+    },
     "quotequotetemplateassociation": {
       "label": "Quote-Quote Template Association",
       "parent": "quote",
