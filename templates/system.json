@@ -653,6 +653,9 @@
       "id_expression": "{{ id }}",
       "method": "GET",
       "next_page_link": "{{ body.paging.next.link }}",
+      "params": {
+        "properties": "hs_name,hs_active,hs_createdate,hs_lastmodifieddate,hs_object_id"
+      },
       "payload_property": "results",
       "url": "crm/v3/objects/quote_template"
     },
