@@ -197,6 +197,9 @@
     "_id": "{{@ system @}}-{{@ datatype @}}-share",
     "batch_size": 1,
     "namespaced_identifiers": false,
+    "sink": {
+      "set_initial_offset": "onload"
+    },
     "source": {
       "dataset": "{{@ system @}}-{{@ datatype @}}-transform",
       "type": "dataset"
