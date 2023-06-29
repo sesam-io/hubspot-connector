@@ -102,7 +102,7 @@
     "quotecompanyassociation": {
       "label": "Quote-Company Association",
       "parent": "quote",
-      "template": "templates/contactcompanyassociation.json"
+      "template": "templates/dealcontactassociation.json"
     },
     "quotecompanyassociationtype": {
       "label": "Quote-Company Association Type",
@@ -111,7 +111,7 @@
     "quotecontactassociation": {
       "label": "Quote-Contact Association",
       "parent": "quote",
-      "template": "templates/contactcompanyassociation.json"
+      "template": "templates/dealcontactassociation.json"
     },
     "quotecontactassociationtype": {
       "label": "Quote-Contact Association Type",
@@ -120,7 +120,7 @@
     "quotedealassociation": {
       "label": "Quote-Deal Association",
       "parent": "quote",
-      "template": "templates/contactcompanyassociation.json"
+      "template": "templates/dealcontactassociation.json"
     },
     "quotedealassociationtype": {
       "label": "Quote-Deal Association Type",
@@ -155,7 +155,7 @@
     "ticketcontactassociation": {
       "label": "Ticket-Contact Association",
       "parent": "ticket",
-      "template": "templates/contactcompanyassociation.json"
+      "template": "templates/dealcontactassociation.json"
     },
     "ticketcontactassociationtype": {
       "label": "Ticket-Contact Association Type",
