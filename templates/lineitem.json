@@ -77,7 +77,7 @@
           ],
           [
             "matches",
-            "{{@ datatype @}}.*",
+            "{{@ webhook_filter_criteria @}}.*",
             [
               "list",
               "_S.subscriptionType"
@@ -146,12 +146,12 @@
   {
     "_id": "{{@ system @}}-{{@ datatype @}}-event2",
     "namespaced_identifiers": false,
+    "sink": {
+      "set_initial_offset": "onload"
+    },
     "source": {
       "dataset": "{{@ system @}}-{{@ datatype @}}-event",
       "type": "dataset"
-    },
-    "sink": {
-      "set_initial_offset": "onload"
     },
     "transform": [
       {

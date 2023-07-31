@@ -11,7 +11,10 @@
     },
     "company": {
       "label": "Company",
-      "template": "templates/company.json"
+      "parameters": {
+        "webhook_filter_criteria": "company"
+      },
+      "template": "templates/lineitem.json"
     },
     "companycompanyassociation": {
       "label": "Company-Company Association",
@@ -24,7 +27,10 @@
     },
     "contact": {
       "label": "Contact",
-      "template": "templates/company.json"
+      "parameters": {
+        "webhook_filter_criteria": "contact"
+      },
+      "template": "templates/lineitem.json"
     },
     "contactcompanyassociation": {
       "label": "Contact-Company Association",
@@ -37,7 +43,10 @@
     },
     "deal": {
       "label": "Deal",
-      "template": "templates/company.json"
+      "parameters": {
+        "webhook_filter_criteria": "deal"
+      },
+      "template": "templates/lineitem.json"
     },
     "dealcompanyassociation": {
       "label": "Deal-Company Association",
@@ -59,7 +68,10 @@
     },
     "lineitem": {
       "label": "Line Item",
-      "template": "templates/company.json"
+      "parameters": {
+        "webhook_filter_criteria": "line_item"
+      },
+      "template": "templates/lineitem.json"
     },
     "lineitemdealassociation": {
       "label": "Line Item-Deal Association",
@@ -93,7 +105,10 @@
     },
     "product": {
       "label": "Product",
-      "template": "templates/company.json"
+      "parameters": {
+        "webhook_filter_criteria": "product"
+      },
+      "template": "templates/lineitem.json"
     },
     "quote": {
       "label": "Quote",
@@ -141,7 +156,10 @@
     },
     "ticket": {
       "label": "Ticket",
-      "template": "templates/company.json"
+      "parameters": {
+        "webhook_filter_criteria": "ticket"
+      },
+      "template": "templates/lineitem.json"
     },
     "ticketcompanyassociation": {
       "label": "Ticket-Company Association",
