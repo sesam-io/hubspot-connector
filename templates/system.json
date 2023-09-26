@@ -892,5 +892,7 @@
   },
   "type": "system:rest",
   "url_pattern": "https://api.hubapi.com/%s",
+  "rate_limiting_retries": 3,
+  "rate_limiting_delay": 5,
   "verify_ssl": true
 }
