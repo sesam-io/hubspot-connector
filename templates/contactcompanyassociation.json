@@ -140,62 +140,15 @@
         "type": "emit_children"
       },
       {
-        "rules": {
-          "default": [
-            [
-              "copy",
-              "*"
-            ],
-            [
-              "comment",
-              "TODO replace with template once the template supports composite keys "
-            ],
-            [
-              "add",
-              "_origin",
-              [
-                "first",
-                [
-                  "hops",
-                  {
-                    "datasets": [
-                      "{{@ system @}}-{{@ datatype @}}-share st"
-                    ],
-                    "return": "st.$origin",
-                    "track-dependencies": false,
-                    "where": [
-                      [
-                        "eq",
-                        [
-                          "tuples",
-                          "_S.id",
-                          "_S.toObjectId"
-                        ],
-                        [
-                          "list",
-                          "st.$generated_id"
-                        ]
-                      ]
-                    ]
-                  }
-                ]
-              ]
-            ],
-            [
-              "if",
-              [
-                "is-not-null",
-                "_T._origin"
-              ],
-              [
-                "add",
-                "$origin",
-                "_T._origin"
-              ]
-            ]
-          ]
+        "properties": {
+          "primary_key": [
+            "id", 
+            "toObjectId"
+          ],
+          "share_dataset": "{{@ system @}}-{{@ datatype @}}-share"
         },
-        "type": "dtl"
+        "template": "transform-collect-rest",
+        "type": "template"
       }
     ],
     "type": "pipe"
