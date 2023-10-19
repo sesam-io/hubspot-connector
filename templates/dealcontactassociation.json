@@ -161,12 +161,31 @@
                         "eq",
                         [
                           "tuples",
-                          "_S.id",
-                          "_S.toObjectId"
+                          [
+                            "string",
+                            "_S.id"
+                          ],
+                          [
+                            "string",
+                            "_S.toObjectId"
+                          ]
                         ],
                         [
-                          "list",
-                          "st.$generated_id"
+                          "tuples",
+                          [
+                            "string",
+                            [
+                              "first",
+                              "st.$generated_id"
+                            ]
+                          ],
+                          [
+                            "string",
+                            [
+                              "last",
+                              "st.$generated_id"
+                            ]
+                          ]
                         ]
                       ]
                     ]
