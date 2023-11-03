@@ -352,7 +352,7 @@
               "need to add the associationTypes here as they will only exsist in Sesam Talk."
             ],
             [
-              "add",
+              "add-if",
               "associationTypes",
               [
                 "apply",
@@ -366,6 +366,7 @@
       },
       {
         "properties": {
+          "enable_deletes": true,
           "is_natural_key": true,
           "operation_delete": "{{@ datatype @}}-delete",
           "operation_insert": "{{@ datatype @}}-upsert",
