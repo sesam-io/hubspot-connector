@@ -149,7 +149,7 @@
     "namespaced_identifiers": false,
     "sink": {
       "set_initial_offset": "onload",
-      "deletion_tracking": true
+      "deletion_tracking": false
     },
     "source": {
       "dataset": "{{@ system @}}-{{@ datatype @}}-event",
