@@ -1,6 +1,10 @@
 # hubspot-connector
 An example of a new Sesam component - a connector - to the Hubspot CRM system.
 
+# Custom fields
+
+Pr. now two custom fields are in use: `sesam_org_number_no` and `sesam_org_number_se` for `companies`. These will have to be manually created in each hubspot instance, but once they are they will syncronize as a Norwegian and a Swedish organization number correspondingly. They will also be used as merge criteria for organizations.  
+
 # Associations
 
 The cronological sequence of hacks we have had to do on associations.
