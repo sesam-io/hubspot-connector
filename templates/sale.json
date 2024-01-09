@@ -1,0 +1,524 @@
+[
+  {
+    "_id": "{{@ system @}}-{{@ datatype @}}-all",
+    "metadata": {
+      "supports_since": true
+    },
+    "namespaced_identifiers": false,
+    "source": {
+      "operation": "list",
+      "properties": {
+        "base_url": "Sale",
+        "primary_key": "{{@ datatype @}}Id",
+        "updated_param": "updatedDate"
+      },
+      "since_property_location": "manual",
+      "since_property_name": "since",
+      "supports_since": true,
+      "system": "{{@ system @}}",
+      "type": "rest",
+      "updated_expression": "{{ updatedDate }}"
+    },
+    "type": "pipe"
+  },
+  {
+    "_id": "{{@ system @}}-{{@ datatype @}}-collect",
+    "exclude_completeness": [
+      "{{@ system @}}-{{@ datatype @}}-share",
+      "{{@ system @}}-quotealternative-{{@ datatype @}}-share"
+    ],
+    "namespaced_identifiers": false,
+    "source": {
+      "datasets": [
+        "{{@ system @}}-{{@ datatype @}}-event",
+        "{{@ system @}}-{{@ datatype @}}-all"
+      ],
+      "type": "merge_datasets"
+    },
+    "transform": {
+      "transforms": [
+        {
+          "rules": {
+            "default": [
+              [
+                "copy",
+                "*"
+              ],
+              [
+                "comment",
+                "In the case of webhook events, we only have the PrimaryKey available."
+              ],
+              [
+                "default",
+                "{{@ datatype @}}Id",
+                "_S.PrimaryKey"
+              ]
+            ]
+          },
+          "type": "dtl"
+        },
+        {
+          "allowed_status_codes": "200,404",
+          "operation": "lookup-from-list",
+          "properties": {
+            "base_url": "Sale",
+            "list_id": "{{@ datatype @}}Id",
+            "primary_key": "SaleId"
+          },
+          "replace_entity": false,
+          "response_property": "response_body",
+          "response_status_property": "response_status",
+          "side_effects": false,
+          "system": "{{@ system @}}",
+          "type": "rest"
+        },
+        {
+          "rules": {
+            "default": [
+              [
+                "case-eq",
+                "_S.response_status",
+                200,
+                [
+                  [
+                    "merge",
+                    [
+                      "first",
+                      "_S.response_body"
+                    ]
+                  ],
+                  [
+                    "if",
+                    [
+                      "eq",
+                      "_S._deleted",
+                      true
+                    ],
+                    [
+                      "add",
+                      "_deleted",
+                      false
+                    ]
+                  ]
+                ],
+                404,
+                [
+                  [
+                    "if",
+                    [
+                      "eq",
+                      "_S._deleted",
+                      true
+                    ],
+                    [
+                      "copy",
+                      "*",
+                      [
+                        "list",
+                        "response_body",
+                        "response_status"
+                      ]
+                    ],
+                    [
+                      "discard"
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          },
+          "type": "dtl"
+        },
+        {
+          "rules": {
+            "default": [
+              [
+                "copy",
+                "*"
+              ],
+              [
+                "add",
+                "_origin_entity",
+                [
+                  "coalesce",
+                  [
+                    "is-not-empty",
+                    "_."
+                  ],
+                  [
+                    "list",
+                    [
+                      "first",
+                      [
+                        "hops",
+                        {
+                          "datasets": [
+                            "{{@ system @}}-{{@ datatype @}}-share st"
+                          ],
+                          "track-dependencies": false,
+                          "where": [
+                            [
+                              "eq",
+                              "_S.SaleId",
+                              "st.$generated_id"
+                            ]
+                          ]
+                        }
+                      ]
+                    ],
+                    [
+                      "first",
+                      [
+                        "hops",
+                        {
+                          "datasets": [
+                            "{{@ system @}}-quotealternative-{{@ datatype @}}-share st"
+                          ],
+                          "track-dependencies": false,
+                          "where": [
+                            [
+                              "eq",
+                              "_S.SaleId",
+                              "st.$generated_id"
+                            ]
+                          ]
+                        }
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              [
+                "add-if",
+                "$origin",
+                "_T._origin_entity.$origin"
+              ],
+              [
+                "remove",
+                "_origin_entity"
+              ],
+              [
+                "add-if",
+                "$truncation",
+                [
+                  "max",
+                  "_._updated",
+                  [
+                    "hops",
+                    {
+                      "datasets": [
+                        "{{@ system @}}-{{@ datatype @}}-share st"
+                      ],
+                      "return": "st.$truncation",
+                      "track-dependencies": false,
+                      "where": [
+                        [
+                          "eq",
+                          "_S.SaleId",
+                          "st.SaleId"
+                        ]
+                      ]
+                    }
+                  ]
+                ]
+              ]
+            ]
+          },
+          "type": "dtl"
+        },
+        {
+          "rules": {
+            "default": [
+              [
+                "copy",
+                "*"
+              ],
+              [
+                "comment",
+                "_S.updatedDate handles the case where the entity has been deleted"
+              ],
+              [
+                "add",
+                "$last-modified",
+                [
+                  "max",
+                  [
+                    "datetime-parse",
+                    "%Y-%m-%dT%H:%M:%S%z",
+                    [
+                      "list",
+                      "_T.UpdatedDate",
+                      "_T.CreatedDate",
+                      "_S.updatedDate"
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          },
+          "type": "dtl"
+        }
+      ],
+      "type": "chained"
+    },
+    "type": "pipe"
+  },
+  {
+    "_id": "{{@ system @}}-{{@ datatype @}}-event",
+    "comment": "WARNING! This pipe is generated from the template of the 'contact' datatype and changes will be silently ignored during collapse. For more information see the connectorpy README.",
+    "compaction": {
+      "keep_versions": 1
+    },
+    "namespaced_identifiers": false,
+    "sink": {
+      "set_initial_offset": "onload"
+    },
+    "source": {
+      "system": "{{@ system @}}",
+      "type": "http_endpoint",
+      "validation_expression": "{% if request_headers['X-Superoffice-Signature'] == b64encode(hmacsha256digest(secret('webhook_secret'), request_body)) %}{% else %}FAIL!{% endif %}"
+    },
+    "transform": [
+      {
+        "rules": {
+          "default": [
+            [
+              "copy",
+              "*"
+            ],
+            [
+              "add",
+              "_id",
+              [
+                "string",
+                "_S.PrimaryKey"
+              ]
+            ],
+            [
+              "comment",
+              "When we register a webhook in SO, they send a test event to this pipe instantly, with an Event: test property, these we want to get rid of."
+            ],
+            [
+              "discard",
+              [
+                "neq",
+                "_S.Event",
+                "test"
+              ]
+            ]
+          ]
+        },
+        "type": "dtl"
+      }
+    ],
+    "type": "pipe"
+  },
+  {
+    "_id": "{{@ system @}}-{{@ datatype @}}-registerwebhook",
+    "comment": "WARNING! This pipe is generated from the template of the 'contact' datatype and changes will be silently ignored during collapse. For more information see the connectorpy README.",
+    "namespaced_identifiers": false,
+    "sink": {
+      "deletion_tracking": false,
+      "set_initial_offset": "onload"
+    },
+    "source": {
+      "entities": [
+        {
+          "_id": "{{@ datatype @}}",
+          "_updated": 0
+        }
+      ],
+      "supports_since": true,
+      "type": "embedded"
+    },
+    "transform": [
+      {
+        "rules": {
+          "default": [
+            [
+              "add",
+              "WebhookId",
+              [
+                "first",
+                [
+                  "hops",
+                  {
+                    "datasets": [
+                      "{{@ system @}}-{{@ datatype @}}-registerwebhook sink"
+                    ],
+                    "return": [
+                      "first",
+                      "sink.insert_response.WebhookId"
+                    ],
+                    "where": [
+                      [
+                        "eq",
+                        "_S._id",
+                        "sink._id"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            ],
+            [
+              "add",
+              "$operation",
+              [
+                "if",
+                [
+                  "is-not-null",
+                  "_T.WebhookId"
+                ],
+                "lookup",
+                "insert"
+              ]
+            ]
+          ]
+        },
+        "type": "dtl"
+      },
+      {
+        "allowed_status_codes": "200,404",
+        "operation": "webhook-lookup",
+        "replace_entity": false,
+        "response_property": "lookup_response",
+        "response_status_property": "lookup_status_code",
+        "side_effects": false,
+        "system": "{{@ system @}}",
+        "trigger_on": {
+          "key": "$operation",
+          "value": "lookup"
+        },
+        "type": "rest"
+      },
+      {
+        "rules": {
+          "default": [
+            [
+              "copy",
+              "*"
+            ],
+            [
+              "comment",
+              "TODO: we should compare the state of the actual object vs our desired state."
+            ],
+            [
+              "discard",
+              [
+                "or",
+                [
+                  "eq",
+                  404,
+                  "_T.lookup_status_code"
+                ],
+                [
+                  "eq",
+                  "_S.$operation",
+                  "insert"
+                ]
+              ]
+            ]
+          ]
+        },
+        "type": "dtl"
+      },
+      {
+        "allowed_status_codes": "200,201",
+        "operation": "{{@ datatype @}}-webhook-insert",
+        "replace_entity": false,
+        "response_property": "insert_response",
+        "response_status_property": "insert_status_code",
+        "side_effects": true,
+        "system": "{{@ system @}}",
+        "type": "rest"
+      }
+    ],
+    "type": "pipe"
+  },
+  {
+    "_id": "{{@ system @}}-{{@ datatype @}}-share",
+    "add_namespaces": false,
+    "batch_size": 1,
+    "compaction": {
+      "keep_versions": 100
+    },
+    "exclude_completeness": [
+      "{{@ system @}}-{{@ datatype @}}-share"
+    ],
+    "namespaced_identifiers": false,
+    "sink": {
+      "deletion_tracking": false,
+      "set_initial_offset": "onload"
+    },
+    "source": {
+      "dataset": "{{@ system @}}-{{@ datatype @}}-transform",
+      "type": "dataset"
+    },
+    "transform": [
+      {
+        "rules": {
+          "default": [
+            [
+              "copy",
+              "*"
+            ],
+            [
+              "comment",
+              "Workaround for IS-14640"
+            ],
+            [
+              "if",
+              [
+                "is-null",
+                "_S.SaleId"
+              ],
+              [
+                "remove",
+                "SaleId"
+              ]
+            ]
+          ]
+        },
+        "type": "dtl"
+      },
+      {
+        "properties": {
+          "operation": "defaults",
+          "operation_properties": {
+            "base_url": "Sale/default"
+          },
+          "primary_key": "SaleId",
+          "rest_system": "{{@ system @}}"
+        },
+        "template": "transform-defaults-rest",
+        "type": "template"
+      },
+      {
+        "properties": {
+          "operation_delete_properties": {
+            "base_url": "Sale",
+            "lookup_id": "SaleId"
+          },
+          "operation_insert_properties": {
+            "base_url": "Sale"
+          },
+          "operation_lookup_properties": {
+            "base_url": "Sale",
+            "lookup_id": "SaleId"
+          },
+          "operation_update_properties": {
+            "base_url": "Sale",
+            "lookup_id": "SaleId"
+          },
+          "primary_key": "SaleId",
+          "rest_system": "{{@ system @}}",
+          "share_dataset": "{{@ system @}}-{{@ datatype @}}-share"
+        },
+        "template": "transform-share-rest",
+        "type": "template"
+      }
+    ],
+    "type": "pipe"
+  }
+]
