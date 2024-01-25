@@ -256,9 +256,17 @@
                 [
                   "filter",
                   [
-                    "neq",
-                    "_.",
-                    "sesam_simpleAssociationTypes"
+                    "and",
+                    [
+                      "neq",
+                      "_.",
+                      "sesam_simpleAssociationTypes"
+                    ],
+                    [
+                      "neq",
+                      "_.",
+                      "id"
+                    ]
                   ],
                   "_S.$based_on_properties"
                 ]
