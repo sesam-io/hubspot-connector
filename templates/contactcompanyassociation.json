@@ -68,14 +68,7 @@
                     "_.typeId"
                   ]
                 ],
-                [
-                  "filter",
-                  [
-                    "is-not-empty",
-                    "_.label"
-                  ],
-                  "_S.associationTypes"
-                ]
+                "_S.associationTypes"
               ]
             ],
             [
