@@ -12,7 +12,7 @@ The cronological sequence of hacks we have had to do on associations.
  2. Reconstructing the original structure from "sesam_simpleAssociationTypes", which has been created to simplify model mapping and removing it.
  3. Reshape the payload since its asymmetric for insert/update vs. collect/lookup.
  4. On lookup, find the one relation we are about to update, since all relations between datatypes are returned.
- 5. Overwriting the returned "associationTypes" that gets rid of null label values, which is a default label added by HubSpot that has no meaning for us to care about.
+ 5. Overwriting the returned "associationTypes" in collect; get rid of the default association that always follows the primary association. This association always has no label and is created by default by HubSpot and has no meaning for us.
  
  
 Sequence description on inserts and updates:
