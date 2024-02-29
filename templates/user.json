@@ -1,14 +1,23 @@
 [
   {
+    "_id": "{{@ system @}}-{{@ datatype @}}-all",
+    "namespaced_identifiers": false,
+    "source": {
+      "operation": "{{@ datatype @}}-list",
+      "system": "{{@ system @}}",
+      "type": "rest"
+    },
+    "type": "pipe"
+  },
+  {
     "_id": "{{@ system @}}-{{@ datatype @}}-collect",
     "exclude_completeness": [
       "{{@ system @}}-{{@ datatype @}}-share"
     ],
     "namespaced_identifiers": false,
     "source": {
-      "operation": "{{@ datatype @}}-list",
-      "system": "{{@ system @}}",
-      "type": "rest"
+      "dataset": "{{@ system @}}-{{@ datatype @}}-all",
+      "type": "dataset"
     },
     "transform": {
       "properties": {

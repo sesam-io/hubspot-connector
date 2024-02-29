@@ -59,8 +59,8 @@
     "_id": "{{@ system @}}-{{@ datatype @}}-event",
     "namespaced_identifiers": false,
     "sink": {
-      "set_initial_offset": "onload",
-      "deletion_tracking": false
+      "deletion_tracking": false,
+      "set_initial_offset": "onload"
     },
     "source": {
       "dataset": "{{@ hubspot_webhook_dataset @}}",
@@ -148,8 +148,8 @@
     "_id": "{{@ system @}}-{{@ datatype @}}-event2",
     "namespaced_identifiers": false,
     "sink": {
-      "set_initial_offset": "onload",
-      "deletion_tracking": false
+      "deletion_tracking": false,
+      "set_initial_offset": "onload"
     },
     "source": {
       "dataset": "{{@ system @}}-{{@ datatype @}}-event",

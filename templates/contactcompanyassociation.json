@@ -54,20 +54,46 @@
               "comment",
               "starts with sesam_ so that we know it was not part of the source entity"
             ],
-            ["add", "sesam_simpleAssociationTypes",
-              ["map",
-                ["concat", "_.category", "-",
-                  ["string", "_.typeId"]
+            [
+              "add",
+              "sesam_simpleAssociationTypes",
+              [
+                "map",
+                [
+                  "concat",
+                  "_.category",
+                  "-",
+                  [
+                    "string",
+                    "_.typeId"
+                  ]
                 ],
-                ["filter",
-                  ["or",
-                    ["is-not-empty", "_.label"],
-                    ["and",
-                      ["eq",
-                        ["count", "_S.associationTypes"], 1],
-                      ["is-empty", "_.label"]
+                [
+                  "filter",
+                  [
+                    "or",
+                    [
+                      "is-not-empty",
+                      "_.label"
+                    ],
+                    [
+                      "and",
+                      [
+                        "eq",
+                        [
+                          "count",
+                          "_S.associationTypes"
+                        ],
+                        1
+                      ],
+                      [
+                        "is-empty",
+                        "_.label"
+                      ]
                     ]
-                  ], "_S.associationTypes"]
+                  ],
+                  "_S.associationTypes"
+                ]
               ]
             ],
             [
