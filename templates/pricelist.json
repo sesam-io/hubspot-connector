@@ -1,0 +1,160 @@
+[
+  {
+    "_id": "{{@ system @}}-{{@ datatype @}}-all",
+    "metadata": {
+      "supports_since": true
+    },
+    "namespaced_identifiers": false,
+    "source": {
+      "operation": "list",
+      "properties": {
+        "base_url": "PriceList",
+        "primary_key": "PrimaryKey",
+        "updated_param": "updatedDate"
+      },
+      "since_property_location": "manual",
+      "since_property_name": "since",
+      "supports_since": true,
+      "system": "{{@ system @}}",
+      "type": "rest",
+      "updated_expression": "{{ updatedDate }}"
+    },
+    "type": "pipe"
+  },
+  {
+    "_id": "{{@ system @}}-{{@ datatype @}}-collect",
+    "exclude_completeness": [
+      "{{@ system @}}-{{@ datatype @}}-share"
+    ],
+    "namespaced_identifiers": false,
+    "source": {
+      "dataset": "{{@ system @}}-{{@ datatype @}}-all",
+      "type": "dataset"
+    },
+    "transform": [
+      {
+        "properties": {
+          "operation_lookup": "lookup-from-list",
+          "operation_lookup_properties": {
+            "base_url": "PriceList",
+            "list_id": "PrimaryKey",
+            "primary_key": "PriceListId"
+          },
+          "original_property": "$source",
+          "primary_key": "PriceListId",
+          "rest_system": "{{@ system @}}",
+          "share_dataset": "{{@ system @}}-{{@ datatype @}}-share"
+        },
+        "template": "transform-collect-rest",
+        "type": "template"
+      },
+      {
+        "rules": {
+          "default": [
+            [
+              "copy",
+              "*",
+              "$source"
+            ],
+            [
+              "add",
+              "$last-modified",
+              [
+                "datetime-parse",
+                "%Y-%m-%dT%H:%M:%S",
+                "_S.$source.updatedDate"
+              ]
+            ]
+          ]
+        },
+        "type": "dtl"
+      }
+    ],
+    "type": "pipe"
+  },
+  {
+    "_id": "{{@ system @}}-{{@ datatype @}}-share",
+    "add_namespaces": false,
+    "batch_size": 1,
+    "compaction": {
+      "keep_versions": 100
+    },
+    "exclude_completeness": [
+      "{{@ system @}}-{{@ datatype @}}-share"
+    ],
+    "namespaced_identifiers": false,
+    "sink": {
+      "deletion_tracking": false,
+      "set_initial_offset": "onload"
+    },
+    "source": {
+      "dataset": "{{@ system @}}-{{@ datatype @}}-transform",
+      "type": "dataset"
+    },
+    "transform": [
+      {
+        "rules": {
+          "default": [
+            [
+              "copy",
+              "*"
+            ],
+            [
+              "comment",
+              "Workaround for IS-14640"
+            ],
+            [
+              "if",
+              [
+                "is-null",
+                "_S.PriceListId"
+              ],
+              [
+                "remove",
+                "PriceListId"
+              ]
+            ]
+          ]
+        },
+        "type": "dtl"
+      },
+      {
+        "properties": {
+          "operation": "defaults",
+          "operation_properties": {
+            "base_url": "PriceList/default"
+          },
+          "primary_key": "PriceListId",
+          "rest_system": "{{@ system @}}"
+        },
+        "template": "transform-defaults-rest",
+        "type": "template"
+      },
+      {
+        "properties": {
+          "operation_delete_properties": {
+            "base_url": "PriceList",
+            "lookup_id": "PriceListId"
+          },
+          "operation_insert_properties": {
+            "base_url": "PriceList"
+          },
+          "operation_lookup_properties": {
+            "base_url": "PriceList",
+            "lookup_id": "PriceListId"
+          },
+          "operation_update_properties": {
+            "base_url": "PriceList",
+            "lookup_id": "PriceListId"
+          },
+          "primary_key": "PriceListId",
+          "rest_system": "{{@ system @}}",
+          "share_dataset": "{{@ system @}}-{{@ datatype @}}-share"
+        },
+        "template": "transform-share-rest",
+        "type": "template"
+      }
+    ],
+    "type": "pipe"
+  }
+]

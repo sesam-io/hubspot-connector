@@ -1,22 +1,45 @@
-{
-  "_id": "{{@ system @}}-{{@ datatype @}}-collect",
-  "namespaced_identifiers": false,
-  "source": {
-    "operation": "{{@ datatype @}}-list",
-    "system": "{{@ system @}}",
-    "type": "rest"
+[
+  {
+    "_id": "{{@ system @}}-{{@ datatype @}}-all",
+    "namespaced_identifiers": false,
+    "source": {
+      "operation": "{{@ datatype @}}-list",
+      "system": "{{@ system @}}",
+      "type": "rest"
+    },
+    "type": "pipe"
   },
-  "transform": {
-    "type": "dtl",
-    "rules": {
-      "default": [
-        ["copy", "*", "additionalCurrencies"],
-        ["comment", "IS-16923"],
-        ["add", "additionalCurrencies",
-          ["sorted", "_S.additionalCurrencies"]
+  {
+    "_id": "{{@ system @}}-{{@ datatype @}}-collect",
+    "namespaced_identifiers": false,
+    "source": {
+      "dataset": "{{@ system @}}-{{@ datatype @}}-all",
+      "type": "dataset"
+    },
+    "transform": {
+      "rules": {
+        "default": [
+          [
+            "copy",
+            "*",
+            "additionalCurrencies"
+          ],
+          [
+            "comment",
+            "IS-16923"
+          ],
+          [
+            "add",
+            "additionalCurrencies",
+            [
+              "sorted",
+              "_S.additionalCurrencies"
+            ]
+          ]
         ]
-      ]
-    }
-  },
-  "type": "pipe"
-}
+      },
+      "type": "dtl"
+    },
+    "type": "pipe"
+  }
+]
