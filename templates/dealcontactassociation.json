@@ -146,7 +146,8 @@
           "default": [
             [
               "copy",
-              "*"
+              "*",
+              "parent_updatedAt"
             ],
             [
               "add",
