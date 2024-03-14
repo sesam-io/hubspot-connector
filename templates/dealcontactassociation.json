@@ -26,7 +26,11 @@
             ],
             [
               "copy",
-              "id"
+              [
+                "list",
+                "updatedAt",
+                "id"
+              ]
             ]
           ]
         },
@@ -45,6 +49,11 @@
             [
               "copy",
               "*"
+            ],
+            [
+              "add",
+              "parent_updatedAt",
+              "_R._S.updatedAt"
             ],
             [
               "comment",
@@ -138,6 +147,15 @@
             [
               "copy",
               "*"
+            ],
+            [
+              "add",
+              "$last-modified",
+              [
+                "datetime-parse",
+                "%Y-%m-%dT%H:%M:%S.%fZ",
+                "_S.parent_updatedAt"
+              ]
             ],
             [
               "comment",
