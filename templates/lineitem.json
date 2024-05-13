@@ -211,7 +211,7 @@
                 "discard",
                 [
                   "eq",
-                  "{{@ datatype @}}.deletion",
+                  "{{@ webhook_filter_criteria @}}.deletion",
                   "_S.subscriptionType"
                 ]
               ]
