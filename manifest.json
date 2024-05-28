@@ -14,7 +14,7 @@
       "parameters": {
         "webhook_filter_criteria": "company"
       },
-      "template": "templates/lineitem.json"
+      "template": "templates/company.json"
     },
     "companycompanyassociation": {
       "label": "Company-Company Association",

@@ -1,0 +1,333 @@
+[
+  {
+    "_id": "{{@ system @}}-{{@ webhook_filter_criteria @}}-all",
+    "namespaced_identifiers": false,
+    "source": {
+      "operation": "{{@ webhook_filter_criteria @}}-list",
+      "system": "{{@ system @}}",
+      "type": "rest"
+    },
+    "type": "pipe"
+  },
+  {
+    "_id": "{{@ system @}}-{{@ webhook_filter_criteria @}}-collect",
+    "exclude_completeness": [
+      "{{@ system @}}-{{@ webhook_filter_criteria @}}-event2",
+      "{{@ system @}}-{{@ webhook_filter_criteria @}}-share"
+    ],
+    "namespaced_identifiers": false,
+    "source": {
+      "datasets": [
+        "{{@ system @}}-{{@ webhook_filter_criteria @}}-event2",
+        "{{@ system @}}-{{@ webhook_filter_criteria @}}-all"
+      ],
+      "type": "merge_datasets"
+    },
+    "transform": {
+      "transforms": [
+        {
+          "required_pipe_locks": [
+            "{{@ system @}}-{{@ webhook_filter_criteria @}}-share"
+          ],
+          "rules": {
+            "default": [
+              [
+                "copy",
+                "*"
+              ],
+              [
+                "merge-union",
+                [
+                  "map",
+                  [
+                    "dict",
+                    "origin_entity",
+                    "_."
+                  ],
+                  [
+                    "hops",
+                    {
+                      "datasets": [
+                        "{{@ system @}}-{{@ webhook_filter_criteria @}}-share st"
+                      ],
+                      "track-dependencies": false,
+                      "where": [
+                        [
+                          "eq",
+                          [
+                            "combine",
+                            "_S.id",
+                            [
+                              "split",
+                              ";",
+                              "_S.properties.hs_merged_object_ids"
+                            ]
+                          ],
+                          "st.$generated_id"
+                        ]
+                      ]
+                    }
+                  ]
+                ]
+              ],
+              [
+                "add-if",
+                "$origin",
+                "_T.origin_entity.$origin"
+              ],
+              [
+                "remove",
+                "origin_entity"
+              ],
+              [
+                "add-if",
+                "$truncation",
+                [
+                  "max",
+                  "_._updated",
+                  [
+                    "hops",
+                    {
+                      "datasets": [
+                        "{{@ system @}}-{{@ webhook_filter_criteria @}}-share st"
+                      ],
+                      "return": "st.$truncation",
+                      "track-dependencies": false,
+                      "where": [
+                        [
+                          "eq",
+                          "_S.id",
+                          "st.id"
+                        ]
+                      ]
+                    }
+                  ]
+                ]
+              ]
+            ]
+          },
+          "type": "dtl"
+        },
+        {
+          "rules": {
+            "default": [
+              [
+                "copy",
+                "*"
+              ],
+              [
+                "add",
+                "$last-modified",
+                [
+                  "datetime-parse",
+                  "%Y-%m-%dT%H:%M:%S.%fZ",
+                  "_S.updatedAt"
+                ]
+              ]
+            ]
+          },
+          "type": "dtl"
+        }
+      ],
+      "type": "chained"
+    },
+    "type": "pipe"
+  },
+  {
+    "_id": "{{@ system @}}-{{@ webhook_filter_criteria @}}-event",
+    "comment": "WARNING! This pipe is generated from the template of the 'lineitem' datatype and changes will be silently ignored during collapse. For more information see the connectorpy README.",
+    "namespaced_identifiers": false,
+    "sink": {
+      "deletion_tracking": false,
+      "set_initial_offset": "onload"
+    },
+    "source": {
+      "dataset": "{{@ hubspot_webhook_dataset @}}",
+      "subset": [
+        "eq",
+        [
+          "and",
+          [
+            "eq",
+            "_S.portalId",
+            [
+              "integer",
+              "{{@ account_id @}}"
+            ]
+          ],
+          [
+            "matches",
+            "{{@ webhook_filter_criteria @}}.*",
+            [
+              "list",
+              "_S.subscriptionType"
+            ]
+          ]
+        ],
+        true
+      ],
+      "type": "dataset"
+    },
+    "transform": [
+      {
+        "rules": {
+          "default": [
+            [
+              "comment",
+              "objectId contains the {{@ webhook_filter_criteria @}} id"
+            ],
+            [
+              "add",
+              "_id",
+              [
+                "string",
+                [
+                  "coalesce",
+                  [
+                    "list",
+                    "_S.objectId",
+                    "_S.fromObjectId"
+                  ]
+                ]
+              ]
+            ],
+            [
+              "add",
+              "id",
+              [
+                "coalesce",
+                [
+                  "list",
+                  "_S.objectId",
+                  "_S.fromObjectId"
+                ]
+              ]
+            ],
+            [
+              "comment",
+              "need this in the last transform to determine what to emit"
+            ],
+            [
+              "copy",
+              "subscriptionType"
+            ],
+            [
+              "add",
+              "$original_id",
+              "_S._id"
+            ]
+          ]
+        },
+        "type": "dtl"
+      }
+    ],
+    "type": "pipe"
+  },
+  {
+    "_id": "{{@ system @}}-{{@ webhook_filter_criteria @}}-event2",
+    "comment": "WARNING! This pipe is generated from the template of the 'lineitem' datatype and changes will be silently ignored during collapse. For more information see the connectorpy README.",
+    "namespaced_identifiers": false,
+    "sink": {
+      "deletion_tracking": false,
+      "set_initial_offset": "onload"
+    },
+    "source": {
+      "dataset": "{{@ system @}}-{{@ webhook_filter_criteria @}}-event",
+      "type": "dataset"
+    },
+    "transform": [
+      {
+        "allowed_status_codes": "200,404",
+        "operation": "{{@ webhook_filter_criteria @}}-lookup",
+        "replace_entity": false,
+        "response_status_property": "status",
+        "system": "{{@ system @}}",
+        "type": "rest"
+      },
+      {
+        "rules": {
+          "default": [
+            [
+              "copy",
+              "id"
+            ],
+            [
+              "comment",
+              "if deletion, always mark the output as deleted"
+            ],
+            [
+              "if",
+              [
+                "eq",
+                "{{@ webhook_filter_criteria @}}.deletion",
+                "_S.subscriptionType"
+              ],
+              [
+                "add",
+                "_deleted",
+                true
+              ]
+            ],
+            [
+              "comment",
+              "if we find the entity, always include it (will probably never happen if we get a deletion event)"
+            ],
+            [
+              "comment",
+              "discard if we get a 404 unless we have a deletion event"
+            ],
+            [
+              "if",
+              [
+                "neq",
+                404,
+                "_S.status"
+              ],
+              [
+                "merge",
+                "_S.response"
+              ],
+              [
+                "discard",
+                [
+                  "eq",
+                  "{{@ webhook_filter_criteria @}}.deletion",
+                  "_S.subscriptionType"
+                ]
+              ]
+            ]
+          ]
+        },
+        "type": "dtl"
+      }
+    ],
+    "type": "pipe"
+  },
+  {
+    "_id": "{{@ system @}}-{{@ webhook_filter_criteria @}}-share",
+    "batch_size": 1,
+    "namespaced_identifiers": false,
+    "sink": {
+      "deletion_tracking": false,
+      "set_initial_offset": "onload"
+    },
+    "source": {
+      "dataset": "{{@ system @}}-{{@ webhook_filter_criteria @}}-transform",
+      "type": "dataset"
+    },
+    "transform": {
+      "properties": {
+        "operation_delete": "{{@ webhook_filter_criteria @}}-delete",
+        "operation_insert": "{{@ webhook_filter_criteria @}}-insert",
+        "operation_lookup": "{{@ webhook_filter_criteria @}}-lookup",
+        "operation_update": "{{@ webhook_filter_criteria @}}-update",
+        "primary_key": "id",
+        "rest_system": "{{@ system @}}",
+        "share_dataset": "{{@ system @}}-{{@ webhook_filter_criteria @}}-share"
+      },
+      "template": "transform-share-rest",
+      "type": "template"
+    },
+    "type": "pipe"
+  }
+]
