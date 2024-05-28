@@ -135,7 +135,6 @@
   },
   {
     "_id": "{{@ system @}}-{{@ webhook_filter_criteria @}}-event",
-    "comment": "WARNING! This pipe is generated from the template of the 'lineitem' datatype and changes will be silently ignored during collapse. For more information see the connectorpy README.",
     "namespaced_identifiers": false,
     "sink": {
       "deletion_tracking": false,
@@ -225,7 +224,6 @@
   },
   {
     "_id": "{{@ system @}}-{{@ webhook_filter_criteria @}}-event2",
-    "comment": "WARNING! This pipe is generated from the template of the 'lineitem' datatype and changes will be silently ignored during collapse. For more information see the connectorpy README.",
     "namespaced_identifiers": false,
     "sink": {
       "deletion_tracking": false,
