@@ -21,9 +21,19 @@
         "{{@ system @}}-{{@ datatype @}}-event2",
         "{{@ system @}}-{{@ datatype @}}-all"
       ],
+      "strategy": "all",
       "type": "merge_datasets"
     },
     "transform": [
+      {
+        "type": "dtl",
+        "rules": {
+          "default": [
+            ["create", ["max", "_.updatedAt", ["values", "_S."]]],
+            ["discard"]
+          ]
+        }
+      },
       {
         "properties": {
           "primary_key": "id",
